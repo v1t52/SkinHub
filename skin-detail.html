@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkinHub — AWP Dragon Lore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* =========================================================
+                   STEAM 2026 — ПЕРЕМЕННЫЕ
+                   ========================================================= */
+        :root {
+            --bg-primary: #0e1217;
+            --bg-secondary: #171d25;
+            --bg-card: #1f2833;
+            --bg-card-hover: #2a3544;
+            --border-color: #2f4058;
+            --text-primary: #d2e0f0;
+            --text-secondary: #9ab0cc;
+            --text-muted: #5f7a9e;
+            --steam-blue: #4a90d9;
+            --steam-blue-dark: #2d6fa8;
+            --steam-blue-light: #6dafe8;
+            --steam-orange: #ff6b00;
+            --steam-orange-dark: #cc5500;
+            --steam-orange-light: #ff8833;
+            --steam-gold: #d4a843;
+            --steam-gold-light: #f0d080;
+            --rarity-gold: #d4a843;
+            --rarity-contraband: #ff6b00;
+            --rarity-red: #ff4444;
+            --rarity-pink: #ff69b4;
+            --rarity-purple: #aa66ff;
+            --rarity-blue: #4488ff;
+            --radius: 10px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #e8ecf2;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f4fa;
+            --border-color: #c8d0dc;
+            --text-primary: #1a2332;
+            --text-secondary: #4a6a8a;
+            --text-muted: #8a9aaa;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* =========================================================
+                   АНИМИРОВАННЫЙ ФОН — STEAM 2026
+                   ========================================================= */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-animation .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            animation: pulse-orb 10s ease-in-out infinite;
+            opacity: 0.06;
+            will-change: transform;
+        }
+
+        @keyframes pulse-orb {
+            0%, 100% {
+                transform: scale(1) translate(0, 0);
+                opacity: 0.04;
+            }
+            50% {
+                transform: scale(1.8) translate(40px, -30px);
+                opacity: 0.10;
+            }
+        }
+
+        .bg-animation .steam-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(74, 144, 217, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 144, 217, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: grid-shift 20s linear infinite;
+        }
+
+        @keyframes grid-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .bg-animation .falling-skin-img {
+            position: absolute;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+            border-radius: 4px;
+            will-change: transform;
+            animation: fall-skin 20s linear infinite;
+            z-index: 0;
+            opacity: 0.04;
+            filter: blur(0.5px);
+        }
+
+        @keyframes fall-skin {
+            0% {
+                transform: translateY(-100px) rotate(0deg) scale(0.4);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.06;
+            }
+            90% {
+                opacity: 0.05;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* =========================================================
+                   ХЕДЕР — STEAM 2026
+                   ========================================================= */
+        header {
+            padding: 14px 0;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(14, 18, 23, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: background 0.4s ease;
+        }
+
+        [data-theme="light"] header {
+            background: rgba(232, 236, 242, 0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        .logo-skin {
+            color: var(--steam-blue);
+        }
+
+        .logo-hub {
+            color: var(--steam-orange);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+        }
+
+        nav a:hover {
+            color: var(--steam-blue);
+        }
+
+        nav a.active {
+            color: var(--steam-blue);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--steam-blue);
+            box-shadow: 0 0 20px rgba(74, 144, 217, 0.4);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-theme {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .btn-theme:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        .btn-steam {
+            background: linear-gradient(135deg, #1a2332, #2a3a4a);
+            color: #fff;
+            border: 1px solid rgba(74, 144, 217, 0.15);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-steam i {
+            color: var(--steam-blue);
+        }
+
+        .btn-steam:hover {
+            border-color: var(--steam-blue);
+            transform: scale(1.04);
+            box-shadow: 0 0 24px rgba(74, 144, 217, 0.15);
+        }
+
+        .btn-sell {
+            background: rgba(255, 107, 0, 0.08);
+            color: var(--steam-orange);
+            border: 1px solid rgba(255, 107, 0, 0.15);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sell:hover {
+            background: rgba(255, 107, 0, 0.15);
+            border-color: var(--steam-orange);
+        }
+
+        .wallet {
+            background: rgba(212, 168, 67, 0.08);
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--steam-gold);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wallet:hover {
+            background: rgba(212, 168, 67, 0.15);
+            border-color: var(--steam-gold);
+            transform: scale(1.02);
+        }
+
+        .cart-btn {
+            background: rgba(74, 144, 217, 0.06);
+            border: 1px solid rgba(74, 144, 217, 0.12);
+            padding: 8px 16px;
+            border-radius: 40px;
+            color: var(--steam-blue);
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            background: rgba(74, 144, 217, 0.10);
+        }
+
+        .cart-count {
+            background: var(--steam-orange);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            box-shadow: 0 0 16px rgba(255, 107, 0, 0.3);
+        }
+
+        /* =========================================================
+                   СТРАНИЦА ДЕТАЛЕЙ СКИНА — STEAM 2026
+                   ========================================================= */
+        .skin-detail-section {
+            margin: 30px 0 40px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: var(--steam-blue);
+        }
+
+        .skin-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* =========================================================
+                   ЛЕВАЯ КОЛОНКА — ИЗОБРАЖЕНИЕ
+                   ========================================================= */
+        .skin-image-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px 24px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            max-width: 100%;
+        }
+
+        .skin-image-container .rarity-badge-large {
+            position: absolute;
+            top: 12px;
+            left: 14px;
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rarity-red {
+            background: rgba(255, 68, 68, 0.12);
+            color: var(--rarity-red);
+            border: 1px solid rgba(255, 68, 68, 0.15);
+        }
+
+        .skin-image-container .skin-image {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .skin-image-container .skin-image img {
+            max-width: 90%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 40px rgba(74, 144, 217, 0.08));
+            transition: var(--transition);
+        }
+
+        .skin-image-container .skin-image .fallback-icon {
+            font-size: 80px;
+            opacity: 0.3;
+        }
+
+        .skin-image-container .skin-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 14px;
+        }
+
+        .skin-image-container .skin-actions .btn-buy-detail {
+            flex: 1;
+            padding: 10px 12px;
+            background: linear-gradient(135deg, var(--steam-orange), var(--steam-orange-dark));
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.12);
+        }
+
+        .skin-image-container .skin-actions .btn-buy-detail:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(255, 107, 0, 0.25);
+        }
+
+        .skin-image-container .skin-actions .btn-cart-detail {
+            flex: 1;
+            padding: 10px 12px;
+            background: rgba(74, 144, 217, 0.06);
+            color: var(--steam-blue);
+            border: 1px solid rgba(74, 144, 217, 0.12);
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .skin-image-container .skin-actions .btn-cart-detail:hover {
+            background: rgba(74, 144, 217, 0.10);
+            transform: translateY(-2px);
+        }
+
+        .skin-image-container .skin-actions .btn-cart-detail.in-cart {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+
+        .skin-image-container .skin-actions .btn-cart-detail.in-cart:hover {
+            background: rgba(255, 68, 68, 0.10);
+            color: var(--rarity-red);
+            border-color: var(--rarity-red);
+        }
+
+        /* =========================================================
+                   ПРАВАЯ КОЛОНКА — ИНФОРМАЦИЯ
+                   ========================================================= */
+        .skin-info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .skin-info-container .skin-name {
+            font-size: 26px;
+            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .skin-info-container .skin-price {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--steam-gold);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .skin-info-container .skin-price .price-rub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .skin-info-container .skin-exterior {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .skin-info-container .skin-exterior strong {
+            color: var(--text-primary);
+        }
+
+        .skin-info-container .skin-float {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .skin-info-container .skin-float .float-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .skin-info-container .skin-type {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* =========================================================
+                   ОПИСАНИЕ
+                   ========================================================= */
+        .skin-description {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            margin-top: 2px;
+        }
+
+        .skin-description h4 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        .skin-description p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+                   ХАРАКТЕРИСТИКИ
+                   ========================================================= */
+        .skin-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 2px;
+        }
+
+        .skin-stat {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .skin-stat .stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .skin-stat .stat-value {
+            font-weight: 700;
+            font-size: 15px;
+            margin-top: 2px;
+        }
+
+        .skin-stat .stat-value.good {
+            color: #4caf50;
+        }
+
+        .skin-stat .stat-value.bad {
+            color: var(--rarity-red);
+        }
+
+        .skin-stat .stat-value.gold {
+            color: var(--steam-gold);
+        }
+
+        /* =========================================================
+                   ГРАФИК ЦЕН
+                   ========================================================= */
+        .price-chart {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            margin-top: 2px;
+        }
+
+        .price-chart .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .price-chart .chart-header h4 {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .price-chart .chart-header h4 i {
+            color: var(--steam-blue);
+            margin-right: 6px;
+        }
+
+        .price-chart .chart-header .chart-periods {
+            display: flex;
+            gap: 4px;
+        }
+
+        .price-chart .chart-header .chart-periods button {
+            padding: 3px 12px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .price-chart .chart-header .chart-periods button:hover,
+        .price-chart .chart-header .chart-periods button.active {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        .chart-container {
+            height: 150px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            padding: 8px 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--steam-blue), var(--steam-blue-dark));
+            border-radius: 3px 3px 0 0;
+            min-height: 8px;
+            transition: var(--transition);
+            position: relative;
+            opacity: 0.7;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 1;
+            transform: scaleY(1.02);
+        }
+
+        .chart-bar .bar-label {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 7px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .chart-bar .bar-price {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--steam-gold);
+            display: none;
+        }
+
+        .chart-bar:hover .bar-price {
+            display: block;
+        }
+
+        /* =========================================================
+                   КАЧЕСТВА (EXTERIORS) — ВЫБИРАЕМЫЕ
+                   ========================================================= */
+        .exteriors-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            margin-top: 2px;
+        }
+
+        .exteriors-section h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .exteriors-section h4 i {
+            color: var(--steam-gold);
+            margin-right: 6px;
+        }
+
+        .exteriors-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+
+        .exterior-item {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 8px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .exterior-item:hover {
+            border-color: var(--steam-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(74, 144, 217, 0.04);
+        }
+
+        .exterior-item.active {
+            border-color: var(--steam-blue);
+            background: rgba(74, 144, 217, 0.05);
+            box-shadow: 0 0 20px rgba(74, 144, 217, 0.03);
+        }
+
+        .exterior-item .exterior-name {
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .exterior-item .exterior-price {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--steam-gold);
+            margin-top: 2px;
+        }
+
+        .exterior-item .exterior-float {
+            font-size: 8px;
+            color: var(--text-muted);
+        }
+
+        .exterior-item .exterior-check {
+            display: none;
+            color: var(--steam-blue);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .exterior-item.active .exterior-check {
+            display: block;
+        }
+
+        /* =========================================================
+                   ТОСТ
+                   ========================================================= */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 22px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+            animation: slideIn 0.4s ease;
+            z-index: 99999;
+            max-width: 380px;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        .toast i {
+            font-size: 20px;
+        }
+
+        .toast .toast-text {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .toast.error {
+            border-color: var(--rarity-red);
+        }
+
+        .toast.error i {
+            color: var(--rarity-red);
+        }
+
+        .toast.success {
+            border-color: #4caf50;
+        }
+
+        .toast.success i {
+            color: #4caf50;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* =========================================================
+                   МОДАЛЬНЫЕ ОКНА — STEAM 2026
+                   ========================================================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.94); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            padding: 32px 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal .modal-icon {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .modal h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .modal .modal-sub {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .modal .form-group {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .modal .form-group input:focus {
+            border-color: var(--steam-blue);
+        }
+
+        .modal .btn-confirm {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.10);
+        }
+
+        .modal .btn-confirm:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(74, 144, 217, 0.25);
+        }
+
+        .modal .auth-suggest {
+            background: rgba(74, 144, 217, 0.05);
+            border: 1px solid rgba(74, 144, 217, 0.08);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .modal .auth-suggest strong {
+            color: var(--text-primary);
+        }
+
+        .modal .auth-switch {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .modal .auth-switch a {
+            color: var(--steam-blue);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .modal .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .modal .error-text {
+            color: var(--rarity-red);
+            text-align: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        /* =========================================================
+                   ФУТЕР — STEAM 2026
+                   ========================================================= */
+        footer {
+            padding: 34px 0 24px;
+            border-top: 2px solid var(--border-color);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        footer .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        footer .footer-links a:hover {
+            color: var(--steam-blue);
+        }
+
+        footer .socials {
+            display: flex;
+            gap: 18px;
+        }
+
+        footer .socials a {
+            color: var(--text-secondary);
+            font-size: 22px;
+            transition: var(--transition);
+        }
+
+        footer .socials a:hover {
+            color: var(--steam-blue);
+            transform: translateY(-3px);
+        }
+
+        footer .copy {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+        /* =========================================================
+                   АДАПТИВ
+                   ========================================================= */
+        @media (max-width: 1024px) {
+            .skin-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skin-image-container .skin-image {
+                height: 250px;
+            }
+
+            .exteriors-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 12px;
+            }
+
+            header {
+                padding: 12px 0;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            nav {
+                justify-content: center;
+                gap: 14px;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+
+            .skin-image-container .skin-image {
+                height: 200px;
+            }
+
+            .skin-image-container .skin-image .fallback-icon {
+                font-size: 60px;
+            }
+
+            .skin-image-container {
+                padding: 16px;
+            }
+
+            .skin-info-container .skin-name {
+                font-size: 20px;
+            }
+
+            .skin-info-container .skin-price {
+                font-size: 22px;
+            }
+
+            .skin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .exteriors-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .skin-image-container .skin-actions {
+                flex-direction: column;
+            }
+
+            .chart-container {
+                height: 100px;
+            }
+
+            .toast {
+                bottom: 80px;
+                right: 12px;
+                left: 12px;
+                max-width: unset;
+            }
+
+            footer .footer-links {
+                gap: 16px;
+            }
+
+            footer .socials {
+                gap: 14px;
+            }
+
+            .price-chart .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .exteriors-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .skin-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .skin-image-container .skin-image {
+                height: 160px;
+            }
+
+            .price-chart .chart-header .chart-periods {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    АНИМИРОВАННЫЙ ФОН — STEAM 2026
+    ============================================================ -->
+    <div class="bg-animation" id="bgAnimation">
+        <div class="steam-grid"></div>
+        <div class="glow-orb" style="width:350px;height:350px;background:radial-gradient(circle,#4a90d9,transparent);top:8%;left:3%;animation-delay:0s;"></div>
+        <div class="glow-orb" style="width:450px;height:450px;background:radial-gradient(circle,#2d6fa8,transparent);bottom:5%;right:3%;animation-delay:4s;"></div>
+        <div class="glow-orb" style="width:250px;height:250px;background:radial-gradient(circle,#6dafe8,transparent);top:45%;left:55%;animation-delay:8s;"></div>
+    </div>
+
+    <!-- ============================================================
+    ОСНОВНОЙ КОНТЕЙНЕР
+    ============================================================ -->
+    <div class="container">
+
+        <!-- ============================================================
+        ХЕДЕР — STEAM 2026
+        ============================================================ -->
+        <header>
+            <div class="header-inner">
+                <a class="logo" href="index.html">
+                    <span class="logo-skin">Skin</span><span class="logo-hub">Hub</span>
+                </a>
+
+                <nav>
+                    <a href="index.html">Магазин</a>
+                    <a href="cabinet.html">Кабинет</a>
+                    <a href="trade.html">Обмен</a>
+                    <a href="sell.html">Продать</a>
+                    <a href="#" onclick="showToast('📄 Страница о нас скоро появится!', 'default')">О нас</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn-theme" title="Сменить тему" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <button class="btn-sell" onclick="window.location.href='sell.html'">
+                        <i class="fas fa-tag"></i> Продать
+                    </button>
+                    <button class="btn-steam" id="steamLoginBtn">
+                        <i class="fab fa-steam"></i> <span id="authBtnText">Войти</span>
+                    </button>
+                    <div class="wallet" onclick="openTopup()">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span class="wallet-balance" id="walletBalance">$0.00</span>
+                    </div>
+                    <button class="cart-btn" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        СТРАНИЦА ДЕТАЛЕЙ СКИНА — AWP DRAGON LORE
+        ============================================================ -->
+        <section class="skin-detail-section">
+            <!-- Назад -->
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Назад в магазин
+            </a>
+
+            <div class="skin-detail-grid">
+                <!-- Левая колонка — Изображение -->
+                <div class="skin-image-container">
+                    <div class="rarity-badge-large rarity-red">🔴 Красный</div>
+                    <div class="skin-image">
+                        <img src="https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV" alt="AWP Dragon Lore" onerror="this.parentElement.innerHTML='<span></span>'">
+                    </div>
+                    <div class="skin-actions">
+                        <button class="btn-buy-detail" id="buyNowBtn">
+                            <i class="fas fa-bolt"></i> Купить сейчас
+                        </button>
+                        <button class="btn-cart-detail" id="cartBtnDetail">
+                            <i class="fas fa-cart-plus"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Правая колонка — Информация -->
+                <div class="skin-info-container">
+                    <div class="skin-name">AWP Dragon Lore</div>
+                    <div class="skin-price">
+                        $<span id="skinPrice">2,500.00</span>
+                        <span class="price-rub">≈ <span id="skinPriceRub">225,000</span> ₽</span>
+                    </div>
+                    <div class="skin-exterior" id="skinExterior">Качество: <strong>Factory New</strong></div>
+                    <div class="skin-float">Float: <span class="float-value" id="skinFloat">0.0123</span></div>
+                    <div class="skin-type">Снайперская винтовка • AWP</div>
+
+                    <!-- ОПИСАНИЕ -->
+                    <div class="skin-description">
+                        <h4>📝 Описание</h4>
+                        <p>Легендарная снайперская винтовка с уникальным драконьим дизайном. Один из самых редких и дорогих скинов в CS2. Вдохновлён средневековыми драконами и эпическими битвами.</p>
+                    </div>
+
+                    <!-- Характеристики -->
+                    <div class="skin-stats">
+                        <div class="skin-stat">
+                            <div class="stat-label">Популярность</div>
+                            <div class="stat-value good">🔥 97%</div>
+                        </div>
+                        <div class="skin-stat">
+                            <div class="stat-label">Продано сегодня</div>
+                            <div class="stat-value gold">47</div>
+                        </div>
+                        <div class="skin-stat">
+                            <div class="stat-label">В наличии</div>
+                            <div class="stat-value" style="color:#4caf50;">12 шт.</div>
+                        </div>
+                    </div>
+
+                    <!-- График цен -->
+                    <div class="price-chart">
+                        <div class="chart-header">
+                            <h4><i class="fas fa-chart-line"></i> Динамика цен</h4>
+                            <div class="chart-periods">
+                                <button class="active" data-period="7">7д</button>
+                                <button data-period="30">30д</button>
+                                <button data-period="90">90д</button>
+                                <button data-period="365">1г</button>
+                            </div>
+                        </div>
+                        <div class="chart-container" id="chartContainer">
+                            <!-- Заполняется через JS -->
+                        </div>
+                    </div>
+
+                    <!-- Качества (Exteriors) — ВЫБИРАЕМЫЕ -->
+                    <div class="exteriors-section">
+                        <h4><i class="fas fa-star"></i> Доступные качества</h4>
+                        <div class="exteriors-grid" id="exteriorsGrid">
+                            <!-- Заполняется через JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ============================================================
+    МОДАЛКА АВТОРИЗАЦИИ
+    ============================================================ -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <button class="modal-close" id="authClose"><i class="fas fa-times"></i></button>
+            <span class="modal-icon">🎮</span>
+            <h2 id="authTitle">Вход в аккаунт</h2>
+            <p class="modal-sub" id="authSub">Войдите или зарегистрируйтесь</p>
+            <div id="authError" class="error-text" style="display:none;"></div>
+            <div class="auth-suggest">
+                💡 <strong>Готовый аккаунт:</strong> demo@skin.com / <strong>demo123</strong>
+            </div>
+            <form class="auth-form" id="authForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="authEmail" placeholder="example@mail.com" value="demo@skin.com">
+                </div>
+                <div class="form-group">
+                    <label>🔑 Пароль</label>
+                    <input type="password" id="authPassword" placeholder="Минимум 6 символов" value="demo123" minlength="6">
+                </div>
+                <button class="btn-confirm" id="authSubmitBtn" style="margin-top:4px;">
+                    <i class="fas fa-sign-in-alt"></i> <span id="authBtnLabel">Войти</span>
+                </button>
+            </form>
+            <div class="auth-switch">
+                <span id="authSwitchText">Нет аккаунта?</span>
+                <a id="authSwitchLink" onclick="toggleAuthMode()">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    ТОСТ
+    ============================================================ -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <div class="toast-text" id="toastText">Уведомление</div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    ФУТЕР
+    ============================================================ -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Правила безопасности</a>
+            <a href="#">Поддержка</a>
+            <a href="#">Партнёрам</a>
+            <a href="#">API</a>
+        </div>
+        <div class="socials">
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-telegram"></i></a>
+        </div>
+        <div class="copy">© 2026 SkinHub. Все сделки защищены. Не связан с Valve Corporation.</div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT — STEAM 2026
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // ОБЩИЕ КЛЮЧИ ДЛЯ localStorage
+        // ============================================================
+        const STORAGE_KEYS = {
+            USER: 'skinHub_user',
+            BALANCE: 'skinHub_balance',
+            LOGGED_IN: 'skinHub_loggedIn',
+            OWNED_SKINS: 'skinHub_ownedSkins',
+            TRANSACTIONS: 'skinHub_transactions',
+            CART: 'skinHub_cart',
+            THEME: 'skinHub_theme'
+        };
+
+        // ============================================================
+        // ДАННЫЕ СКИНА (AWP DRAGON LORE)
+        // ============================================================
+        const skin = {
+            id: 1,
+            name: 'AWP Dragon Lore',
+            exterior: 'Factory New',
+            float: '0.0123',
+            type: 'Снайперская винтовка • AWP',
+            rarity: 'red',
+            price: 2500,
+            icon: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV',
+            hasImage: true
+        };
+
+        // ============================================================
+        // ДАННЫЕ КАЧЕСТВ
+        // ============================================================
+        const qualities = [
+            { name: 'Factory New', price: 2500, float: '0.00-0.07', icon: '✨' },
+            { name: 'Minimal Wear', price: 2125, float: '0.07-0.15', icon: '🌟' },
+            { name: 'Field-Tested', price: 1500, float: '0.15-0.38', icon: '⭐' },
+            { name: 'Well-Worn', price: 1000, float: '0.38-0.45', icon: '💫' },
+            { name: 'Battle-Scarred', price: 625, float: '0.45-1.00', icon: '🌑' }
+        ];
+
+        // ============================================================
+        // СОСТОЯНИЕ
+        // ============================================================
+        let isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
+        let user = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || { email: '', username: 'Гость', avatar: '👤' };
+        let balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+        let selectedQuality = 0;
+        let toastTimeout = null;
+        let isRegister = false;
+
+        // ============================================================
+        // ГЕНЕРАЦИЯ ДАННЫХ ДЛЯ ГРАФИКА
+        // ============================================================
+        function generateChartData(basePrice, days) {
+            const data = [];
+            let price = basePrice;
+            for (let i = 0; i < days; i++) {
+                const change = (Math.random() - 0.45) * 0.06;
+                price = price * (1 + change);
+                price = Math.max(price, basePrice * 0.6);
+                data.push({
+                    day: i + 1,
+                    price: Math.round(price * 100) / 100
+                });
+            }
+            return data;
+        }
+
+        // ============================================================
+        // РЕНДЕРИНГ ГРАФИКА
+        // ============================================================
+        function renderChart(period) {
+            const container = document.getElementById('chartContainer');
+            const days = period || 7;
+            const currentPrice = qualities[selectedQuality].price;
+            const data = generateChartData(currentPrice, days);
+            const maxPrice = Math.max(...data.map(d => d.price));
+            const minPrice = Math.min(...data.map(d => d.price));
+            const range = maxPrice - minPrice || 1;
+
+            container.innerHTML = data.map((d, index) => {
+                const height = ((d.price - minPrice) / range) * 90 + 10;
+                const isLast = index === data.length - 1;
+                return `
+                    <div class="chart-bar" style="height: ${Math.max(height, 10)}%; background: linear-gradient(180deg, ${isLast ? 'var(--steam-orange)' : 'var(--steam-blue)'}, var(--steam-blue-dark));">
+                        <span class="bar-price">$${d.price.toFixed(2)}</span>
+                        <span class="bar-label">${index + 1}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // РЕНДЕРИНГ КАЧЕСТВ (ВЫБИРАЕМЫЕ)
+        // ============================================================
+        function renderQualities() {
+            const grid = document.getElementById('exteriorsGrid');
+
+            grid.innerHTML = qualities.map((q, index) => {
+                const isActive = index === selectedQuality;
+                return `
+                    <div class="exterior-item ${isActive ? 'active' : ''}" onclick="selectQuality(${index})">
+                        <div class="exterior-name">${q.icon} ${q.name}</div>
+                        <div class="exterior-price">$${q.price.toFixed(2)}</div>
+                        <div class="exterior-float">${q.float}</div>
+                        <div class="exterior-check">✓ Выбрано</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // ВЫБОР КАЧЕСТВА
+        // ============================================================
+        function selectQuality(index) {
+            selectedQuality = index;
+            const quality = qualities[index];
+            
+            document.getElementById('skinExterior').innerHTML = `Качество: <strong>${quality.name}</strong>`;
+            document.getElementById('skinPrice').textContent = quality.price.toFixed(2);
+            document.getElementById('skinPriceRub').textContent = Math.round(quality.price * 90);
+            
+            const floatParts = quality.float.split('-');
+            const avgFloat = (parseFloat(floatParts[0]) + parseFloat(floatParts[1])) / 2;
+            document.getElementById('skinFloat').textContent = avgFloat.toFixed(4);
+            
+            renderChart(7);
+            renderQualities();
+        }
+
+        // ============================================================
+        // ТЕМА
+        // ============================================================
+        function toggleTheme() {
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('themeIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem(STORAGE_KEYS.THEME, isDark ? 'light' : 'dark');
+            showToast(isDark ? '☀️ Светлая тема' : '🌙 Тёмная тема', 'default');
+        }
+
+        const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(text, type = 'default') {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            toastText.textContent = text;
+            toast.className = 'toast show';
+            if (type === 'error') toast.classList.add('error');
+            else if (type === 'success') toast.classList.add('success');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================================
+        // БАЛАНС
+        // ============================================================
+        function updateBalanceUI() {
+            const formatted = '$' + balance.toFixed(2);
+            document.getElementById('walletBalance').textContent = formatted;
+        }
+
+        // ============================================================
+        // АВТОРИЗАЦИЯ
+        // ============================================================
+        function updateAuthUI() {
+            if (isLoggedIn) {
+                document.getElementById('authBtnText').textContent = user.username;
+                document.getElementById('steamLoginBtn').style.borderColor = 'var(--steam-blue)';
+                document.getElementById('steamLoginBtn').style.color = 'var(--steam-blue)';
+            } else {
+                document.getElementById('authBtnText').textContent = 'Войти';
+                document.getElementById('steamLoginBtn').style.borderColor = 'rgba(255,255,255,0.08)';
+                document.getElementById('steamLoginBtn').style.color = '#fff';
+            }
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+            const errorEl = document.getElementById('authError');
+
+            if (!email || !password) {
+                errorEl.textContent = '⚠️ Заполните все поля!';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorEl.textContent = '⚠️ Пароль должен быть минимум 6 символов!';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            const isRegisterMode = document.getElementById('authBtnLabel').textContent === 'Зарегистрироваться';
+
+            if (isRegisterMode) {
+                user = { email, username: email.split('@')[0], avatar: '👤' };
+                isLoggedIn = true;
+                balance = 100;
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
+                document.getElementById('authModal').classList.remove('active');
+                showToast(`🎉 Добро пожаловать, ${user.username}!`, 'success');
+                updateAuthUI();
+                updateBalanceUI();
+            } else {
+                const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
+                if (savedUser) {
+                    const parsed = JSON.parse(savedUser);
+                    if (parsed.email === email) {
+                        isLoggedIn = true;
+                        user = parsed;
+                        balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+                        document.getElementById('authModal').classList.remove('active');
+                        showToast(`👋 С возвращением, ${user.username}!`, 'success');
+                        updateAuthUI();
+                        updateBalanceUI();
+                        return;
+                    }
+                }
+                user = { email, username: email.split('@')[0], avatar: '👤' };
+                isLoggedIn = true;
+                balance = 100;
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
+                document.getElementById('authModal').classList.remove('active');
+                showToast(`🎉 Добро пожаловать, ${user.username}!`, 'success');
+                updateAuthUI();
+                updateBalanceUI();
+            }
+
+            document.getElementById('authEmail').value = '';
+            document.getElementById('authPassword').value = '';
+            errorEl.style.display = 'none';
+        }
+
+        function toggleAuthMode() {
+            const isRegisterMode = document.getElementById('authBtnLabel').textContent === 'Зарегистрироваться';
+            if (isRegisterMode) {
+                document.getElementById('authTitle').textContent = 'Вход в аккаунт';
+                document.getElementById('authSub').textContent = 'Войдите или зарегистрируйтесь';
+                document.getElementById('authBtnLabel').textContent = 'Войти';
+                document.getElementById('authSwitchText').textContent = 'Нет аккаунта?';
+                document.getElementById('authSwitchLink').textContent = 'Зарегистрироваться';
+            } else {
+                document.getElementById('authTitle').textContent = 'Регистрация';
+                document.getElementById('authSub').textContent = 'Создайте аккаунт';
+                document.getElementById('authBtnLabel').textContent = 'Зарегистрироваться';
+                document.getElementById('authSwitchText').textContent = 'Уже есть аккаунт?';
+                document.getElementById('authSwitchLink').textContent = 'Войти';
+            }
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        // ============================================================
+        // КОРЗИНА
+        // ============================================================
+        function getCartItems() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]');
+        }
+
+        function setCartItems(items) {
+            localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(items));
+            updateCartBadge();
+        }
+
+        function isInCart() {
+            return getCartItems().some(item => item.id === skin.id);
+        }
+
+        function toggleCart() {
+            const cart = getCartItems();
+            const index = cart.findIndex(item => item.id === skin.id);
+
+            if (index !== -1) {
+                cart.splice(index, 1);
+                setCartItems(cart);
+                showToast('🗑️ Скин удалён из корзины', 'default');
+                const btn = document.getElementById('cartBtnDetail');
+                btn.innerHTML = '<i class="fas fa-cart-plus"></i> В корзину';
+                btn.classList.remove('in-cart');
+            } else {
+                const quality = qualities[selectedQuality];
+                cart.push({ ...skin, price: quality.price, exterior: quality.name });
+                setCartItems(cart);
+                showToast('✅ Скин добавлен в корзину', 'success');
+                const btn = document.getElementById('cartBtnDetail');
+                btn.innerHTML = '<i class="fas fa-check"></i> В корзине';
+                btn.classList.add('in-cart');
+            }
+            updateCartBadge();
+        }
+
+        function updateCartBadge() {
+            const count = getCartItems().length;
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // ============================================================
+        // КУПИТЬ СЕЙЧАС
+        // ============================================================
+        function buyNow() {
+            if (!isLoggedIn) {
+                showToast('⚠️ Войдите в аккаунт!', 'error');
+                document.getElementById('authModal').classList.add('active');
+                return;
+            }
+
+            const quality = qualities[selectedQuality];
+            const price = quality.price;
+
+            if (balance < price) {
+                showToast(`❌ Недостаточно средств! Нужно $${price.toFixed(2)}, у вас $${balance.toFixed(2)}`, 'error');
+                return;
+            }
+
+            const newBalance = balance - price;
+            localStorage.setItem(STORAGE_KEYS.BALANCE, newBalance.toString());
+            balance = newBalance;
+            updateBalanceUI();
+
+            const owned = JSON.parse(localStorage.getItem(STORAGE_KEYS.OWNED_SKINS) || '[]');
+            owned.push({ ...skin, price: price, exterior: quality.name, acquired: new Date().toISOString() });
+            localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(owned));
+
+            const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
+            txs.push({
+                type: 'Покупка',
+                amount: -price,
+                name: `${skin.name} (${quality.name})`,
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+            });
+            localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(txs));
+
+            showToast(`🎉 Скин "${skin.name}" (${quality.name}) куплен!`, 'success');
+            updateCartBadge();
+        }
+
+        // ============================================================
+        // МОДАЛКА ПОПОЛНЕНИЯ
+        // ============================================================
+        function openTopup() {
+            showToast('💳 Пополнение кошелька доступно в личном кабинете', 'default');
+            window.location.href = 'cabinet.html';
+        }
+
+        // ============================================================
+        // АНИМИРОВАННЫЙ ФОН — С КАРТИНКАМИ СКИНОВ
+        // ============================================================
+        function initBackground() {
+            const bg = document.getElementById('bgAnimation');
+            if (!bg) return;
+
+            // Очищаем фон от старых элементов
+            const existingImgs = bg.querySelectorAll('.falling-skin-img');
+            existingImgs.forEach(el => el.remove());
+
+            // Реальные URL картинок скинов из Steam
+            const skinUrls = [
+                'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Z-ua6bbZrLOmsD2mv1edxtfNWQDuymxoijDGMnYftb3mfOg8hAsFzRrYCtxKxxtPlZOnl5gaM3ogQmX_7jnkdvHppseoGVvI7uvqAJhUGkWs',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1idwPx0vORWSSi3kCIrujqNjsGveH2RaVRxX5ohEe4Juhawm4fiM-ji4APf2YMXmSz_hyoduytv4uhWT-N7rfLHGBJ4',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiNW0PCvZaZiL8-ZG2mXzetJveRtRjy-20lwtzzRytb_dS-eagAnCsN0Q-detxO-x4HkYuLksQTXjNkUz3342ntXrnE85hrDYAs',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Wts2sab1iLvWHMWaR_uh3tORWQyC0nQlp4znQytr6cnjFbg8oC8BzRrQK50S-lNDgP-_r5wWP3t5CyX37jCIb7DErvbiJu9Hv_g',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_yaCW-E_ux6peRWQyC0nQlp4jjRyt-vJX6QblMgApt0R-5c5hLsktO2Nu_h4QaLg4MXyCmr2ClP7jErvbiwB_ADaw',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_CNk7uW-V6JsJPWsAm6Xyfo45-c5GXDnwB534DuEwtuoIHOfaAYiAsYjF-QItUaxmoC0MO_h5ALcjJUFk3sEzfdk4w',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwjFS4_ega6F_H_GeMWrEwL9lj-NlWiygmBIstgKJk4jxNWWeOg5xDJR2Q-5b5BGwxIDuP7uw4ALa3ohMz3n3iypLvyc55-pQUKct5OSJ2OKlF5Nn',
+                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0PSneqF-JeKDC2mE_u995LZWTTuygxIYvzSCkpu3cnvFPQB2DpUkROFY4Rntw93lP7i241DbiI1BxSuviHlKunk_6-sHU71lpPMTRLyP4Q'
+            ];
+
+            // Создаем падающие элементы с картинками
+            for (let i = 0; i < 40; i++) {
+                const img = document.createElement('img');
+                img.className = 'falling-skin-img';
+                img.src = skinUrls[Math.floor(Math.random() * skinUrls.length)];
+                img.alt = 'skin';
+                img.loading = 'lazy';
+                
+                const size = Math.random() * 50 + 25;
+                const left = Math.random() * 95 + 2.5;
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 20;
+                const rotation = Math.random() * 360;
+                const opacity = Math.random() * 0.05 + 0.02;
+                
+                img.style.cssText = `
+                    left: ${left}%;
+                    width: ${size}px;
+                    height: auto;
+                    animation-duration: ${duration}s;
+                    animation-delay: ${delay}s;
+                    transform: rotate(${rotation}deg);
+                    opacity: ${opacity};
+                    filter: blur(${Math.random() * 0.5}px);
+                    object-fit: contain;
+                `;
+                
+                img.onerror = function() {
+                    this.style.display = 'none';
+                };
+                
+                bg.appendChild(img);
+            }
+        }
+
+        // ============================================================
+        // СОБЫТИЯ
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация фона
+            initBackground();
+            
+            // Инициализация остальных элементов
+            balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+            isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
+
+            updateAuthUI();
+            updateBalanceUI();
+            updateCartBadge();
+
+            renderQualities();
+            renderChart(7);
+
+            if (isInCart()) {
+                const btn = document.getElementById('cartBtnDetail');
+                btn.innerHTML = '<i class="fas fa-check"></i> В корзине';
+                btn.classList.add('in-cart');
+            }
+
+            console.log('🐉 Страница AWP Dragon Lore (Steam 2026) загружена!');
+            console.log(`👤 Пользователь: ${isLoggedIn ? user.username : 'Гость'}`);
+            console.log(`💰 Баланс: $${balance}`);
+            console.log('📸 Падающие картинки скинов активированы!');
+        });
+
+        document.getElementById('steamLoginBtn')?.addEventListener('click', function() {
+            if (isLoggedIn) {
+                isLoggedIn = false;
+                user = { email: '', username: 'Гость', avatar: '👤' };
+                balance = 0;
+                localStorage.setItem(STORAGE_KEYS.BALANCE, '0');
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'false');
+                updateAuthUI();
+                updateBalanceUI();
+                showToast('👋 Вы вышли из аккаунта', 'default');
+                return;
+            }
+            document.getElementById('authModal').classList.add('active');
+        });
+
+        document.getElementById('authClose')?.addEventListener('click', function() {
+            document.getElementById('authModal').classList.remove('active');
+        });
+
+        document.getElementById('authModal')?.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+
+        document.getElementById('authForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleAuth();
+        });
+
+        document.getElementById('authSubmitBtn')?.addEventListener('click', handleAuth);
+
+        document.getElementById('cartBtn')?.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        document.getElementById('buyNowBtn')?.addEventListener('click', buyNow);
+        document.getElementById('cartBtnDetail')?.addEventListener('click', toggleCart);
+
+        // Кнопки периодов графика
+        document.querySelectorAll('.chart-periods button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.chart-periods button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const period = parseInt(this.dataset.period);
+                renderChart(period);
+            });
+        });
+    </script>
+
+</body>
+</html>

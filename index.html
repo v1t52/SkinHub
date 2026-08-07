@@ -1,0 +1,3431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS2 Market — Каталог скинов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* =========================================================
+                   STEAM 2026 STYLE
+                   ========================================================= */
+        :root {
+            --bg-primary: #0e1217;
+            --bg-secondary: #171d25;
+            --bg-card: #1f2833;
+            --bg-card-hover: #2a3544;
+            --border-color: #2f4058;
+            --text-primary: #d2e0f0;
+            --text-secondary: #9ab0cc;
+            --text-muted: #5f7a9e;
+            --steam-blue: #4a90d9;
+            --steam-blue-dark: #2d6fa8;
+            --steam-blue-light: #6dafe8;
+            --steam-orange: #ff6b00;
+            --steam-orange-dark: #cc5500;
+            --steam-orange-light: #ff8833;
+            --steam-gold: #d4a843;
+            --steam-gold-light: #f0d080;
+            --rarity-gold: #d4a843;
+            --rarity-contraband: #ff6b00;
+            --rarity-red: #ff4444;
+            --rarity-pink: #ff69b4;
+            --rarity-purple: #aa66ff;
+            --rarity-blue: #4488ff;
+            --glow-blue: 0 0 40px rgba(74, 144, 217, 0.15);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --radius: 10px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #e8ecf2;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f4fa;
+            --border-color: #c8d0dc;
+            --text-primary: #1a2332;
+            --text-secondary: #4a6a8a;
+            --text-muted: #8a9aaa;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* =========================================================
+                   АНИМИРОВАННЫЙ ФОН — С ПАДАЮЩИМИ КАРТИНКАМИ
+                   ========================================================= */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-animation .falling-skin-img {
+            position: absolute;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+            border-radius: 4px;
+            will-change: transform;
+            animation: fall-skin 20s linear infinite;
+            z-index: 0;
+            opacity: 0.05;
+            filter: blur(0.5px);
+        }
+
+        @keyframes fall-skin {
+            0% {
+                transform: translateY(-120px) rotate(0deg) scale(0.3);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.06;
+            }
+            85% {
+                opacity: 0.05;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        .bg-animation .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            animation: pulse-orb 10s ease-in-out infinite;
+            opacity: 0.08;
+            will-change: transform;
+        }
+
+        @keyframes pulse-orb {
+            0%, 100% {
+                transform: scale(1) translate(0, 0);
+                opacity: 0.05;
+            }
+            50% {
+                transform: scale(1.8) translate(40px, -30px);
+                opacity: 0.12;
+            }
+        }
+
+        .bg-animation .steam-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(74, 144, 217, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 144, 217, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: grid-shift 20s linear infinite;
+        }
+
+        @keyframes grid-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* =========================================================
+                   ХЕДЕР
+                   ========================================================= */
+        header {
+            padding: 16px 0;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(14, 18, 23, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: background 0.4s ease;
+        }
+
+        [data-theme="light"] header {
+            background: rgba(232, 236, 242, 0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        .logo .cs-text {
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo .cs-text span {
+            color: var(--steam-orange);
+            -webkit-text-fill-color: var(--steam-orange);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+        }
+
+        nav a:hover {
+            color: var(--steam-blue);
+        }
+
+        nav a.active {
+            color: var(--steam-blue);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--steam-blue);
+            box-shadow: 0 0 20px rgba(74, 144, 217, 0.4);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-theme {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .btn-theme:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        .btn-steam {
+            background: linear-gradient(135deg, #1a2332, #2a3a4a);
+            color: #fff;
+            border: 1px solid rgba(74, 144, 217, 0.15);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-steam i {
+            color: var(--steam-blue);
+        }
+
+        .btn-steam:hover {
+            border-color: var(--steam-blue);
+            transform: scale(1.04);
+            box-shadow: 0 0 24px rgba(74, 144, 217, 0.15);
+        }
+
+        .wallet {
+            background: rgba(212, 168, 67, 0.08);
+            border: 1px solid rgba(212, 168, 67, 0.15);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--steam-gold);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wallet:hover {
+            background: rgba(212, 168, 67, 0.15);
+            border-color: var(--steam-gold);
+            transform: scale(1.02);
+        }
+
+        .cart-btn {
+            background: rgba(74, 144, 217, 0.06);
+            border: 1px solid rgba(74, 144, 217, 0.12);
+            padding: 8px 16px;
+            border-radius: 40px;
+            color: var(--steam-blue);
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            background: rgba(74, 144, 217, 0.10);
+        }
+
+        .cart-count {
+            background: var(--steam-orange);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            box-shadow: 0 0 16px rgba(255, 107, 0, 0.3);
+        }
+
+        /* =========================================================
+                   ГЕРОЙ
+                   ========================================================= */
+        .hero {
+            padding: 60px 0 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .hero-content {
+            flex: 1 1 450px;
+        }
+
+        .hero-content .badge {
+            display: inline-block;
+            background: rgba(74, 144, 217, 0.08);
+            border: 1px solid rgba(74, 144, 217, 0.15);
+            color: var(--steam-blue);
+            padding: 4px 18px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(34px, 5.5vw, 60px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero-content h1 .highlight {
+            background: linear-gradient(135deg, var(--steam-orange), var(--steam-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            color: #fff;
+            border: none;
+            padding: 14px 38px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 28px rgba(74, 144, 217, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 44px rgba(74, 144, 217, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 14px 38px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            flex: 0 0 320px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-image .glow-ring {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 2px solid rgba(74, 144, 217, 0.06);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin-ring 25s linear infinite;
+        }
+
+        @keyframes spin-ring {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .hero-image .awp-img {
+            width: 220px;
+            height: auto;
+            filter: drop-shadow(0 20px 60px rgba(74, 144, 217, 0.12));
+            animation: float-gun 4.5s ease-in-out infinite;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes float-gun {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-18px) rotate(3deg); }
+        }
+
+        /* =========================================================
+                   ФИЛЬТРЫ
+                   ========================================================= */
+        .filters {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .filter-toggle:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        .filter-toggle i {
+            font-size: 11px;
+            transition: transform 0.3s ease;
+        }
+
+        .filter-toggle.active i {
+            transform: rotate(180deg);
+        }
+
+        .filter-toggle .filter-badge {
+            background: var(--steam-orange);
+            color: #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 2px;
+        }
+
+        .filter-toggle .filter-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .filter-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 210px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 6px;
+            box-shadow: 0 12px 44px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 50;
+            animation: fadeDown 0.2s ease;
+        }
+
+        .filter-menu.open {
+            display: block;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 14px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-option:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .filter-option.active {
+            background: rgba(74, 144, 217, 0.08);
+            color: var(--steam-blue);
+        }
+
+        .filter-option .option-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .filter-option .check {
+            margin-left: auto;
+            color: var(--steam-blue);
+            font-size: 12px;
+        }
+
+        .filter-option[data-filter="contraband"] {
+            color: var(--rarity-contraband);
+        }
+        .filter-option[data-filter="contraband"]:hover {
+            background: rgba(255, 107, 0, 0.10);
+        }
+        .filter-option[data-filter="contraband"].active {
+            background: rgba(255, 107, 0, 0.15);
+            color: var(--rarity-contraband);
+        }
+
+        .filter-slider-compact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 14px 4px 18px;
+            background: var(--bg-primary);
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-slider-compact .filter-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .filter-slider-compact input[type="range"] {
+            width: 90px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--border-color);
+            border-radius: 4px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .filter-slider-compact input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--steam-blue);
+            cursor: pointer;
+            box-shadow: 0 0 16px rgba(74, 144, 217, 0.3);
+        }
+
+        .search-box {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 2px 2px 2px 18px;
+            min-width: 180px;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--steam-blue);
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.05);
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            padding: 7px 0;
+            color: var(--text-primary);
+            font-size: 13px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box button {
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            border: none;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
+            transform: scale(1.04);
+        }
+
+        /* =========================================================
+                   КАТАЛОГ
+                   ========================================================= */
+        .catalog {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding-bottom: 30px;
+        }
+
+        .skin-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 18px 16px 16px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .skin-card:hover {
+            border-color: var(--steam-blue);
+            transform: translateY(-6px);
+            box-shadow: var(--glow-blue);
+        }
+
+        .skin-card .rarity-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .rarity-gold {
+            background: rgba(212, 168, 67, 0.15);
+            color: var(--rarity-gold);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+        }
+        .rarity-contraband {
+            background: rgba(255, 107, 0, 0.15);
+            color: var(--rarity-contraband);
+            border: 1px solid rgba(255, 107, 0, 0.25);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.08);
+        }
+        .rarity-red {
+            background: rgba(255, 68, 68, 0.12);
+            color: var(--rarity-red);
+            border: 1px solid rgba(255, 68, 68, 0.15);
+        }
+        .rarity-pink {
+            background: rgba(255, 105, 180, 0.12);
+            color: var(--rarity-pink);
+            border: 1px solid rgba(255, 105, 180, 0.15);
+        }
+        .rarity-purple {
+            background: rgba(170, 102, 255, 0.12);
+            color: var(--rarity-purple);
+            border: 1px solid rgba(170, 102, 255, 0.15);
+        }
+        .rarity-blue {
+            background: rgba(68, 136, 255, 0.12);
+            color: var(--rarity-blue);
+            border: 1px solid rgba(68, 136, 255, 0.15);
+        }
+
+        .skin-card .skin-img {
+            width: 100%;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 0;
+            transition: var(--transition);
+            overflow: hidden;
+            background: transparent;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .skin-card .skin-img img {
+            max-width: 80%;
+            max-height: 85%;
+            object-fit: contain;
+            transition: var(--transition);
+        }
+
+        .skin-card .skin-img .skin-icon {
+            font-size: 46px;
+            opacity: 0.5;
+        }
+
+        .skin-card:hover .skin-img img {
+            transform: scale(1.05);
+        }
+
+        .skin-card .skin-name {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.2;
+            margin-top: 6px;
+        }
+
+        .skin-card .skin-exterior {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .skin-card .skin-type {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .skin-card .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .skin-card .price-usd {
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--steam-gold);
+        }
+
+        .skin-card .price-rub {
+            font-size: 10px;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        .skin-card .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-buy {
+            flex: 1;
+            background: rgba(74, 144, 217, 0.08);
+            border: 1px solid rgba(74, 144, 217, 0.2);
+            color: var(--steam-blue);
+            padding: 7px 12px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-buy:hover:not(:disabled) {
+            background: var(--steam-blue);
+            color: #fff;
+            border-color: var(--steam-blue);
+            box-shadow: 0 4px 20px rgba(74, 144, 217, 0.15);
+        }
+
+        .btn-buy.in-cart {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+            cursor: pointer;
+        }
+
+        .btn-buy.in-cart:hover {
+            background: rgba(255, 68, 68, 0.10);
+            color: var(--rarity-red);
+            border-color: var(--rarity-red);
+        }
+
+        .btn-buy:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-detail {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 7px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-detail:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        /* =========================================================
+                   ПАГИНАЦИЯ
+                   ========================================================= */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .pagination .page-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 38px;
+            text-align: center;
+        }
+
+        .pagination .page-btn:hover {
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        .pagination .page-btn.active {
+            background: rgba(74, 144, 217, 0.08);
+            border-color: var(--steam-blue);
+            color: var(--steam-blue);
+        }
+
+        .pagination .page-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* =========================================================
+                   КОРЗИНА
+                   ========================================================= */
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -440px;
+            width: 420px;
+            height: 100%;
+            background: var(--bg-primary);
+            border-left: 2px solid var(--border-color);
+            padding: 28px 24px;
+            z-index: 10000;
+            transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -8px 0 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .cart-panel.open {
+            right: 0;
+        }
+
+        .cart-panel .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .cart-panel .cart-header h2 {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-panel .cart-header h2 i {
+            color: var(--steam-blue);
+        }
+
+        .cart-panel .cart-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cart-panel .cart-close:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .cart-panel .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 14px;
+        }
+
+        .cart-panel .cart-items::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .cart-panel .cart-items::-webkit-scrollbar-track {
+            background: var(--bg-card);
+        }
+
+        .cart-panel .cart-items::-webkit-scrollbar-thumb {
+            background: var(--steam-blue);
+            border-radius: 4px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            margin-bottom: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .cart-item .item-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-item .item-icon img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .cart-item .item-icon .fallback-icon {
+            font-size: 22px;
+        }
+
+        .cart-item .item-info {
+            flex: 1;
+        }
+
+        .cart-item .item-info .item-name {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .cart-item .item-info .item-price {
+            color: var(--steam-gold);
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .cart-item .item-remove {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .cart-item .item-remove:hover {
+            color: var(--rarity-red);
+        }
+
+        .cart-panel .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 18px;
+            padding: 14px 0;
+            border-top: 2px solid var(--border-color);
+            margin-bottom: 14px;
+        }
+
+        .cart-panel .cart-total .total-price {
+            color: var(--steam-gold);
+        }
+
+        .cart-panel .cart-checkout {
+            width: 100%;
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.12);
+        }
+
+        .cart-panel .cart-checkout:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 36px rgba(74, 144, 217, 0.25);
+        }
+
+        .cart-panel .cart-checkout:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 40px 0;
+        }
+
+        .cart-empty i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+            opacity: 0.5;
+        }
+
+        /* =========================================================
+                   МОДАЛЬНЫЕ ОКНА
+                   ========================================================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.94); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            padding: 32px 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-icon {
+            font-size: 44px;
+            text-align: center;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .modal h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .modal .modal-sub {
+            color: var(--text-secondary);
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .modal .form-group {
+            margin-bottom: 14px;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .modal .form-group input:focus {
+            border-color: var(--steam-blue);
+        }
+
+        .modal .btn-pay {
+            width: 100%;
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.10);
+        }
+
+        .modal .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 36px rgba(74, 144, 217, 0.25);
+        }
+
+        .modal .error-text {
+            color: var(--rarity-red);
+            text-align: center;
+            margin-bottom: 14px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .modal .auth-suggest {
+            background: rgba(74, 144, 217, 0.05);
+            border: 1px solid rgba(74, 144, 217, 0.08);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .modal .auth-suggest strong {
+            color: var(--text-primary);
+        }
+
+        .modal .auth-switch {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .modal .auth-switch a {
+            color: var(--steam-blue);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .modal .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .modal .item-detail {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal .item-detail .label {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .modal .item-detail .value {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--steam-gold);
+        }
+
+        .modal .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 800;
+            padding: 12px 0;
+            border-top: 2px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .modal .total .total-price {
+            color: var(--steam-gold);
+        }
+
+        .modal .btn-topup {
+            width: 100%;
+            background: rgba(74, 144, 217, 0.08);
+            border: 1px solid rgba(74, 144, 217, 0.15);
+            color: var(--steam-blue);
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+
+        .modal .btn-topup:hover {
+            background: rgba(74, 144, 217, 0.15);
+        }
+
+        /* =========================================================
+                   ПОПОЛНЕНИЕ
+                   ========================================================= */
+        #topupModal .modal {
+            max-width: 540px;
+            padding: 34px 32px 30px;
+        }
+
+        #topupModal .modal-icon {
+            font-size: 48px;
+        }
+
+        #topupModal h2 {
+            background: linear-gradient(135deg, var(--steam-gold-light), var(--steam-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .topup-display {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px 20px;
+            text-align: center;
+            font-size: 44px;
+            font-weight: 900;
+            color: var(--steam-gold);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            box-shadow: inset 0 4px 24px rgba(0, 0, 0, 0.2);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .topup-display .currency-symbol {
+            font-size: 28px;
+            color: var(--text-secondary);
+            margin-right: 4px;
+        }
+
+        .topup-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .amount-btn {
+            padding: 12px 0;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .amount-btn:hover {
+            border-color: var(--steam-blue);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(74, 144, 217, 0.08);
+        }
+
+        .amount-btn.active {
+            border-color: var(--steam-blue);
+            background: rgba(74, 144, 217, 0.10);
+            color: var(--steam-blue);
+            box-shadow: 0 0 24px rgba(74, 144, 217, 0.06);
+        }
+
+        .amount-btn.active::before {
+            content: '✓';
+            position: absolute;
+            top: 3px;
+            right: 10px;
+            font-size: 11px;
+            color: var(--steam-blue);
+        }
+
+        .topup-custom {
+            margin-bottom: 16px;
+        }
+
+        .topup-custom input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            transition: var(--transition);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .topup-custom input:focus {
+            border-color: var(--steam-blue);
+            box-shadow: 0 0 0 4px rgba(74, 144, 217, 0.05);
+        }
+
+        .topup-custom input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .topup-methods {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .method-btn {
+            padding: 12px 0;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .method-btn i {
+            font-size: 24px;
+            transition: var(--transition);
+        }
+
+        .method-btn .method-label {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .method-btn:hover {
+            border-color: var(--steam-blue);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .method-btn.active {
+            border-color: var(--steam-blue);
+            background: rgba(74, 144, 217, 0.08);
+            color: var(--steam-blue);
+        }
+
+        .method-btn.active i {
+            color: var(--steam-blue);
+        }
+
+        .card-form {
+            display: none;
+            padding: 18px;
+            background: var(--bg-card);
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card-form.active {
+            display: block;
+        }
+
+        .card-form .form-group {
+            margin-bottom: 12px;
+        }
+
+        .card-form .form-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-form .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-form .form-group input:focus {
+            border-color: var(--steam-blue);
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.05);
+        }
+
+        .card-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        #topupModal .btn-pay {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        #topupModal .btn-pay:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(74, 144, 217, 0.25);
+        }
+
+        #topupModal .btn-pay i {
+            font-size: 18px;
+        }
+
+        .topup-security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .topup-security i {
+            color: #4caf50;
+            font-size: 14px;
+        }
+
+        /* =========================================================
+                   ТОСТ
+                   ========================================================= */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 22px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+            animation: slideIn 0.4s ease;
+            z-index: 99999;
+            max-width: 380px;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        .toast i {
+            font-size: 20px;
+        }
+
+        .toast .toast-text {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .toast.error {
+            border-color: var(--rarity-red);
+        }
+
+        .toast.error i {
+            color: var(--rarity-red);
+        }
+
+        .toast.success {
+            border-color: #4caf50;
+        }
+
+        .toast.success i {
+            color: #4caf50;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* =========================================================
+                   ЧАТ
+                   ========================================================= */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            z-index: 9998;
+        }
+
+        .chat-toggle {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 28px rgba(74, 144, 217, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 44px rgba(74, 144, 217, 0.4);
+        }
+
+        .chat-toggle .chat-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--rarity-red);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 72px;
+            right: 0;
+            width: 340px;
+            height: 420px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-window.open {
+            display: flex;
+        }
+
+        .chat-window .chat-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-window .chat-header h4 {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-window .chat-header h4 i {
+            color: #4caf50;
+            font-size: 10px;
+        }
+
+        .chat-window .chat-header .chat-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .chat-window .chat-header .chat-close:hover {
+            color: var(--text-primary);
+        }
+
+        .chat-window .chat-messages {
+            flex: 1;
+            padding: 14px 18px;
+            overflow-y: auto;
+        }
+
+        .chat-window .chat-messages .msg {
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: var(--radius);
+            max-width: 85%;
+        }
+
+        .chat-window .chat-messages .msg.support {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            align-self: flex-start;
+        }
+
+        .chat-window .chat-messages .msg.user {
+            background: rgba(74, 144, 217, 0.10);
+            border: 1px solid rgba(74, 144, 217, 0.12);
+            margin-left: auto;
+        }
+
+        .chat-window .chat-messages .msg .msg-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .chat-window .chat-messages .msg .msg-text {
+            font-size: 13px;
+        }
+
+        .chat-window .chat-messages .msg .msg-time {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        .chat-window .chat-input {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-window .chat-input input {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .chat-window .chat-input input:focus {
+            border-color: var(--steam-blue);
+        }
+
+        .chat-window .chat-input button {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
+            border: none;
+            border-radius: 40px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-window .chat-input button:hover {
+            transform: scale(1.04);
+        }
+
+        /* =========================================================
+                   ФУТЕР
+                   ========================================================= */
+        footer {
+            padding: 34px 0 24px;
+            border-top: 2px solid var(--border-color);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        footer .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        footer .footer-links a:hover {
+            color: var(--steam-blue);
+        }
+
+        footer .socials {
+            display: flex;
+            gap: 18px;
+        }
+
+        footer .socials a {
+            color: var(--text-secondary);
+            font-size: 22px;
+            transition: var(--transition);
+        }
+
+        footer .socials a:hover {
+            color: var(--steam-blue);
+            transform: translateY(-3px);
+        }
+
+        footer .copy {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+        /* =========================================================
+                   АДАПТИВ
+                   ========================================================= */
+        @media (max-width: 1024px) {
+            .catalog {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 12px;
+            }
+            header {
+                padding: 12px 0;
+            }
+            .header-inner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            nav {
+                justify-content: center;
+                gap: 14px;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .hero {
+                padding: 36px 0;
+                text-align: center;
+                justify-content: center;
+            }
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-image {
+                flex-basis: 100%;
+            }
+            .hero-image .awp-img {
+                width: 160px;
+            }
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 14px 16px;
+            }
+            .filter-dropdown {
+                width: 100%;
+            }
+            .filter-toggle {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .filter-menu {
+                left: 0;
+                right: 0;
+                min-width: unset;
+            }
+            .filter-slider-compact {
+                width: 100%;
+                justify-content: space-between;
+                padding: 6px 14px 6px 18px;
+            }
+            .filter-slider-compact input[type="range"] {
+                flex: 1;
+                width: auto;
+            }
+            .search-box {
+                margin-left: 0;
+                width: 100%;
+            }
+            .catalog {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .skin-card .skin-img {
+                height: 100px;
+            }
+            .cart-panel {
+                width: 100%;
+                right: -100%;
+                padding: 18px 14px;
+            }
+            .cart-panel.open {
+                right: 0;
+            }
+            .modal {
+                padding: 22px 16px;
+            }
+            .chat-window {
+                width: 320px;
+                right: 0;
+            }
+            .toast {
+                bottom: 90px;
+                right: 12px;
+                left: 12px;
+                max-width: unset;
+            }
+            footer .footer-links {
+                gap: 16px;
+            }
+            footer .socials {
+                gap: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .catalog {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .skin-card {
+                padding: 12px 10px;
+            }
+            .skin-card .skin-img {
+                height: 80px;
+            }
+            .skin-card .skin-img img {
+                max-width: 70%;
+                max-height: 80%;
+            }
+            .skin-card .skin-name {
+                font-size: 12px;
+            }
+            .skin-card .price-usd {
+                font-size: 15px;
+            }
+            .btn-buy,
+            .btn-detail {
+                font-size: 9px;
+                padding: 5px 8px;
+            }
+            .filter-toggle {
+                font-size: 11px;
+                padding: 6px 14px;
+            }
+            .filter-option {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            .filter-slider-compact .filter-label {
+                font-size: 11px;
+            }
+            .pagination .page-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+                min-width: 32px;
+            }
+            .hero-image .awp-img {
+                width: 120px;
+            }
+            .chat-window {
+                width: 100%;
+                right: 0;
+                bottom: 64px;
+                height: 360px;
+            }
+            .topup-amounts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .topup-methods {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    АНИМИРОВАННЫЙ ФОН — С ПАДАЮЩИМИ СКИНАМИ
+    ============================================================ -->
+    <div class="bg-animation" id="bgAnimation">
+        <div class="steam-grid"></div>
+        <div class="glow-orb" style="width:350px;height:350px;background:radial-gradient(circle,#4a90d9,transparent);top:8%;left:3%;animation-delay:0s;"></div>
+        <div class="glow-orb" style="width:450px;height:450px;background:radial-gradient(circle,#2d6fa8,transparent);bottom:5%;right:3%;animation-delay:4s;"></div>
+        <div class="glow-orb" style="width:250px;height:250px;background:radial-gradient(circle,#6dafe8,transparent);top:45%;left:55%;animation-delay:8s;"></div>
+    </div>
+
+    <div class="container">
+        <!-- ХЕДЕР -->
+        <header>
+            <div class="header-inner">
+                <a class="logo" href="index.html">
+                    <span class="cs-text">Skin<span>Hub</span></span>
+                </a>
+                <nav>
+                    <a class="active" href="index.html">Магазин</a>
+                    <a href="cabinet.html">Кабинет</a>
+                    <a href="trade.html">Обмен</a>
+                    <a href="sell.html">Продать</a>
+                    <a href="#" onclick="showToast('📄 Страница о нас скоро появится!', 'default')">О нас</a>
+                </nav>
+                <div class="header-actions">
+                    <button class="btn-theme" title="Сменить тему">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <button class="btn-steam" id="steamLoginBtn">
+                        <i class="fab fa-steam"></i> <span id="authBtnText">Войти</span>
+                    </button>
+                    <div class="wallet" onclick="openTopup()">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span class="wallet-balance" id="walletBalance">$0.00</span>
+                    </div>
+                    <button class="cart-btn" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ГЕРОЙ -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="badge"><i class="fas fa-bolt"></i> P2P Без комиссии</div>
+                <h1>Торгуй <span class="highlight">скинами</span><br>как профессионал</h1>
+                <p>Покупай, продавай и обменивай скины CS2 на самой удобной платформе с лучшими ценами.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="document.querySelector('.filters').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-arrow-right"></i> Начать торговать
+                    </button>
+                    <button class="btn-secondary" onclick="showToast('📊 Графики цен скоро появятся!', 'default')">
+                        <i class="fas fa-chart-line"></i> График цен
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="картинки/141619_b.avif" alt="AWP Dragon Lore" class="awp-img" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\\'font-size:80px;color:var(--steam-blue);\\'></span>'">
+            </div>
+        </section>
+
+        <!-- ФИЛЬТРЫ -->
+        <div class="filters">
+            <div class="filter-dropdown">
+                <button class="filter-toggle" data-dropdown="rarity">
+                    <span> Редкость</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="filter-menu" data-dropdown="rarity">
+                    <span class="filter-option active" data-filter="all">Все</span>
+                    <span class="filter-option" data-filter="gold">⭐ Золото</span>
+                    <span class="filter-option" data-filter="contraband">🟠 Контрбанда</span>
+                    <span class="filter-option" data-filter="red">🔴 Красные</span>
+                    <span class="filter-option" data-filter="pink">🟣 Розовые</span>
+                    <span class="filter-option" data-filter="purple">🟣 Фиолетовые</span>
+                    <span class="filter-option" data-filter="blue">🔵 Синие</span>
+                </div>
+            </div>
+            <div class="filter-dropdown">
+                <button class="filter-toggle" data-dropdown="type">
+                    <span>Тип</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="filter-menu" data-dropdown="type">
+                    <span class="filter-option active" data-type="all">Все</span>
+                    <span class="filter-option" data-type="knife">
+                        <img src="https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/99097_b.png" class="option-icon" loading="lazy" onerror="this.style.display='none'">
+                        Ножи
+                    </span>
+                    <span class="filter-option" data-type="rifle">
+                        <img src="https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/13012_b.png" class="option-icon" loading="lazy" onerror="this.style.display='none'">
+                        Винтовки
+                    </span>
+                    <span class="filter-option" data-type="pistol">
+                        <img src="https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/8865_b.png" class="option-icon" loading="lazy" onerror="this.style.display='none'">
+                        Пистолеты
+                    </span>
+                    <span class="filter-option" data-type="sniper">
+                        <img src="https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/11097_b.png" class="option-icon" loading="lazy" onerror="this.style.display='none'">
+                        Снайперки
+                    </span>
+                    <span class="filter-option" data-type="gloves">
+                        <img src="https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/40000_b.png" class="option-icon" loading="lazy" onerror="this.style.display='none'">
+                        Перчатки
+                    </span>
+                </div>
+            </div>
+            <div class="filter-dropdown">
+                <button class="filter-toggle" data-dropdown="quality">
+                    <span>Качество</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="filter-menu" data-dropdown="quality">
+                    <span class="filter-option active" data-quality="all">Все</span>
+                    <span class="filter-option" data-quality="fn">Factory New</span>
+                    <span class="filter-option" data-quality="mw">Minimal Wear</span>
+                    <span class="filter-option" data-quality="ft">Field-Tested</span>
+                    <span class="filter-option" data-quality="ww">Well-Worn</span>
+                    <span class="filter-option" data-quality="bs">Battle-Scarred</span>
+                </div>
+            </div>
+            <div class="filter-slider-compact">
+                <span class="filter-label"> До $<span id="priceDisplay">2500</span></span>
+                <input type="range" id="priceSlider" min="0" max="2500" value="2500" step="10">
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск скина...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- Сортировка -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:13px;color:var(--text-secondary);">Сортировка:</span>
+                <select id="sortSelect" style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:8px 14px;color:var(--text-primary);font-size:13px;outline:none;cursor:pointer;">
+                    <option value="price-desc">По цене (дорогие)</option>
+                    <option value="price-asc">По цене (дешёвые)</option>
+                    <option value="name">По названию</option>
+                    <option value="popular">По популярности</option>
+                </select>
+            </div>
+            <div style="font-size:13px;color:var(--text-secondary);">
+                Найдено: <span id="totalCount">0</span> скинов
+            </div>
+        </div>
+
+        <!-- КАТАЛОГ -->
+        <div class="catalog" id="catalog"></div>
+
+        <!-- ПАГИНАЦИЯ -->
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- КОРЗИНА -->
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
+            <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-cart-plus"></i>
+                <p>Корзина пуста</p>
+            </div>
+        </div>
+        <div class="cart-total">
+            <span>Итого:</span>
+            <span class="total-price" id="cartTotal">$0</span>
+        </div>
+        <button class="cart-checkout" id="checkoutBtn" disabled>Оформить покупку</button>
+    </div>
+
+    <!-- МОДАЛЬНЫЕ ОКНА -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <button class="modal-close" id="authClose"><i class="fas fa-times"></i></button>
+            <span class="modal-icon">🎮</span>
+            <h2 id="authTitle">Вход в аккаунт</h2>
+            <p class="modal-sub" id="authSub">Войдите или зарегистрируйтесь</p>
+            <div id="authError" class="error-text" style="display:none;"></div>
+            <div class="auth-suggest">💡 <strong>Готовый аккаунт:</strong> demo@cs2.com / <strong>demo123</strong></div>
+            <form class="auth-form" id="authForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="authEmail" placeholder="example@mail.com" value="demo@cs2.com">
+                </div>
+                <div class="form-group">
+                    <label>🔑 Пароль</label>
+                    <input type="password" id="authPassword" placeholder="Минимум 6 символов" value="demo123" minlength="6">
+                </div>
+                <button class="btn-pay" id="authSubmitBtn" style="margin-top:4px;">
+                    <i class="fas fa-sign-in-alt"></i> <span id="authBtnLabel">Войти</span>
+                </button>
+            </form>
+            <div class="auth-switch">
+                <span id="authSwitchText">Нет аккаунта?</span>
+                <a id="authSwitchLink" onclick="toggleAuthMode()">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="topupModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeTopup()"><i class="fas fa-times"></i></button>
+            <span class="modal-icon">💎</span>
+            <h2>Пополнение кошелька</h2>
+            <p class="modal-sub">Выберите сумму или укажите свою</p>
+            <div class="topup-display" id="topupDisplay">
+                <span class="currency-symbol">$</span>50.00
+            </div>
+            <div class="topup-amounts">
+                <button class="amount-btn" data-amount="10" onclick="selectTopupAmount(10)">$10</button>
+                <button class="amount-btn" data-amount="25" onclick="selectTopupAmount(25)">$25</button>
+                <button class="amount-btn active" data-amount="50" onclick="selectTopupAmount(50)">$50</button>
+                <button class="amount-btn" data-amount="100" onclick="selectTopupAmount(100)">$100</button>
+                <button class="amount-btn" data-amount="250" onclick="selectTopupAmount(250)">$250</button>
+                <button class="amount-btn" data-amount="500" onclick="selectTopupAmount(500)">$500</button>
+            </div>
+            <div class="topup-custom">
+                <input type="number" id="customAmount" placeholder="Введите свою сумму" min="1" step="0.01" oninput="updateTopupDisplay(this.value)">
+            </div>
+            <div class="topup-methods">
+                <button class="method-btn active" data-method="sbp" onclick="selectTopupMethod('sbp')">
+                    <i class="fas fa-university"></i>
+                    <span class="method-label">СБП</span>
+                </button>
+                <button class="method-btn" data-method="card" onclick="selectTopupMethod('card')">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="method-label">Карта</span>
+                </button>
+                <button class="method-btn" data-method="crypto" onclick="selectTopupMethod('crypto')">
+                    <i class="fab fa-bitcoin"></i>
+                    <span class="method-label">Крипта</span>
+                </button>
+                <button class="method-btn" data-method="qiwi" onclick="selectTopupMethod('qiwi')">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span class="method-label">Qiwi</span>
+                </button>
+            </div>
+            <div class="card-form" id="cardForm">
+                <div class="form-group">
+                    <label>Номер карты</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Срок действия</label>
+                        <input type="text" placeholder="MM/YY" maxlength="5" oninput="formatCardExpiry(this)">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" placeholder="***" maxlength="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Владелец карты</label>
+                    <input type="text" placeholder="IVAN IVANOV">
+                </div>
+            </div>
+            <button class="btn-pay" onclick="processTopup()">
+                <i class="fas fa-plus-circle"></i> Пополнить
+            </button>
+            <div class="topup-security">
+                <i class="fas fa-lock"></i>
+                <span>Все транзакции защищены SSL-шифрованием</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ЧАТ -->
+    <div class="chat-widget">
+        <button class="chat-toggle" onclick="toggleChat()">
+            <i class="fas fa-comment-dots"></i>
+            <span class="chat-badge">1</span>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4><i class="fas fa-circle" style="color:#4caf50; font-size:10px;"></i> Поддержка онлайн</h4>
+                <button class="chat-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg support">
+                    <div class="msg-name">🛡️ Поддержка</div>
+                    <div class="msg-text">Здравствуйте! Чем могу помочь?</div>
+                    <div class="msg-time">только что</div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Напишите сообщение..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <div class="toast-text" id="toastText">Уведомление</div>
+        </div>
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Правила безопасности</a>
+            <a href="#">Поддержка</a>
+            <a href="#">Партнёрам</a>
+            <a href="#">API</a>
+        </div>
+        <div class="socials">
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-telegram"></i></a>
+        </div>
+        <div class="copy">© 2026 SkinHub. Все сделки защищены. Не связан с Valve Corporation.</div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // ВСЕ СКИНЫ — 36 ШТУК
+        // ============================================================
+        const allSkins = [
+            // НОЖИ (GOLD)
+            { id: 1, name: 'Karambit Doppler', exterior: 'Factory New', float: '0.0012', type: 'knife', rarity: 'gold', price: 4500, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/99097_b.png', hasImage: true },
+            { id: 2, name: 'Bayonet Marble Fade', exterior: 'Minimal Wear', float: '0.0456', type: 'knife', rarity: 'gold', price: 2800, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12536_b.png', hasImage: true },
+            { id: 3, name: 'M9 Bayonet Night', exterior: 'Minimal Wear', float: '0.0678', type: 'knife', rarity: 'gold', price: 1200, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12512_b.png', hasImage: true},
+            { id: 4, name: 'Karambit Fade', exterior: 'Factory New', float: '0.0009', type: 'knife', rarity: 'gold', price: 850, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/10095_b.png', hasImage: true},
+            { id: 5, name: 'Butterfly Fade', exterior: 'Factory New', float: '0.0023', type: 'knife', rarity: 'gold', price: 1800, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12474_b.png', hasImage: true},
+            { id: 6, name: 'Huntsman Slaughter', exterior: 'Minimal Wear', float: '0.0789', type: 'knife', rarity: 'gold', price: 650, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12532_b.png', hasImage: true},
+            
+            // ВИНТОВКИ (RED)
+            { id: 7, name: 'AK-47 Fire Serpent', exterior: 'Minimal Wear', float: '0.0789', type: 'rifle', rarity: 'red', price: 180, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/13012_b.png', hasImage: true},
+            { id: 8, name: 'AK-47 Vulcan', exterior: 'Factory New', float: '0.0034', type: 'rifle', rarity: 'red', price: 850, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/10756_b.png', hasImage: true},
+            { id: 9, name: 'AK-47 Redline', exterior: 'Minimal Wear', float: '0.1023', type: 'rifle', rarity: 'red', price: 45, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/222575_b.png', hasImage: true},
+            { id: 10, name: 'M4A4 Howl', exterior: 'Field-Tested', float: '0.1890', type: 'rifle', rarity: 'contraband', price: 1200, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/10575_b.png', hasImage: true},
+            { id: 11, name: 'M4A1-S Printstream', exterior: 'Minimal Wear', float: '0.0654', type: 'rifle', rarity: 'red', price: 150, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/148423_b.png', hasImage: true},
+            { id: 12, name: 'AK-47 Bloodsport', exterior: 'Factory New', float: '0.0045', type: 'rifle', rarity: 'red', price: 95, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/222873_b.png', hasImage: true},
+            { id: 13, name: 'M4A1-S Hyper Beast', exterior: 'Field-Tested', float: '0.2345', type: 'rifle', rarity: 'red', price: 40, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12533_b.png', hasImage: true},
+            
+            // СНАЙПЕРКИ
+            { id: 14, name: 'AWP Dragon Lore', exterior: 'Factory New', float: '0.0123', type: 'sniper', rarity: 'red', price: 2500, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/11097_b.png', hasImage: true},
+            { id: 15, name: 'AWP Asiimov', exterior: 'Field-Tested', float: '0.2345', type: 'sniper', rarity: 'red', price: 85, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/219068_b.png', hasImage: true},
+            { id: 17, name: 'AWP Hyper Beast', exterior: 'Minimal Wear', float: '0.0897', type: 'sniper', rarity: 'red', price: 55, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12868_b.png', hasImage: true},
+            
+            // ПИСТОЛЕТЫ
+            { id: 18, name: 'Glock-18 Fade', exterior: 'Factory New', float: '0.0021', type: 'pistol', rarity: 'purple', price: 120, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/8865_b.png', hasImage: true},
+            { id: 19, name: 'Desert Eagle Blaze', exterior: 'Factory New', float: '0.0045', type: 'pistol', rarity: 'purple', price: 70, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/220599_b.png', hasImage: true},
+            { id: 20, name: 'USP-S Kill Confirmed', exterior: 'Minimal Wear', float: '0.0987', type: 'pistol', rarity: 'pink', price: 55, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/13460_b.png', hasImage: true},
+            { id: 21, name: 'Tec-9 Nuclear Threat', exterior: 'Minimal Wear', float: '0.0876', type: 'pistol', rarity: 'pink', price: 95, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/10104_b.png', hasImage: true},
+            { id: 22, name: 'P250 Whiteout', exterior: 'Minimal Wear', float: '0.0789', type: 'pistol', rarity: 'blue', price: 25, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12955_b.png', hasImage: true},
+            { id: 23, name: 'Desert Eagle Kumicho Dragon', exterior: 'Factory New', float: '0.0032', type: 'pistol', rarity: 'purple', price: 45, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/14179_b.png', hasImage: true},
+            { id: 24, name: 'Five-SeveN Fowl Play', exterior: 'Minimal Wear', float: '0.0654', type: 'pistol', rarity: 'blue', price: 15, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/11074_b.png', hasImage: true},
+            
+            // ПЕРЧАТКИ (GOLD)
+            { id: 25, name: 'Sport Gloves Vice', exterior: 'Minimal Wear', float: '0.0734', type: 'gloves', rarity: 'gold', price: 3200, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/40000_b.png', hasImage: true},
+            { id: 26, name: 'Hand Wraps Slaughter', exterior: 'Field-Tested', float: '0.1567', type: 'gloves', rarity: 'gold', price: 480, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/16616_b.png', hasImage: true},
+            { id: 27, name: 'Sport Gloves Omega', exterior: 'Minimal Wear', float: '0.0897', type: 'gloves', rarity: 'gold', price: 1800, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/41714_b.png', hasImage: true},
+            { id: 28, name: 'Moto Gloves Spearmint', exterior: 'Field-Tested', float: '0.2345', type: 'gloves', rarity: 'gold', price: 350, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/16883_b.png', hasImage: true},
+            
+            // ДОПОЛНИТЕЛЬНЫЕ ВИНТОВКИ
+            { id: 29, name: 'AK-47 Jaguar', exterior: 'Minimal Wear', float: '0.0789', type: 'rifle', rarity: 'red', price: 35, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/11368_b.png', hasImage: true},
+            { id: 30, name: 'AK-47 Wasteland Rebel', exterior: 'Field-Tested', float: '0.2345', type: 'rifle', rarity: 'red', price: 30, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/11948_b.png', hasImage: true},
+            { id: 31, name: 'M4A4 Dragon King', exterior: 'Minimal Wear', float: '0.0897', type: 'rifle', rarity: 'purple', price: 28, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12129_b.png', hasImage: true},
+            { id: 32, name: 'M4A1-S Guardian', exterior: 'Factory New', float: '0.0045', type: 'rifle', rarity: 'blue', price: 12, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/9542_b.png', hasImage: true},
+            
+            // ДОПОЛНИТЕЛЬНЫЕ СНАЙПЕРКИ
+            { id: 33, name: 'SSG 08 Blood in the Water', exterior: 'Minimal Wear', float: '0.0987', type: 'sniper', rarity: 'pink', price: 40, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/9847_b.png', hasImage: true},
+            { id: 34, name: 'SSG 08 Dragon Fire', exterior: 'Factory New', float: '0.0034', type: 'sniper', rarity: 'purple', price: 25, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/16429_b.png', hasImage: true},
+            
+            // ДОПОЛНИТЕЛЬНЫЕ ПИСТОЛЕТЫ
+            { id: 35, name: 'P2000 Ocean Foam', exterior: 'Factory New', float: '0.0021', type: 'pistol', rarity: 'blue', price: 18, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/9525_b.png', hasImage: true},
+            { id: 36, name: 'CZ75-Auto Emerald', exterior: 'Minimal Wear', float: '0.0765', type: 'pistol', rarity: 'purple', price: 22, icon: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12935_b.png', hasImage: true}
+        ];
+
+        // ============================================================
+        // КЛЮЧИ ДЛЯ localStorage
+        // ============================================================
+        const STORAGE_KEYS = {
+            USER: 'skinHub_user',
+            BALANCE: 'skinHub_balance',
+            LOGGED_IN: 'skinHub_loggedIn',
+            OWNED_SKINS: 'skinHub_ownedSkins',
+            TRANSACTIONS: 'skinHub_transactions',
+            CART: 'skinHub_cart',
+            THEME: 'skinHub_theme'
+        };
+
+        // ============================================================
+        // СОСТОЯНИЕ
+        // ============================================================
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 9;
+        let isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
+        let user = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || { email: '', username: 'Гость', avatar: '👤' };
+        let balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+        let toastTimeout = null;
+
+        // ============================================================
+        // ФУНКЦИИ ДЛЯ ПАДАЮЩИХ КАРТИНОК (АНИМИРОВАННЫЙ ФОН)
+        // ============================================================
+        function initFallingSkins() {
+            const bg = document.getElementById('bgAnimation');
+            if (!bg) return;
+
+            const skinUrls = allSkins.map(s => s.icon).filter(url => url && url.startsWith('http'));
+
+            const oldImgs = bg.querySelectorAll('.falling-skin-img');
+            oldImgs.forEach(el => el.remove());
+
+            for (let i = 0; i < 75; i++) {
+                const img = document.createElement('img');
+                img.className = 'falling-skin-img';
+                img.src = skinUrls[Math.floor(Math.random() * skinUrls.length)];
+                img.alt = 'skin';
+                img.loading = 'lazy';
+
+                const size = Math.random() * 50 + 25;
+                const left = Math.random() * 95 + 2.5;
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 20;
+                const rotation = Math.random() * 360;
+                const opacity = Math.random() * 0.05 + 0.02;
+
+                img.style.cssText = `
+                    left: ${left}%;
+                    width: ${size}px;
+                    height: auto;
+                    animation-duration: ${duration}s;
+                    animation-delay: ${delay}s;
+                    transform: rotate(${rotation}deg);
+                    opacity: ${opacity};
+                    filter: blur(${Math.random() * 0.5}px);
+                    object-fit: contain;
+                `;
+
+                img.onerror = function() {
+                    this.style.display = 'none';
+                };
+
+                bg.appendChild(img);
+            }
+        }
+
+        // ============================================================
+        // РАБОТА С localStorage
+        // ============================================================
+        function getUser() {
+            const data = localStorage.getItem(STORAGE_KEYS.USER);
+            return data ? JSON.parse(data) : null;
+        }
+
+        function getBalance() {
+            return parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+        }
+
+        function updateBalance(amount) {
+            const current = getBalance();
+            const newBalance = current + amount;
+            localStorage.setItem(STORAGE_KEYS.BALANCE, newBalance.toString());
+            balance = newBalance;
+            return true;
+        }
+
+        function getCartItems() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]');
+        }
+
+        function setCartItems(items) {
+            localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(items));
+            updateCartBadge();
+        }
+
+        function isInCart(id) {
+            return getCartItems().some(item => item.id === id);
+        }
+
+        function addToCart(id) {
+            const skin = allSkins.find(s => s.id === id);
+            if (!skin) return;
+            const cart = getCartItems();
+            if (!cart.some(item => item.id === id)) {
+                cart.push({ ...skin });
+                setCartItems(cart);
+            }
+        }
+
+        function removeFromCart(id) {
+            const cart = getCartItems().filter(item => item.id !== id);
+            setCartItems(cart);
+        }
+
+        function getCartTotal() {
+            return getCartItems().reduce((sum, item) => sum + item.price, 0);
+        }
+
+        function updateCartBadge() {
+            const count = getCartItems().length;
+            const badge = document.getElementById('cartCount');
+            if (badge) badge.textContent = count;
+        }
+
+        function addOwnedSkins(items) {
+            const owned = JSON.parse(localStorage.getItem(STORAGE_KEYS.OWNED_SKINS) || '[]');
+            items.forEach(item => {
+                owned.push({
+                    name: item.name,
+                    price: item.price,
+                    exterior: item.exterior,
+                    icon: item.icon,
+                    hasImage: item.hasImage,
+                    iconFallback: item.iconFallback,
+                    acquired: new Date().toISOString()
+                });
+            });
+            localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(owned));
+        }
+
+        function addTransaction(transaction) {
+            const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
+            txs.push({
+                ...transaction,
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+            });
+            localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(txs));
+        }
+
+        // ============================================================
+        // ТЕМА
+        // ============================================================
+        function toggleTheme() {
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem(STORAGE_KEYS.THEME, isDark ? 'light' : 'dark');
+            showToast(isDark ? '☀️ Светлая тема' : '🌙 Тёмная тема', 'default');
+        }
+
+        const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = 'fas fa-sun';
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(text, type = 'default') {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            if (!toast || !toastText) return;
+            toastText.textContent = text;
+            toast.className = 'toast show';
+            if (type === 'error') toast.classList.add('error');
+            else if (type === 'success') toast.classList.add('success');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================================
+        // АВТОРИЗАЦИЯ
+        // ============================================================
+        function handleAuth() {
+            const email = document.getElementById('authEmail')?.value.trim();
+            const password = document.getElementById('authPassword')?.value.trim();
+            const errorEl = document.getElementById('authError');
+
+            if (!email || !password) {
+                if (errorEl) {
+                    errorEl.textContent = '⚠️ Заполните все поля!';
+                    errorEl.style.display = 'block';
+                }
+                return;
+            }
+
+            if (password.length < 6) {
+                if (errorEl) {
+                    errorEl.textContent = '⚠️ Пароль должен быть минимум 6 символов!';
+                    errorEl.style.display = 'block';
+                }
+                return;
+            }
+
+            const isRegisterMode = document.getElementById('authBtnLabel')?.textContent === 'Зарегистрироваться';
+
+            if (isRegisterMode) {
+                user = { email, username: email.split('@')[0], avatar: '👤' };
+                isLoggedIn = true;
+                balance = 100;
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
+                document.getElementById('authModal').classList.remove('active');
+                showToast(`🎉 Добро пожаловать, ${user.username}!`, 'success');
+                updateAuthUI();
+                updateBalanceUI();
+                renderCatalog();
+            } else {
+                const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
+                if (savedUser) {
+                    const parsed = JSON.parse(savedUser);
+                    if (parsed.email === email) {
+                        isLoggedIn = true;
+                        user = parsed;
+                        balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+                        document.getElementById('authModal').classList.remove('active');
+                        showToast(`👋 С возвращением, ${user.username}!`, 'success');
+                        updateAuthUI();
+                        updateBalanceUI();
+                        renderCatalog();
+                        return;
+                    }
+                }
+                user = { email, username: email.split('@')[0], avatar: '👤' };
+                isLoggedIn = true;
+                balance = 100;
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
+                document.getElementById('authModal').classList.remove('active');
+                showToast(`🎉 Добро пожаловать, ${user.username}!`, 'success');
+                updateAuthUI();
+                updateBalanceUI();
+                renderCatalog();
+            }
+
+            const emailInput = document.getElementById('authEmail');
+            const passInput = document.getElementById('authPassword');
+            if (emailInput) emailInput.value = '';
+            if (passInput) passInput.value = '';
+            if (errorEl) errorEl.style.display = 'none';
+        }
+
+        function toggleAuthMode() {
+            const isRegisterMode = document.getElementById('authBtnLabel')?.textContent === 'Зарегистрироваться';
+            const title = document.getElementById('authTitle');
+            const sub = document.getElementById('authSub');
+            const btnLabel = document.getElementById('authBtnLabel');
+            const switchText = document.getElementById('authSwitchText');
+            const switchLink = document.getElementById('authSwitchLink');
+
+            if (isRegisterMode) {
+                if (title) title.textContent = 'Вход в аккаунт';
+                if (sub) sub.textContent = 'Войдите или зарегистрируйтесь';
+                if (btnLabel) btnLabel.textContent = 'Войти';
+                if (switchText) switchText.textContent = 'Нет аккаунта?';
+                if (switchLink) switchLink.textContent = 'Зарегистрироваться';
+            } else {
+                if (title) title.textContent = 'Регистрация';
+                if (sub) sub.textContent = 'Создайте аккаунт';
+                if (btnLabel) btnLabel.textContent = 'Зарегистрироваться';
+                if (switchText) switchText.textContent = 'Уже есть аккаунт?';
+                if (switchLink) switchLink.textContent = 'Войти';
+            }
+            const errorEl = document.getElementById('authError');
+            if (errorEl) errorEl.style.display = 'none';
+        }
+
+        function updateAuthUI() {
+            const btnText = document.getElementById('authBtnText');
+            const steamBtn = document.getElementById('steamLoginBtn');
+            if (isLoggedIn) {
+                if (btnText) btnText.textContent = user.username;
+                if (steamBtn) {
+                    steamBtn.style.borderColor = 'var(--steam-blue)';
+                    steamBtn.style.color = 'var(--steam-blue)';
+                }
+            } else {
+                if (btnText) btnText.textContent = 'Войти';
+                if (steamBtn) {
+                    steamBtn.style.borderColor = 'rgba(255,255,255,0.08)';
+                    steamBtn.style.color = '#fff';
+                }
+            }
+        }
+
+        function updateBalanceUI() {
+            const formatted = '$' + balance.toFixed(2);
+            const wallet = document.getElementById('walletBalance');
+            if (wallet) wallet.textContent = formatted;
+        }
+
+        // ============================================================
+        // ЧАТ
+        // ============================================================
+        function toggleChat() {
+            const window = document.getElementById('chatWindow');
+            if (window) window.classList.toggle('open');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            if (!input || !messages || !input.value.trim()) return;
+
+            const text = input.value.trim();
+            const time = new Date().toLocaleTimeString();
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'msg user';
+            msgDiv.innerHTML = `
+                <div class="msg-name">👤 Вы</div>
+                <div class="msg-text">${text}</div>
+                <div class="msg-time">${time}</div>
+            `;
+            messages.appendChild(msgDiv);
+            messages.scrollTop = messages.scrollHeight;
+
+            input.value = '';
+
+            setTimeout(() => {
+                const reply = document.createElement('div');
+                reply.className = 'msg support';
+                reply.innerHTML = `
+                    <div class="msg-name">🛡️ Поддержка</div>
+                    <div class="msg-text">Спасибо за сообщение! Мы ответим вам в ближайшее время.</div>
+                    <div class="msg-time">${new Date().toLocaleTimeString()}</div>
+                `;
+                messages.appendChild(reply);
+                messages.scrollTop = messages.scrollHeight;
+            }, 1500);
+        }
+
+        // ============================================================
+        // ПОПОЛНЕНИЕ
+        // ============================================================
+        function selectTopupAmount(amount) {
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.amount-btn[data-amount="${amount}"]`)?.classList.add('active');
+            document.getElementById('customAmount').value = '';
+            document.getElementById('topupDisplay').innerHTML = `<span class="currency-symbol">$</span>${amount.toFixed(2)}`;
+        }
+
+        function updateTopupDisplay(value) {
+            const amount = parseFloat(value);
+            if (amount > 0) {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById('topupDisplay').innerHTML = `<span class="currency-symbol">$</span>${amount.toFixed(2)}`;
+            } else if (value === '') {
+                document.getElementById('topupDisplay').innerHTML = `<span class="currency-symbol">$</span>0.00`;
+            }
+        }
+
+        function selectTopupMethod(method) {
+            document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.method-btn[data-method="${method}"]`)?.classList.add('active');
+            const cardForm = document.getElementById('cardForm');
+            if (method === 'card') {
+                cardForm.classList.add('active');
+            } else {
+                cardForm.classList.remove('active');
+            }
+        }
+
+        function openTopup() {
+            document.getElementById('topupModal').classList.add('active');
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.amount-btn[data-amount="50"]')?.classList.add('active');
+            document.getElementById('customAmount').value = '';
+            document.getElementById('topupDisplay').innerHTML = `<span class="currency-symbol">$</span>50.00`;
+            document.getElementById('cardForm').classList.remove('active');
+            document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.method-btn[data-method="sbp"]')?.classList.add('active');
+        }
+
+        function closeTopup() {
+            document.getElementById('topupModal').classList.remove('active');
+        }
+
+        function processTopup() {
+            const customInput = document.getElementById('customAmount');
+            let amount = parseFloat(customInput?.value) || 0;
+
+            if (!amount || amount <= 0) {
+                const activeBtn = document.querySelector('.amount-btn.active');
+                if (activeBtn) {
+                    amount = parseFloat(activeBtn.dataset.amount) || 0;
+                }
+            }
+
+            if (amount <= 0) {
+                showToast('⚠️ Введите корректную сумму', 'error');
+                return;
+            }
+
+            const userData = getUser();
+            if (!userData) {
+                showToast('⚠️ Войдите в аккаунт!', 'error');
+                closeTopup();
+                document.getElementById('authModal').classList.add('active');
+                return;
+            }
+
+            const activeMethod = document.querySelector('.method-btn.active');
+            const methodName = activeMethod ? activeMethod.querySelector('.method-label')?.textContent || 'СБП' : 'СБП';
+
+            updateBalance(amount);
+            addTransaction({
+                type: 'Пополнение',
+                amount: amount,
+                name: `Пополнение через ${methodName}`
+            });
+
+            closeTopup();
+            showToast(`💰 Кошелек пополнен на $${amount.toFixed(2)}`, 'success');
+
+            document.querySelectorAll('.wallet-balance').forEach(el => {
+                el.textContent = '$' + getBalance().toFixed(2);
+            });
+        }
+
+        // ============================================================
+        // ФИЛЬТРЫ
+        // ============================================================
+        function getActiveFilters() {
+            const rarityOption = document.querySelector('.filter-menu[data-dropdown="rarity"] .filter-option.active');
+            const typeOption = document.querySelector('.filter-menu[data-dropdown="type"] .filter-option.active');
+            const qualityOption = document.querySelector('.filter-menu[data-dropdown="quality"] .filter-option.active');
+
+            return {
+                rarity: rarityOption ? rarityOption.dataset.filter || 'all' : 'all',
+                type: typeOption ? typeOption.dataset.type || 'all' : 'all',
+                quality: qualityOption ? qualityOption.dataset.quality || 'all' : 'all'
+            };
+        }
+
+        // ============================================================
+        // РЕНДЕРИНГ КАТАЛОГА
+        // ============================================================
+        function renderCatalog() {
+            const searchQuery = document.getElementById('searchInput')?.value.toLowerCase().trim() || '';
+            const maxPrice = parseInt(document.getElementById('priceSlider')?.value || 2500);
+            const sort = document.getElementById('sortSelect')?.value || 'price-desc';
+
+            const filters = getActiveFilters();
+            const rarity = filters.rarity;
+            const type = filters.type;
+            const quality = filters.quality;
+
+            const qualityMap = {
+                'fn': 'Factory New',
+                'mw': 'Minimal Wear',
+                'ft': 'Field-Tested',
+                'ww': 'Well-Worn',
+                'bs': 'Battle-Scarred'
+            };
+
+            let filtered = allSkins.filter(skin => {
+                const matchRarity = rarity === 'all' || skin.rarity === rarity;
+                const matchType = type === 'all' || skin.type === type;
+                const matchQuality = quality === 'all' || skin.exterior === qualityMap[quality];
+                const matchPrice = skin.price <= maxPrice;
+                const matchSearch = skin.name.toLowerCase().includes(searchQuery) || searchQuery === '';
+                return matchRarity && matchType && matchQuality && matchPrice && matchSearch;
+            });
+
+            switch (sort) {
+                case 'price-asc':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-desc':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'popular':
+                    filtered.sort((a, b) => (b.popular || 0) - (b.popular || 0));
+                    break;
+                default:
+                    filtered.sort((a, b) => b.price - a.price);
+            }
+
+            const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+            if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pageItems = filtered.slice(start, end);
+
+            const totalEl = document.getElementById('totalCount');
+            if (totalEl) totalEl.textContent = filtered.length;
+
+            const catalog = document.getElementById('catalog');
+            if (!catalog) return;
+
+            if (pageItems.length === 0 && filtered.length > 0) {
+                currentPage = totalPages;
+                renderCatalog();
+                return;
+            }
+
+            if (filtered.length === 0) {
+                catalog.innerHTML =
+                    `<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--text-secondary);"><i class="fas fa-search" style="font-size:40px;display:block;margin-bottom:14px;opacity:0.5;"></i><p style="font-size:18px;font-weight:600;">Скины не найдены</p><span style="font-size:14px;">Попробуйте изменить параметры поиска</span></div>`;
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+
+            catalog.innerHTML = pageItems.map(skin => {
+                const rarityClass = {
+                    'gold': 'rarity-gold',
+                    'contraband': 'rarity-contraband',
+                    'red': 'rarity-red',
+                    'pink': 'rarity-pink',
+                    'purple': 'rarity-purple',
+                    'blue': 'rarity-blue'
+                } [skin.rarity] || 'rarity-blue';
+
+                const rarityLabel = {
+                    'gold': '★ Золото',
+                    'contraband': '● Контрбанда',
+                    'red': '🔴 Красный',
+                    'pink': '🟣 Розовый',
+                    'purple': '🟣 Фиолетовый',
+                    'blue': '🔵 Синий'
+                } [skin.rarity] || '';
+
+                const inCart = isInCart(skin.id);
+
+                const imgHtml = skin.hasImage ?
+                    `<img src="${skin.icon}" alt="${skin.name}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'skin-icon\\'>${skin.iconFallback || '🎯'}</span>'">` :
+                    `<span class="skin-icon">${skin.iconFallback || '🎯'}</span>`;
+
+                return `
+                            <div class="skin-card" data-id="${skin.id}">
+                                <span class="rarity-badge ${rarityClass}">${rarityLabel}</span>
+                                <div class="skin-img">${imgHtml}</div>
+                                <div class="skin-info">
+                                    <div class="skin-name">${skin.name}</div>
+                                    <div class="skin-exterior">${skin.exterior} • Float ${skin.float}</div>
+                                    <div class="skin-type">${skin.type}</div>
+                                </div>
+                                <div class="price-row">
+                                    <div>
+                                        <span class="price-usd">$${skin.price}</span>
+                                        <span class="price-rub">≈ ${Math.round(skin.price * 90)} ₽</span>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn-buy ${inCart ? 'in-cart' : ''}" data-id="${skin.id}" ${inCart ? 'disabled' : ''}>
+                                        ${inCart ? 'В корзине ✓' : 'Купить'}
+                                    </button>
+                                    <button class="btn-detail" onclick="window.location.href='skin-detail.html?id=${skin.id}'">
+                                        Подробнее
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+            }).join('');
+
+            renderPagination(totalPages);
+
+            document.querySelectorAll('.btn-buy').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = parseInt(this.dataset.id);
+
+                    if (isInCart(id)) {
+                        removeFromCart(id);
+                        this.textContent = 'Купить';
+                        this.classList.remove('in-cart');
+                        this.disabled = false;
+                        showToast('🗑️ Скин удалён из корзины');
+                    } else {
+                        addToCart(id);
+                        this.textContent = 'В корзине ✓';
+                        this.classList.add('in-cart');
+                        this.disabled = false;
+                        showToast('✅ Скин добавлен в корзину', 'success');
+                    }
+                    updateCartUI();
+                });
+            });
+
+            document.querySelectorAll('.skin-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.btn-buy') || e.target.closest('.btn-detail')) return;
+                    const id = this.dataset.id;
+                    window.location.href = `skin-detail.html?id=${id}`;
+                });
+            });
+        }
+
+        // ============================================================
+        // ПАГИНАЦИЯ
+        // ============================================================
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            html +=
+                `<button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>‹</button>`;
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html +=
+                        `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<button class="page-btn" disabled>…</button>`;
+                }
+            }
+
+            html +=
+                `<button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>›</button>`;
+            pagination.innerHTML = html;
+        }
+
+        function changePage(page) {
+            const searchQuery = document.getElementById('searchInput')?.value.toLowerCase().trim() || '';
+            const maxPrice = parseInt(document.getElementById('priceSlider')?.value || 2500);
+            const filters = getActiveFilters();
+            const rarity = filters.rarity;
+            const type = filters.type;
+            const quality = filters.quality;
+            const qualityMap = {
+                'fn': 'Factory New',
+                'mw': 'Minimal Wear',
+                'ft': 'Field-Tested',
+                'ww': 'Well-Worn',
+                'bs': 'Battle-Scarred'
+            };
+
+            let filtered = allSkins.filter(skin => {
+                const matchRarity = rarity === 'all' || skin.rarity === rarity;
+                const matchType = type === 'all' || skin.type === type;
+                const matchQuality = quality === 'all' || skin.exterior === qualityMap[quality];
+                const matchPrice = skin.price <= maxPrice;
+                const matchSearch = skin.name.toLowerCase().includes(searchQuery) || searchQuery === '';
+                return matchRarity && matchType && matchQuality && matchPrice && matchSearch;
+            });
+
+            const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderCatalog();
+            document.querySelector('.filters').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // КОРЗИНА UI
+        // ============================================================
+        function updateCartUI() {
+            const items = getCartItems();
+            const total = getCartTotal();
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            if (!cartItems) return;
+
+            if (items.length === 0) {
+                cartItems.innerHTML =
+                    `<div class="cart-empty"><i class="fas fa-cart-plus"></i><p>Корзина пуста</p></div>`;
+                cartTotal.textContent = '$0';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let html = '';
+            items.forEach(item => {
+                const imgHtml = item.hasImage ?
+                    `<img src="${item.icon}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'">` :
+                    `<span class="fallback-icon">${item.iconFallback || '🎯'}</span>`;
+                html += `
+                            <div class="cart-item">
+                                <div class="item-icon">${imgHtml}</div>
+                                <div class="item-info">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-price">$${item.price}</div>
+                                </div>
+                                <button class="item-remove" onclick="removeFromCartUI(${item.id})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        `;
+            });
+
+            cartItems.innerHTML = html;
+            cartTotal.textContent = '$' + total.toFixed(2);
+            checkoutBtn.disabled = false;
+        }
+
+        function removeFromCartUI(id) {
+            removeFromCart(id);
+            updateCartUI();
+            updateCartBadge();
+            renderCatalog();
+            showToast('🗑️ Скин удалён из корзины');
+        }
+
+        // ============================================================
+        // СОБЫТИЯ
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initFallingSkins();
+
+            document.querySelectorAll('.filter-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const dropdown = this.dataset.dropdown;
+                    const menu = document.querySelector(`.filter-menu[data-dropdown="${dropdown}"]`);
+                    const isOpen = menu.classList.contains('open');
+
+                    document.querySelectorAll('.filter-menu').forEach(m => m.classList.remove('open'));
+                    document.querySelectorAll('.filter-toggle').forEach(t => t.classList.remove('active'));
+
+                    if (!isOpen) {
+                        menu.classList.add('open');
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.filter-dropdown')) {
+                    document.querySelectorAll('.filter-menu').forEach(m => m.classList.remove('open'));
+                    document.querySelectorAll('.filter-toggle').forEach(t => t.classList.remove('active'));
+                }
+            });
+
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.closest('.filter-menu');
+                    const dropdown = parent.dataset.dropdown;
+
+                    parent.querySelectorAll('.filter-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const toggle = document.querySelector(`.filter-toggle[data-dropdown="${dropdown}"]`);
+                    if (toggle) {
+                        const label = this.textContent.trim();
+                        const textSpan = toggle.querySelector('span:not(.filter-badge)');
+                        if (textSpan && !toggle.querySelector('img')) {
+                            textSpan.textContent = label;
+                        }
+                        const isAll = this.dataset.filter === 'all' || this.dataset.type === 'all' || this
+                            .dataset.quality === 'all';
+                        let badge = toggle.querySelector('.filter-badge');
+                        if (!isAll) {
+                            if (!badge) {
+                                badge = document.createElement('span');
+                                badge.className = 'filter-badge';
+                                toggle.appendChild(badge);
+                            }
+                            badge.textContent = '1';
+                        } else {
+                            if (badge) badge.remove();
+                        }
+                    }
+
+                    parent.classList.remove('open');
+                    const toggleBtn = document.querySelector(`.filter-toggle[data-dropdown="${dropdown}"]`);
+                    if (toggleBtn) toggleBtn.classList.remove('active');
+
+                    currentPage = 1;
+                    renderCatalog();
+                });
+            });
+
+            document.getElementById('priceSlider')?.addEventListener('input', function() {
+                document.getElementById('priceDisplay').textContent = this.value;
+                currentPage = 1;
+                renderCatalog();
+            });
+
+            document.getElementById('searchInput')?.addEventListener('input', function() {
+                currentPage = 1;
+                renderCatalog();
+            });
+
+            document.getElementById('searchBtn')?.addEventListener('click', function() {
+                currentPage = 1;
+                renderCatalog();
+            });
+
+            document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    currentPage = 1;
+                    renderCatalog();
+                }
+            });
+
+            document.getElementById('sortSelect')?.addEventListener('change', function() {
+                currentPage = 1;
+                renderCatalog();
+            });
+
+            document.getElementById('cartBtn')?.addEventListener('click', function() {
+                document.getElementById('cartPanel').classList.toggle('open');
+            });
+
+            document.getElementById('cartClose')?.addEventListener('click', function() {
+                document.getElementById('cartPanel').classList.remove('open');
+            });
+
+            document.getElementById('checkoutBtn')?.addEventListener('click', function() {
+                const items = getCartItems();
+                if (items.length === 0) return;
+
+                const userData = getUser();
+                if (!userData) {
+                    showToast('⚠️ Войдите в аккаунт!', 'error');
+                    document.getElementById('authModal').classList.add('active');
+                    return;
+                }
+
+                const total = getCartTotal();
+                if (total > getBalance()) {
+                    showToast(`❌ Недостаточно средств! Требуется $${total.toFixed(2)}, доступно $${getBalance().toFixed(2)}`,
+                        'error');
+                    return;
+                }
+
+                updateBalance(-total);
+                addOwnedSkins(items);
+                items.forEach(item => {
+                    addTransaction({ type: 'Покупка', amount: -item.price, name: item.name });
+                });
+
+                localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify([]));
+                updateCartUI();
+                updateCartBadge();
+                document.getElementById('cartPanel').classList.remove('open');
+
+                showToast(`🎉 Покупка завершена!`, 'success');
+
+                document.querySelectorAll('.wallet-balance').forEach(el => {
+                    el.textContent = '$' + getBalance().toFixed(2);
+                });
+
+                renderCatalog();
+            });
+
+            document.getElementById('authClose')?.addEventListener('click', function() {
+                document.getElementById('authModal').classList.remove('active');
+            });
+
+            document.getElementById('authModal')?.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('active');
+            });
+
+            document.getElementById('authForm')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleAuth();
+            });
+
+            document.getElementById('authSubmitBtn')?.addEventListener('click', handleAuth);
+            document.getElementById('authSwitchLink')?.addEventListener('click', toggleAuthMode);
+
+            document.getElementById('steamLoginBtn')?.addEventListener('click', function() {
+                if (isLoggedIn) {
+                    isLoggedIn = false;
+                    user = { email: '', username: 'Гость', avatar: '👤' };
+                    balance = 0;
+                    localStorage.setItem(STORAGE_KEYS.BALANCE, '0');
+                    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                    localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'false');
+                    updateAuthUI();
+                    updateBalanceUI();
+                    showToast('👋 Вы вышли из аккаунта', 'default');
+                    renderCatalog();
+                    return;
+                }
+                document.getElementById('authModal').classList.add('active');
+            });
+
+            document.querySelector('.btn-theme')?.addEventListener('click', toggleTheme);
+
+            updateAuthUI();
+            updateBalanceUI();
+            updateCartBadge();
+
+            renderCatalog();
+            updateCartUI();
+            updateCartBadge();
+
+            console.log('🔥 SkinHub (Steam 2026) загружен!');
+            console.log(`👤 Пользователь: ${isLoggedIn ? user.username : 'Гость'}`);
+            console.log(`💰 Баланс: $${balance}`);
+            console.log(`📦 Скинов в каталоге: ${allSkins.length}`);
+            console.log('🎯 У скинов AWP Dragon Lore и M4A4 Howl редкость "Контрбанда" (оранжевая)!');
+            console.log('🖼️ В фильтре "Тип" теперь отображаются картинки скинов');
+        });
+
+        // ============================================================
+        // ФОРМАТИРОВАНИЕ КАРТЫ
+        // ============================================================
+        function formatCardNumber(input) {
+            let val = input.value.replace(/\D/g, '');
+            val = val.replace(/(\d{4})/g, '$1 ').trim();
+            input.value = val;
+        }
+
+        function formatCardExpiry(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length >= 2) {
+                val = val.substring(0, 2) + '/' + val.substring(2, 4);
+            }
+            input.value = val;
+        }
+
+        console.log('✅ Все скрипты загружены!');
+    </script>
+</body>
+</html>
