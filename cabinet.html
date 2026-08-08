@@ -67,7 +67,7 @@
         }
 
         /* =========================================================
-                   АНИМИРОВАННЫЙ ФОН — STEAM 2026
+                   АНИМИРОВАННЫЙ ФОН
                    ========================================================= */
         .bg-animation {
             position: fixed;
@@ -90,14 +90,8 @@
         }
 
         @keyframes pulse-orb {
-            0%, 100% {
-                transform: scale(1) translate(0, 0);
-                opacity: 0.04;
-            }
-            50% {
-                transform: scale(1.8) translate(40px, -30px);
-                opacity: 0.10;
-            }
+            0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.04; }
+            50% { transform: scale(1.8) translate(40px, -30px); opacity: 0.10; }
         }
 
         .bg-animation .steam-grid {
@@ -125,7 +119,7 @@
         }
 
         /* =========================================================
-                   ХЕДЕР — STEAM 2026
+                   ХЕДЕР
                    ========================================================= */
         header {
             padding: 14px 0;
@@ -324,7 +318,7 @@
         }
 
         /* =========================================================
-                   ЛИЧНЫЙ КАБИНЕТ — STEAM 2026
+                   ЛИЧНЫЙ КАБИНЕТ
                    ========================================================= */
         .cabinet-section {
             margin: 30px 0 40px;
@@ -495,7 +489,7 @@
         }
 
         /* =========================================================
-                   ИНВЕНТАРЬ — STEAM 2026
+                   ИНВЕНТАРЬ
                    ========================================================= */
         .inventory-grid {
             display: grid;
@@ -661,17 +655,6 @@
             transform: scale(1.04);
         }
 
-        .inventory-item .item-status-badge {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 600;
-            color: #4caf50;
-            background: rgba(76, 175, 80, 0.08);
-            padding: 2px 10px;
-            border-radius: 40px;
-            border: 1px solid rgba(76, 175, 80, 0.15);
-        }
-
         .cabinet-empty {
             text-align: center;
             color: var(--text-secondary);
@@ -704,7 +687,7 @@
         }
 
         /* =========================================================
-                   ТРАНЗАКЦИИ — STEAM 2026
+                   ТРАНЗАКЦИИ
                    ========================================================= */
         .transactions-list {
             display: flex;
@@ -741,7 +724,7 @@
         }
 
         /* =========================================================
-                   РЕФЕРАЛКА — STEAM 2026
+                   РЕФЕРАЛКА
                    ========================================================= */
         .referral-box {
             background: var(--bg-card);
@@ -794,7 +777,7 @@
         }
 
         /* =========================================================
-                   БЕЗОПАСНОСТЬ — STEAM 2026
+                   БЕЗОПАСНОСТЬ
                    ========================================================= */
         .security-box {
             background: var(--bg-card);
@@ -866,7 +849,7 @@
         }
 
         /* =========================================================
-                   МОДАЛЬНЫЕ ОКНА — STEAM 2026
+                   МОДАЛЬНЫЕ ОКНА
                    ========================================================= */
         .modal-overlay {
             display: none;
@@ -1035,7 +1018,7 @@
         }
 
         /* =========================================================
-                   ПОПОЛНЕНИЕ — STEAM 2026
+                   ПОПОЛНЕНИЕ
                    ========================================================= */
         #topupModal .modal {
             max-width: 540px;
@@ -1321,14 +1304,8 @@
         }
 
         @keyframes claimPop {
-            0% {
-                transform: translate(-50%, -50%) scale(0.5);
-                opacity: 0;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 1;
-            }
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .claim-toast .claim-icon {
@@ -1448,7 +1425,7 @@
         }
 
         /* =========================================================
-                   ФУТЕР — STEAM 2026
+                   ФУТЕР
                    ========================================================= */
         footer {
             padding: 34px 0 24px;
@@ -1505,145 +1482,47 @@
                    АДАПТИВ
                    ========================================================= */
         @media (max-width: 600px) {
-            .modal {
-                padding: 20px 16px;
-            }
-
-            .topup-amounts {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-
-            .amount-btn {
-                font-size: 13px;
-                padding: 8px 0;
-            }
-
-            .topup-display {
-                font-size: 32px;
-                padding: 12px 16px;
-            }
-
-            .topup-methods {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .method-btn {
-                padding: 8px 0;
-            }
-
-            .topup-custom input {
-                font-size: 14px;
-                padding: 10px 14px;
-            }
-
-            .modal .btn-pay {
-                font-size: 14px;
-                padding: 12px;
-            }
-
-            .inventory-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .modal { padding: 20px 16px; }
+            .topup-amounts { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+            .amount-btn { font-size: 13px; padding: 8px 0; }
+            .topup-display { font-size: 32px; padding: 12px 16px; }
+            .topup-methods { grid-template-columns: repeat(2, 1fr); }
+            .method-btn { padding: 8px 0; }
+            .topup-custom input { font-size: 14px; padding: 10px 14px; }
+            .modal .btn-pay { font-size: 14px; padding: 12px; }
+            .inventory-grid { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
-            .topup-amounts {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .inventory-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .claim-toast {
-                padding: 28px 24px;
-                max-width: 90%;
-            }
-
-            .claim-toast .claim-icon {
-                font-size: 48px;
-            }
-
-            .claim-toast .claim-title {
-                font-size: 18px;
-            }
-
-            .cabinet-tabs {
-                gap: 4px;
-                padding: 4px;
-            }
-
-            .cabinet-tab {
-                font-size: 11px;
-                padding: 6px 12px;
-            }
+            .topup-amounts { grid-template-columns: repeat(2, 1fr); }
+            .inventory-grid { grid-template-columns: 1fr; }
+            .claim-toast { padding: 28px 24px; max-width: 90%; }
+            .claim-toast .claim-icon { font-size: 48px; }
+            .claim-toast .claim-title { font-size: 18px; }
+            .cabinet-tabs { gap: 4px; padding: 4px; }
+            .cabinet-tab { font-size: 11px; padding: 6px 12px; }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 12px;
-            }
-
-            header {
-                padding: 12px 0;
-            }
-
-            .header-inner {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-
-            nav {
-                justify-content: center;
-                gap: 14px;
-            }
-
-            .header-actions {
-                justify-content: center;
-            }
-
-            .cabinet-profile {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                padding: 20px;
-            }
-
-            .cabinet-user-info .user-trade {
-                justify-content: center;
-            }
-
-            .cabinet-tabs {
-                justify-content: center;
-            }
-
-            .card-form .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .toast {
-                bottom: 80px;
-                right: 12px;
-                left: 12px;
-                max-width: unset;
-            }
-
-            footer .footer-links {
-                gap: 16px;
-            }
-
-            footer .socials {
-                gap: 14px;
-            }
+            .container { padding: 0 12px; }
+            header { padding: 12px 0; }
+            .header-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+            nav { justify-content: center; gap: 14px; }
+            .header-actions { justify-content: center; }
+            .cabinet-profile { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .cabinet-user-info .user-trade { justify-content: center; }
+            .cabinet-tabs { justify-content: center; }
+            .card-form .form-row { grid-template-columns: 1fr; }
+            .toast { bottom: 80px; right: 12px; left: 12px; max-width: unset; }
+            footer .footer-links { gap: 16px; }
+            footer .socials { gap: 14px; }
         }
     </style>
 </head>
 <body>
 
     <!-- ============================================================
-    АНИМИРОВАННЫЙ ФОН — STEAM 2026
+    АНИМИРОВАННЫЙ ФОН
     ============================================================ -->
     <div class="bg-animation" id="bgAnimation">
         <div class="steam-grid"></div>
@@ -1658,7 +1537,7 @@
     <div class="container">
 
         <!-- ============================================================
-        ХЕДЕР — STEAM 2026
+        ХЕДЕР
         ============================================================ -->
         <header>
             <div class="header-inner">
@@ -1695,7 +1574,7 @@
         </header>
 
         <!-- ============================================================
-        ЛИЧНЫЙ КАБИНЕТ — STEAM 2026
+        ЛИЧНЫЙ КАБИНЕТ
         ============================================================ -->
         <section class="cabinet-section">
             <!-- Профиль -->
@@ -1728,7 +1607,7 @@
             <div class="cabinet-content">
                 <div class="tab-content active" id="tab-inventory">
                     <div class="inventory-grid" id="inventoryGrid">
-                        <!-- Заполняется через JS -->
+                        <!-- Заполняется через JS только из покупок -->
                     </div>
                 </div>
 
@@ -1794,7 +1673,7 @@
             <h2 id="authTitle">Вход в аккаунт</h2>
             <p class="modal-sub" id="authSub">Войдите или зарегистрируйтесь</p>
             <div id="authError" class="error-text" style="display:none;"></div>
-            <div class="auth-suggest" id="authSuggest">
+            <div class="auth-suggest">
                 💡 <strong>Готовый аккаунт:</strong> demo@skin.com / <strong>demo123</strong>
             </div>
             <form class="auth-form" id="authForm" onsubmit="return false;">
@@ -1806,7 +1685,7 @@
                     <label>🔑 Пароль</label>
                     <input type="password" id="authPassword" placeholder="Минимум 6 символов" value="demo123" minlength="6">
                 </div>
-                <button class="btn-pay" id="authSubmitBtn" style="margin-top:4px;">
+                <button class="btn-pay" id="authSubmitBtn" style="margin-top:4px; background:linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));">
                     <i class="fas fa-sign-in-alt"></i> <span id="authBtnLabel">Войти</span>
                 </button>
             </form>
@@ -1824,11 +1703,9 @@
             <span class="modal-icon">💎</span>
             <h2>Пополнение кошелька</h2>
             <p class="modal-sub">Выберите сумму или укажите свою</p>
-
             <div class="topup-display" id="topupDisplay">
                 <span class="currency-symbol">$</span>50.00
             </div>
-
             <div class="topup-amounts">
                 <button class="amount-btn" data-amount="10" onclick="selectTopupAmount(10)">$10</button>
                 <button class="amount-btn" data-amount="25" onclick="selectTopupAmount(25)">$25</button>
@@ -1837,30 +1714,23 @@
                 <button class="amount-btn" data-amount="250" onclick="selectTopupAmount(250)">$250</button>
                 <button class="amount-btn" data-amount="500" onclick="selectTopupAmount(500)">$500</button>
             </div>
-
             <div class="topup-custom">
                 <input type="number" id="customAmount" placeholder="Введите свою сумму" min="1" step="0.01" oninput="updateTopupDisplay(this.value)">
             </div>
-
             <div class="topup-methods">
                 <button class="method-btn active" data-method="sbp" onclick="selectTopupMethod('sbp')">
-                    <i class="fas fa-university"></i>
-                    <span class="method-label">СБП</span>
+                    <i class="fas fa-university"></i><span class="method-label">СБП</span>
                 </button>
                 <button class="method-btn" data-method="card" onclick="selectTopupMethod('card')">
-                    <i class="fas fa-credit-card"></i>
-                    <span class="method-label">Карта</span>
+                    <i class="fas fa-credit-card"></i><span class="method-label">Карта</span>
                 </button>
                 <button class="method-btn" data-method="crypto" onclick="selectTopupMethod('crypto')">
-                    <i class="fab fa-bitcoin"></i>
-                    <span class="method-label">Крипта</span>
+                    <i class="fab fa-bitcoin"></i><span class="method-label">Крипта</span>
                 </button>
                 <button class="method-btn" data-method="qiwi" onclick="selectTopupMethod('qiwi')">
-                    <i class="fas fa-mobile-alt"></i>
-                    <span class="method-label">Qiwi</span>
+                    <i class="fas fa-mobile-alt"></i><span class="method-label">Qiwi</span>
                 </button>
             </div>
-
             <div class="card-form" id="cardForm">
                 <div class="form-group">
                     <label>Номер карты</label>
@@ -1881,11 +1751,9 @@
                     <input type="text" placeholder="IVAN IVANOV">
                 </div>
             </div>
-
             <button class="btn-pay" onclick="processTopup()">
                 <i class="fas fa-plus-circle"></i> Пополнить
             </button>
-
             <div class="topup-security">
                 <i class="fas fa-lock"></i>
                 <span>Все транзакции защищены SSL-шифрованием</span>
@@ -1966,7 +1834,7 @@
     </div>
 
     <!-- ============================================================
-    СПЕЦИАЛЬНОЕ УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
+    УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
     ============================================================ -->
     <div class="claim-toast" id="claimToast">
         <div class="claim-icon">🎮</div>
@@ -1978,7 +1846,7 @@
     </div>
 
     <!-- ============================================================
-    TOAST (ОБЫЧНЫЙ)
+    TOAST
     ============================================================ -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
@@ -2007,9 +1875,22 @@
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT — ТОЛЬКО ИЗ ПОКУПОК
     ============================================================ -->
     <script>
+        // ============================================================
+        // КЛЮЧИ ДЛЯ localStorage
+        // ============================================================
+        const STORAGE_KEYS = {
+            USER: 'skinHub_user',
+            BALANCE: 'skinHub_balance',
+            LOGGED_IN: 'skinHub_loggedIn',
+            OWNED_SKINS: 'skinHub_ownedSkins',
+            TRANSACTIONS: 'skinHub_transactions',
+            CART: 'skinHub_cart',
+            THEME: 'skinHub_theme'
+        };
+
         // ============================================================
         // СОСТОЯНИЕ
         // ============================================================
@@ -2082,6 +1963,62 @@
         const claimSkinName = document.getElementById('claimSkinName');
 
         // ============================================================
+        // ★★★ ФУНКЦИЯ ЗАГРУЗКИ ИНВЕНТАРЯ (только из покупок) ★★★
+        // ============================================================
+        function loadOwnedSkins() {
+            const data = localStorage.getItem(STORAGE_KEYS.OWNED_SKINS);
+            if (data) {
+                try {
+                    return JSON.parse(data);
+                } catch (e) {
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        // ============================================================
+        // ★★★ ФУНКЦИЯ ОБНОВЛЕНИЯ ИНВЕНТАРЯ ★★★
+        // ============================================================
+        function updateInventory() {
+            ownedSkins = loadOwnedSkins();
+            renderInventory();
+        }
+
+        // ============================================================
+        // ★★★ СЛУШАЕМ ИЗМЕНЕНИЯ В localStorage ★★★
+        // ============================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEYS.OWNED_SKINS) {
+                console.log('🔄 Инвентарь обновлён из другой вкладки!');
+                updateInventory();
+            }
+            if (e.key === STORAGE_KEYS.BALANCE) {
+                balance = parseFloat(e.newValue) || 0;
+                updateBalanceUI();
+            }
+            if (e.key === STORAGE_KEYS.USER) {
+                try {
+                    user = JSON.parse(e.newValue) || { email: '', username: 'Гость', avatar: '👤' };
+                    updateAuthUI();
+                } catch(e) {}
+            }
+            if (e.key === STORAGE_KEYS.LOGGED_IN) {
+                isLoggedIn = e.newValue === 'true';
+                updateAuthUI();
+            }
+            if (e.key === STORAGE_KEYS.TRANSACTIONS) {
+                try {
+                    transactions = JSON.parse(e.newValue) || [];
+                    renderTransactions();
+                } catch(e) {}
+            }
+            if (e.key === STORAGE_KEYS.CART) {
+                updateCartBadge();
+            }
+        });
+
+        // ============================================================
         // АНИМИРОВАННЫЙ ФОН
         // ============================================================
         function initBackground() {
@@ -2110,11 +2047,11 @@
             isDarkTheme = !isDarkTheme;
             document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
             themeIcon.className = isDarkTheme ? 'fas fa-moon' : 'fas fa-sun';
-            localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+            localStorage.setItem(STORAGE_KEYS.THEME, isDarkTheme ? 'dark' : 'light');
             showToast(isDarkTheme ? '🌙 Тёмная тема' : '☀️ Светлая тема', 'default');
         }
 
-        const savedTheme = localStorage.getItem('theme');
+        const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
         if (savedTheme === 'light') {
             isDarkTheme = false;
             document.documentElement.setAttribute('data-theme', 'light');
@@ -2122,7 +2059,7 @@
         }
 
         // ============================================================
-        // TOAST (ОБЫЧНЫЙ)
+        // TOAST
         // ============================================================
         function showToast(text, type = 'default') {
             toastText.textContent = text;
@@ -2136,7 +2073,7 @@
         }
 
         // ============================================================
-        // СПЕЦИАЛЬНОЕ УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
+        // УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
         // ============================================================
         function showClaimToast(skinName) {
             claimSkinName.textContent = skinName || 'Скин';
@@ -2189,10 +2126,13 @@
         }
 
         // ============================================================
-        // РЕНДЕРИНГ ИНВЕНТАРЯ
+        // ★★★ РЕНДЕРИНГ ИНВЕНТАРЯ (ТОЛЬКО ИЗ ПОКУПОК) ★★★
         // ============================================================
         function renderInventory() {
             if (!inventoryGrid) return;
+
+            ownedSkins = loadOwnedSkins();
+
             if (!ownedSkins || ownedSkins.length === 0) {
                 inventoryGrid.innerHTML = `
                     <div class="cabinet-empty">
@@ -2208,11 +2148,11 @@
                 const rarityClass = getRarityClass(item.rarity);
                 const rarityLabel = getRarityLabel(item.rarity);
                 
-                const iconHtml = item.icon ? 
+                const iconHtml = item.hasImage && item.icon ? 
                     `<img src="${item.icon}" alt="${item.name}" onerror="this.parentElement.innerHTML='<span class=\\'fallback-icon\\'>${item.iconFallback || '🎯'}</span>'">` :
                     `<span class="fallback-icon">${item.iconFallback || '🎯'}</span>`;
 
-                const price = item.price || (Math.random() * 500 + 50);
+                const price = item.price || 0;
                 
                 return `
                     <div class="inventory-item" data-index="${index}">
@@ -2236,26 +2176,34 @@
         }
 
         // ============================================================
-        // ЗАБРАТЬ СКИН
+        // ЗАБРАТЬ СКИН (Отправка в Steam)
         // ============================================================
         function claimSkin(index) {
-            const skin = ownedSkins[index];
+            const currentInventory = loadOwnedSkins();
+            const skin = currentInventory[index];
             if (!skin) return;
 
             showClaimToast(skin.name || 'Скин');
 
-            ownedSkins.splice(index, 1);
-            localStorage.setItem('ownedSkins', JSON.stringify(ownedSkins));
+            currentInventory.splice(index, 1);
+            localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(currentInventory));
             
-            addTransaction({
-                type: 'Получение',
+            const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
+            txs.push({
+                type: 'Получение в Steam',
                 amount: 0,
-                name: `Скин "${skin.name || 'Неизвестный'}" передан в Steam`
+                name: `Скин "${skin.name || 'Неизвестный'}" передан в Steam`,
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
             });
+            localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(txs));
 
-            setTimeout(() => {
-                renderInventory();
-            }, 500);
+            updateInventory();
+            renderTransactions();
+
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: STORAGE_KEYS.OWNED_SKINS,
+                newValue: JSON.stringify(currentInventory)
+            }));
         }
 
         // ============================================================
@@ -2263,6 +2211,10 @@
         // ============================================================
         function renderTransactions() {
             if (!transactionsList) return;
+            
+            const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
+            transactions = txs;
+
             if (!transactions || transactions.length === 0) {
                 transactionsList.innerHTML = `
                     <div class="cabinet-empty">
@@ -2273,6 +2225,7 @@
                 `;
                 return;
             }
+            
             transactionsList.innerHTML = transactions.slice().reverse().map(tx => {
                 const sign = tx.amount >= 0 ? '+' : '';
                 const cls = tx.amount >= 0 ? 'plus' : 'minus';
@@ -2416,7 +2369,7 @@
                 user.avatar = event.target.result;
                 avatarModal.classList.remove('active');
                 showToast('✅ Аватарка загружена!', 'success');
-                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
             };
             reader.readAsDataURL(file);
             this.value = '';
@@ -2430,7 +2383,7 @@
             avatarDisplay.style.fontSize = '32px';
             avatarModal.classList.remove('active');
             showToast('✅ Аватарка обновлена!', 'success');
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
         }
 
         // ============================================================
@@ -2565,17 +2518,19 @@
                 avatarDisplay.textContent = user.avatar;
                 lastLogin.textContent = new Date().toLocaleString();
                 updateReferralUI();
-                localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('balance', balance.toString());
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+                updateInventory();
+                renderTransactions();
             } else {
-                const savedUser = localStorage.getItem('user');
+                const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
                 if (savedUser) {
                     const parsed = JSON.parse(savedUser);
                     if (parsed.email === email) {
                         isLoggedIn = true;
                         user = parsed;
-                        balance = parseFloat(localStorage.getItem('balance')) || 0;
+                        balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
                         authModal.classList.remove('active');
                         showToast(`👋 С возвращением, ${user.username}!`, 'success');
                         updateAuthUI();
@@ -2585,7 +2540,7 @@
                         lastLogin.textContent = new Date().toLocaleString();
                         updateReferralUI();
                         updateBalanceUI();
-                        renderInventory();
+                        updateInventory();
                         renderTransactions();
                         return;
                     }
@@ -2602,9 +2557,11 @@
                 avatarDisplay.textContent = user.avatar;
                 lastLogin.textContent = new Date().toLocaleString();
                 updateReferralUI();
-                localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('balance', balance.toString());
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
+                localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+                updateInventory();
+                renderTransactions();
             }
 
             authEmail.value = '';
@@ -2649,7 +2606,7 @@
         // РАБОТА С localStorage
         // ============================================================
         function getUser() {
-            const userData = localStorage.getItem('user');
+            const userData = localStorage.getItem(STORAGE_KEYS.USER);
             return userData ? JSON.parse(userData) : null;
         }
 
@@ -2662,19 +2619,19 @@
             const userData = getUser();
             if (!userData) return false;
             userData.balance = (userData.balance || 0) + amount;
-            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
             balance = userData.balance;
             updateBalanceUI();
             return true;
         }
 
         function addTransaction(transaction) {
-            const txs = JSON.parse(localStorage.getItem('transactions') || '[]');
+            const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
             txs.push({
                 ...transaction,
                 date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
             });
-            localStorage.setItem('transactions', JSON.stringify(txs));
+            localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(txs));
             transactions = txs;
             renderTransactions();
         }
@@ -2697,14 +2654,35 @@
         }
 
         // ============================================================
-        // ЗАГРУЗКА ДАННЫХ
+        // КОРЗИНА
+        // ============================================================
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]');
+            if (cartCount) {
+                cartCount.textContent = cart.length;
+            }
+        }
+
+        // ============================================================
+        // ★★★ ПЕРИОДИЧЕСКАЯ ПРОВЕРКА ОБНОВЛЕНИЙ ★★★
+        // ============================================================
+        setInterval(() => {
+            const currentInventory = loadOwnedSkins();
+            if (JSON.stringify(currentInventory) !== JSON.stringify(ownedSkins)) {
+                console.log('🔄 Инвентарь обновлён автоматически!');
+                ownedSkins = currentInventory;
+                renderInventory();
+            }
+        }, 3000);
+
+        // ============================================================
+        // ★★★ ЗАГРУЗКА ДАННЫХ ★★★
         // ============================================================
         function loadData() {
-            const savedUser = localStorage.getItem('user');
-            const savedLoggedIn = localStorage.getItem('isLoggedIn');
-            const savedBalance = localStorage.getItem('balance');
-            const savedOwnedSkins = localStorage.getItem('ownedSkins');
-            const savedTransactions = localStorage.getItem('transactions');
+            const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
+            const savedLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN);
+            const savedBalance = localStorage.getItem(STORAGE_KEYS.BALANCE);
+            const savedTransactions = localStorage.getItem(STORAGE_KEYS.TRANSACTIONS);
 
             if (savedUser) {
                 try {
@@ -2712,9 +2690,7 @@
                     cabinetUsername.textContent = user.username || 'Гость';
                     cabinetEmail.textContent = `📧 ${user.email || 'Не авторизован'}`;
                     avatarDisplay.textContent = user.avatar || '👤';
-                } catch(e) {
-                    console.warn('Ошибка парсинга user:', e);
-                }
+                } catch(e) {}
             }
             if (savedLoggedIn === 'true') {
                 isLoggedIn = true;
@@ -2725,13 +2701,6 @@
                 balance = parseFloat(savedBalance) || 0;
                 updateBalanceUI();
             }
-            if (savedOwnedSkins) {
-                try {
-                    ownedSkins = JSON.parse(savedOwnedSkins) || [];
-                } catch(e) {
-                    ownedSkins = [];
-                }
-            }
             if (savedTransactions) {
                 try {
                     transactions = JSON.parse(savedTransactions) || [];
@@ -2740,21 +2709,14 @@
                 }
             }
 
+            // ★★★ Загружаем инвентарь только из покупок ★★★
+            ownedSkins = loadOwnedSkins();
+            
             renderInventory();
             renderTransactions();
             updateSecurityUI();
             tradeLinkEl.textContent = tradeLink;
             updateCartBadge();
-        }
-
-        // ============================================================
-        // КОРЗИНА
-        // ============================================================
-        function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            if (cartCount) {
-                cartCount.textContent = cart.length;
-            }
         }
 
         // ============================================================
@@ -2809,10 +2771,10 @@
                 showToast('👋 Вы вышли из аккаунта', 'default');
                 updateReferralUI();
                 updateSecurityUI();
-                localStorage.setItem('isLoggedIn', 'false');
-                localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('balance', '0');
-                renderInventory();
+                localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'false');
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+                localStorage.setItem(STORAGE_KEYS.BALANCE, '0');
+                updateInventory();
                 renderTransactions();
                 return;
             }
@@ -2835,15 +2797,15 @@
         document.querySelector('.btn-theme')?.addEventListener('click', toggleTheme);
 
         // ============================================================
-        // ИНИЦИАЛИЗАЦИЯ
+        // ★★★ ИНИЦИАЛИЗАЦИЯ ★★★
         // ============================================================
         loadData();
 
         console.log('👤 Личный кабинет SkinHub (Steam 2026) загружен!');
-        console.log(`📦 Скинов в инвентаре: ${ownedSkins.length}`);
+        console.log(`📦 Скинов в инвентаре: ${ownedSkins.length} (только из покупок)`);
         console.log(`💰 Баланс: $${balance}`);
         console.log(`👤 Пользователь: ${isLoggedIn ? user.username : 'Гость'}`);
+        console.log('✅ Теперь скины появляются только после покупки на главной странице!');
     </script>
-
 </body>
 </html>
