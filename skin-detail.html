@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkinHive — AWP Dragon Lore</title>
+    <title>SkinHive — Продажа скинов</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -57,21 +57,22 @@
 
         /* СВЕТЛАЯ ТЕМА — БЕЛЫЕ ПАНЕЛИ */
         [data-theme="light"] header,
-        [data-theme="light"] .skin-image-container,
-        [data-theme="light"] .skin-description,
-        [data-theme="light"] .skin-stat,
-        [data-theme="light"] .price-chart,
-        [data-theme="light"] .exteriors-section,
-        [data-theme="light"] .exterior-item,
+        [data-theme="light"] .sell-inventory,
+        [data-theme="light"] .sell-form,
+        [data-theme="light"] .stat-item,
+        [data-theme="light"] .sell-item,
         [data-theme="light"] .modal,
         [data-theme="light"] .toast,
+        [data-theme="light"] .money-toast,
         [data-theme="light"] footer {
             background: #ffffff;
         }
 
-        [data-theme="light"] .skin-stat,
-        [data-theme="light"] .exterior-item,
-        [data-theme="light"] .modal .form-group input {
+        [data-theme="light"] .sell-item .item-image,
+        [data-theme="light"] .sell-form .form-group .selected-skins,
+        [data-theme="light"] .withdraw-method,
+        [data-theme="light"] .modal .form-group input,
+        [data-theme="light"] .modal .modal-details {
             background: #f8fafc;
         }
 
@@ -87,7 +88,7 @@
         }
 
         /* =========================================================
-                   СТАТИЧНЫЙ ФОН (СЕТКА)
+                   СТАТИЧНЫЙ ФОН
                    ========================================================= */
         .bg-animation {
             position: fixed;
@@ -215,508 +216,515 @@
         }
 
         /* =========================================================
-                   СТРАНИЦА ДЕТАЛЕЙ
+                   СТРАНИЦА ПРОДАЖИ
                    ========================================================= */
-        .skin-detail-section {
+        .sell-section {
             margin: 24px 0 40px;
         }
 
-        .back-link {
-            display: inline-flex;
+        .sell-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: var(--transition);
             margin-bottom: 24px;
-            background: rgba(245, 197, 24, 0.05);
-            padding: 8px 18px;
-            border-radius: 40px;
-            border: 1px solid rgba(245, 197, 24, 0.2);
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
-        .back-link:hover {
+        .sell-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
             color: var(--hive-yellow);
-            border-color: var(--hive-yellow);
-            background: rgba(245, 197, 24, 0.15);
+            text-shadow: 0 0 20px rgba(245, 197, 24, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .skin-detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: flex-start;
+        .sell-header h1 i {
+            color: var(--hive-yellow);
+        }
+
+        .sell-header .sell-stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sell-header .sell-stats .stat-item {
+            background: rgba(14, 18, 23, 0.4);
+            border: 2px solid var(--hive-yellow);
+            border-radius: var(--radius);
+            padding: 10px 20px;
+            text-align: center;
+            min-width: 100px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.08);
+        }
+
+        .sell-header .sell-stats .stat-item .stat-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sell-header .sell-stats .stat-item .stat-value {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--hive-yellow);
         }
 
         /* =========================================================
-                   ЛЕВАЯ КОЛОНКА — ИЗОБРАЖЕНИЕ
+                   ИНВЕНТАРЬ
                    ========================================================= */
-        .skin-image-container {
+        .sell-inventory {
             background: rgba(14, 18, 23, 0.4);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 2px solid var(--hive-yellow);
             border-radius: 12px;
             padding: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            max-width: 100%;
+            margin-bottom: 24px;
             box-shadow: 0 0 40px rgba(245, 197, 24, 0.1), inset 0 0 40px rgba(245, 197, 24, 0.02);
         }
 
-        .skin-image-container .rarity-badge-large {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            padding: 4px 16px;
-            border-radius: 40px;
-            font-size: 11px;
+        .sell-inventory .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .sell-inventory .inventory-header h3 {
+            font-size: 18px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 2;
-        }
-
-        .rarity-red {
-            background: rgba(255, 68, 68, 0.15);
-            color: var(--rarity-red);
-            border: 1px solid rgba(255, 68, 68, 0.3);
-            box-shadow: 0 0 20px rgba(255, 68, 68, 0.1);
-        }
-
-        .skin-image-container .skin-image {
-            width: 100%;
-            height: 320px;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 10px;
+            gap: 8px;
         }
 
-        .skin-image-container .skin-image img {
-            max-width: 90%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 40px rgba(245, 197, 24, 0.15));
+        .sell-inventory .inventory-header h3 i {
+            color: var(--hive-yellow);
+        }
+
+        .sell-inventory .inventory-header .inventory-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .sell-inventory .inventory-header .inventory-actions button {
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(245, 197, 24, 0.4);
+            background: rgba(245, 197, 24, 0.05);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
             transition: var(--transition);
         }
 
-        .skin-image-container .skin-image .fallback-icon {
-            font-size: 80px;
-            opacity: 0.3;
+        .sell-inventory .inventory-header .inventory-actions button:hover {
+            border-color: var(--hive-yellow);
+            color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.15);
         }
 
-        .skin-image-container .skin-actions {
+        .sell-inventory .inventory-header .search-inventory {
             display: flex;
-            gap: 12px;
-            width: 100%;
-            margin-top: 20px;
+            align-items: center;
+            gap: 8px;
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid var(--hive-yellow);
+            border-radius: 40px;
+            padding: 4px 4px 4px 16px;
         }
 
-        .skin-image-container .skin-actions .btn-buy-detail {
-            flex: 1;
-            padding: 14px 16px;
+        .sell-inventory .inventory-header .search-inventory input {
+            background: transparent;
+            border: none;
+            padding: 6px 0;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            width: 180px;
+        }
+
+        .sell-inventory .inventory-header .search-inventory input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .sell-inventory .inventory-header .search-inventory button {
+            background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
+            border: none;
+            color: #1a1a1a;
+            padding: 6px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .sell-inventory .inventory-header .search-inventory button:hover {
+            transform: scale(1.04);
+        }
+
+        .sell-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .sell-grid::-webkit-scrollbar { width: 4px; }
+        .sell-grid::-webkit-scrollbar-track { background: rgba(245, 197, 24, 0.05); border-radius: 4px; }
+        .sell-grid::-webkit-scrollbar-thumb { background: var(--hive-yellow); border-radius: 4px; }
+
+        .sell-item {
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid var(--hive-yellow);
+            border-radius: var(--radius);
+            padding: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            backdrop-filter: blur(4px);
+        }
+
+        .sell-item:hover {
+            border-color: var(--hive-honey);
+            transform: translateY(-4px);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.2);
+        }
+
+        .sell-item.selected {
+            border-color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.1);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.3), inset 0 0 20px rgba(245, 197, 24, 0.05);
+        }
+
+        .sell-item .check-mark {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(14, 18, 23, 0.8);
+            border: 2px solid rgba(245, 197, 24, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: transparent;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .sell-item.selected .check-mark {
+            background: var(--hive-yellow);
+            border-color: var(--hive-yellow);
+            color: #1a1a1a;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(245, 197, 24, 0.5);
+        }
+
+        .sell-item .item-image {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            padding: 6px;
+            background: rgba(14, 18, 23, 0.4);
+            border: 1px solid rgba(245, 197, 24, 0.1);
+        }
+
+        .sell-item .item-image img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: var(--transition);
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+        }
+
+        .sell-item:hover .item-image img {
+            transform: scale(1.06);
+        }
+
+        .sell-item .item-image .fallback-icon {
+            font-size: 40px;
+            opacity: 0.5;
+        }
+
+        .sell-item .item-name {
+            font-weight: 700;
+            font-size: 13px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .sell-item .item-price {
+            text-align: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--hive-yellow);
+            margin-top: 4px;
+        }
+
+        .sell-item .item-quality {
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+
+        .sell-item .item-rarity {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 6px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .rarity-gold { background: rgba(212, 168, 67, 0.15); color: var(--rarity-gold); border: 1px solid rgba(212, 168, 67, 0.2); }
+        .rarity-contraband { background: rgba(255, 107, 0, 0.15); color: var(--rarity-contraband); border: 1px solid rgba(255, 107, 0, 0.25); }
+        .rarity-red { background: rgba(255, 68, 68, 0.12); color: var(--rarity-red); border: 1px solid rgba(255, 68, 68, 0.15); }
+        .rarity-pink { background: rgba(255, 105, 180, 0.12); color: var(--rarity-pink); border: 1px solid rgba(255, 105, 180, 0.15); }
+        .rarity-purple { background: rgba(170, 102, 255, 0.12); color: var(--rarity-purple); border: 1px solid rgba(170, 102, 255, 0.15); }
+        .rarity-blue { background: rgba(68, 136, 255, 0.12); color: var(--rarity-blue); border: 1px solid rgba(68, 136, 255, 0.15); }
+
+        /* =========================================================
+                   ФОРМА ПРОДАЖИ
+                   ========================================================= */
+        .sell-form {
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            padding: 28px;
+            margin-top: 24px;
+            box-shadow: 0 0 40px rgba(245, 197, 24, 0.1), inset 0 0 40px rgba(245, 197, 24, 0.02);
+        }
+
+        .sell-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .sell-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .sell-form .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .sell-form .form-group .selected-skins {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            min-height: 60px;
+            align-items: center;
+        }
+
+        .sell-form .form-group .selected-skins .no-skin {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .sell-form .form-group .selected-skins .skin-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 197, 24, 0.1);
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            border-radius: 40px;
+            padding: 4px 12px 4px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--hive-yellow);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sell-form .form-group .selected-skins .skin-tag img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            border-radius: 2px;
+        }
+
+        .sell-form .form-group .selected-skins .skin-tag .remove-tag {
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .sell-form .form-group .selected-skins .skin-tag .remove-tag:hover {
+            opacity: 1;
+            color: var(--rarity-red);
+        }
+
+        .sell-form .form-group .total-price-display {
+            background: rgba(14, 18, 23, 0.6);
+            border: 2px solid rgba(245, 197, 24, 0.3);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sell-form .form-group .total-price-display .total-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .sell-form .form-group .total-price-display .total-amount {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--hive-yellow);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(245, 197, 24, 0.3);
+        }
+
+        .sell-form .form-group .total-price-display .total-amount .currency {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .sell-form .form-group .total-price-display .discount-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .sell-form .btn-sell-submit {
+            width: 100%;
+            padding: 16px;
             background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
             color: #1a1a1a;
             border: none;
             border-radius: 60px;
             font-weight: 800;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            margin-top: 12px;
             box-shadow: 0 4px 24px rgba(245, 197, 24, 0.3);
         }
 
-        .skin-image-container .skin-actions .btn-buy-detail:hover {
+        .sell-form .btn-sell-submit:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 8px 32px rgba(245, 197, 24, 0.5);
         }
 
-        .skin-image-container .skin-actions .btn-cart-detail {
-            flex: 1;
-            padding: 14px 16px;
-            background: rgba(245, 197, 24, 0.08);
-            color: var(--hive-yellow);
-            border: 1px solid var(--hive-yellow);
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .sell-form .btn-sell-submit:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+            filter: grayscale(1);
         }
 
-        .skin-image-container .skin-actions .btn-cart-detail:hover {
-            background: rgba(245, 197, 24, 0.15);
-            transform: translateY(-3px);
-        }
-
-        .skin-image-container .skin-actions .btn-cart-detail.in-cart {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            border-color: var(--border-color);
-        }
-
-        .skin-image-container .skin-actions .btn-cart-detail.in-cart:hover {
-            background: rgba(255, 68, 68, 0.10);
-            color: var(--rarity-red);
-            border-color: var(--rarity-red);
-        }
+        .sell-form .btn-sell-submit i { font-size: 18px; }
 
         /* =========================================================
-                   ПРАВАЯ КОЛОНКА — ИНФОРМАЦИЯ
+                   МЕТОДЫ ВЫВОДА
                    ========================================================= */
-        .skin-info-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .skin-info-container .skin-name {
-            font-size: 32px;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 0.5px;
-            color: var(--text-primary);
-            text-shadow: 0 0 20px rgba(245, 197, 24, 0.1);
-        }
-
-        .skin-info-container .skin-price {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--hive-yellow);
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 20px rgba(245, 197, 24, 0.3);
-        }
-
-        .skin-info-container .skin-price .price-rub {
-            font-size: 16px;
-            color: var(--text-secondary);
-            font-weight: 400;
-            font-family: 'Inter', sans-serif;
-            text-shadow: none;
-        }
-
-        .skin-info-container .skin-exterior {
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        .skin-info-container .skin-exterior strong {
-            color: var(--hive-yellow);
-        }
-
-        .skin-info-container .skin-float {
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        .skin-info-container .skin-float .float-value {
-            font-weight: 700;
-            color: var(--hive-yellow);
-        }
-
-        .skin-info-container .skin-type {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* =========================================================
-                   ОПИСАНИЕ
-                   ========================================================= */
-        .skin-description {
-            background: rgba(14, 18, 23, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(245, 197, 24, 0.2);
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            margin-top: 4px;
-        }
-
-        .skin-description h4 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--hive-yellow);
-        }
-
-        .skin-description p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* =========================================================
-                   ХАРАКТЕРИСТИКИ
-                   ========================================================= */
-        .skin-stats {
+        .withdraw-methods {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
-            margin-top: 4px;
+            margin-bottom: 20px;
         }
 
-        .skin-stat {
-            background: rgba(14, 18, 23, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(245, 197, 24, 0.2);
-            border-radius: var(--radius);
-            padding: 14px 10px;
-            text-align: center;
-        }
-
-        .skin-stat .stat-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .skin-stat .stat-value {
-            font-weight: 800;
-            font-size: 16px;
-            margin-top: 4px;
-        }
-
-        .skin-stat .stat-value.good { color: #4caf50; }
-        .skin-stat .stat-value.bad { color: var(--rarity-red); }
-        .skin-stat .stat-value.gold { color: var(--hive-yellow); }
-
-        /* =========================================================
-                   ГРАФИК ЦЕН
-                   ========================================================= */
-        .price-chart {
-            background: rgba(14, 18, 23, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(245, 197, 24, 0.2);
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            margin-top: 4px;
-        }
-
-        .price-chart .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .price-chart .chart-header h4 {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--hive-yellow);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .price-chart .chart-header .chart-periods {
-            display: flex;
-            gap: 6px;
-        }
-
-        .price-chart .chart-header .chart-periods button {
-            padding: 4px 14px;
-            border-radius: 40px;
-            border: 1px solid rgba(245, 197, 24, 0.3);
-            background: rgba(245, 197, 24, 0.05);
-            color: var(--text-secondary);
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .price-chart .chart-header .chart-periods button:hover,
-        .price-chart .chart-header .chart-periods button.active {
-            border-color: var(--hive-yellow);
-            color: var(--hive-yellow);
-            background: rgba(245, 197, 24, 0.15);
-            box-shadow: 0 0 15px rgba(245, 197, 24, 0.1);
-        }
-
-        .chart-container {
-            height: 160px;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            padding: 10px 0;
-        }
-
-        .chart-bar {
-            flex: 1;
-            background: linear-gradient(180deg, var(--hive-yellow), var(--hive-yellow-dark));
-            border-radius: 4px 4px 0 0;
-            min-height: 8px;
-            transition: var(--transition);
-            position: relative;
-            opacity: 0.8;
-            cursor: pointer;
-        }
-
-        .chart-bar:hover {
-            opacity: 1;
-            transform: scaleY(1.02);
-        }
-
-        .chart-bar .bar-label {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 8px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        .chart-bar .bar-price {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--hive-yellow);
-            display: none;
-            background: rgba(14, 18, 23, 0.8);
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid rgba(245, 197, 24, 0.2);
-        }
-
-        .chart-bar:hover .bar-price {
-            display: block;
-        }
-
-        /* =========================================================
-                   КАЧЕСТВА (EXTERIORS)
-                   ========================================================= */
-        .exteriors-section {
-            background: rgba(14, 18, 23, 0.4);
-            backdrop-filter: blur(8px);
-            border: 2px solid var(--hive-yellow);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 4px;
-            box-shadow: 0 0 30px rgba(245, 197, 24, 0.08);
-        }
-
-        .exteriors-section h4 {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--hive-yellow);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .exteriors-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-        }
-
-        .exterior-item {
+        .withdraw-method {
             background: rgba(14, 18, 23, 0.6);
-            border: 1px solid rgba(245, 197, 24, 0.3);
+            border: 2px solid rgba(245, 197, 24, 0.2);
             border-radius: var(--radius);
-            padding: 10px 8px;
+            padding: 16px 10px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .exterior-item:hover {
-            border-color: var(--hive-yellow);
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px rgba(245, 197, 24, 0.15);
+        .withdraw-method:hover {
+            border-color: rgba(245, 197, 24, 0.5);
+            transform: translateY(-2px);
+            background: rgba(245, 197, 24, 0.05);
         }
 
-        .exterior-item.active {
+        .withdraw-method.active {
             border-color: var(--hive-yellow);
-            background: rgba(245, 197, 24, 0.15);
+            background: rgba(245, 197, 24, 0.1);
             box-shadow: 0 0 20px rgba(245, 197, 24, 0.2);
         }
 
-        .exterior-item .exterior-name {
-            font-size: 11px;
+        .withdraw-method i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .withdraw-method.active i {
+            color: var(--hive-yellow);
+            filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.4));
+        }
+
+        .withdraw-method .method-name {
+            font-size: 12px;
             font-weight: 700;
             color: var(--text-primary);
         }
 
-        .exterior-item .exterior-price {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--hive-yellow);
-            margin-top: 4px;
-        }
-
-        .exterior-item .exterior-float {
-            font-size: 9px;
+        .withdraw-method .method-fee {
+            font-size: 10px;
             color: var(--text-muted);
             margin-top: 2px;
         }
-
-        .exterior-item .exterior-check {
-            display: none;
-            color: var(--hive-yellow);
-            font-size: 11px;
-            margin-top: 4px;
-            font-weight: 700;
-        }
-
-        .exterior-item.active .exterior-check {
-            display: block;
-        }
-
-        /* =========================================================
-                   ТОСТ
-                   ========================================================= */
-        .toast {
-            position: fixed;
-            bottom: 28px; right: 28px;
-            background: rgba(14, 18, 23, 0.95);
-            border: 1px solid var(--hive-yellow);
-            border-radius: var(--radius);
-            padding: 14px 22px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(245, 197, 24, 0.2);
-            animation: slideIn 0.4s ease;
-            z-index: 99999;
-            max-width: 380px;
-            backdrop-filter: blur(12px);
-        }
-
-        .toast.show { display: flex; }
-        .toast i { font-size: 20px; }
-        .toast .toast-text { font-weight: 600; font-size: 14px; }
-
-        .toast.error { border-color: var(--rarity-red); }
-        .toast.error i { color: var(--rarity-red); }
-
-        .toast.success { border-color: var(--hive-yellow); }
-        .toast.success i { color: var(--hive-yellow); }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
         /* =========================================================
                    МОДАЛЬНЫЕ ОКНА
@@ -779,35 +787,26 @@
             margin-bottom: 20px;
         }
 
-        .modal .form-group {
-            margin-bottom: 14px;
-            text-align: left;
-        }
-
-        .modal .form-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .modal .form-group input {
-            width: 100%;
-            padding: 12px 16px;
+        .modal .modal-details {
             background: rgba(14, 18, 23, 0.6);
-            border: 1px solid var(--hive-yellow);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-            transition: var(--transition);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid rgba(245, 197, 24, 0.2);
         }
 
-        .modal .form-group input:focus {
-            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15);
+        .modal .modal-details .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
         }
+
+        .modal .modal-details .detail-row .label { color: var(--text-secondary); }
+        .modal .modal-details .detail-row .value { font-weight: 600; }
+        .modal .modal-details .detail-row .value.gold { color: var(--hive-yellow); font-weight: 800; }
+        .modal .modal-details .detail-row .value.green { color: #4caf50; }
 
         .modal .btn-confirm {
             width: 100%;
@@ -825,12 +824,30 @@
             justify-content: center;
             gap: 10px;
             box-shadow: 0 4px 24px rgba(245, 197, 24, 0.3);
-            margin-top: 8px;
         }
 
         .modal .btn-confirm:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 32px rgba(245, 197, 24, 0.5);
+        }
+
+        .modal .btn-cancel {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            color: var(--text-secondary);
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .modal .btn-cancel:hover {
+            border-color: var(--hive-yellow);
+            color: var(--hive-yellow);
         }
 
         .modal .auth-suggest {
@@ -869,6 +886,159 @@
             font-weight: 600;
             font-size: 13px;
         }
+
+        .modal .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid var(--hive-yellow);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .modal .form-group input:focus {
+            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15);
+        }
+
+        /* =========================================================
+                   УВЕДОМЛЕНИЕ О ПЕРЕВОДЕ ДЕНЕГ
+                   ========================================================= */
+        .money-toast {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(14, 18, 23, 0.95);
+            border: 2px solid #4caf50;
+            border-radius: 20px;
+            padding: 40px 50px;
+            z-index: 99999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(76, 175, 80, 0.3);
+            animation: claimPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            max-width: 420px;
+            backdrop-filter: blur(12px);
+        }
+
+        .money-toast.show { display: flex; }
+
+        @keyframes claimPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .money-toast .money-icon {
+            font-size: 64px;
+            margin-bottom: 12px;
+            animation: moneyBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes moneyBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+
+        .money-toast .money-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #4caf50;
+            margin-bottom: 6px;
+        }
+
+        .money-toast .money-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .money-toast .money-amount {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--hive-yellow);
+            font-family: 'Orbitron', sans-serif;
+            background: rgba(245, 197, 24, 0.1);
+            padding: 8px 28px;
+            border-radius: 40px;
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            margin: 6px 0 14px;
+            text-shadow: 0 0 20px rgba(245, 197, 24, 0.4);
+        }
+
+        .money-toast .money-method {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .money-toast .money-method i { color: var(--hive-yellow); }
+
+        .money-toast .money-btn-ok {
+            margin-top: 16px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: #fff;
+            border: none;
+            padding: 12px 38px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .money-toast .money-btn-ok:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 24px rgba(76, 175, 80, 0.4);
+        }
+
+        /* =========================================================
+                   ТОСТ
+                   ========================================================= */
+        .toast {
+            position: fixed;
+            bottom: 28px; right: 28px;
+            background: rgba(14, 18, 23, 0.95);
+            border: 1px solid var(--hive-yellow);
+            border-radius: var(--radius);
+            padding: 14px 22px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(245, 197, 24, 0.2);
+            animation: slideIn 0.4s ease;
+            z-index: 99998;
+            max-width: 380px;
+            backdrop-filter: blur(12px);
+        }
+
+        .toast.show { display: flex; }
+        .toast i { font-size: 20px; }
+        .toast .toast-text { font-weight: 600; font-size: 14px; }
+
+        .toast.error { border-color: var(--rarity-red); }
+        .toast.error i { color: var(--rarity-red); }
+
+        .toast.success { border-color: var(--hive-yellow); }
+        .toast.success i { color: var(--hive-yellow); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
         /* =========================================================
                    ФУТЕР
@@ -909,9 +1079,7 @@
                    АДАПТИВ
                    ========================================================= */
         @media (max-width: 1024px) {
-            .skin-detail-grid { grid-template-columns: 1fr; }
-            .skin-image-container .skin-image { height: 250px; }
-            .exteriors-grid { grid-template-columns: repeat(3, 1fr); }
+            .sell-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
         }
 
         @media (max-width: 768px) {
@@ -922,25 +1090,43 @@
             .header-actions { justify-content: center; }
             .logo { font-size: 26px; justify-content: center; }
             
-            .skin-image-container .skin-image { height: 220px; }
-            .skin-image-container { padding: 16px; }
-            .skin-info-container .skin-name { font-size: 24px; }
-            .skin-info-container .skin-price { font-size: 26px; }
-            .skin-stats { grid-template-columns: repeat(2, 1fr); }
-            .exteriors-grid { grid-template-columns: repeat(2, 1fr); }
-            .skin-image-container .skin-actions { flex-direction: column; }
-            .chart-container { height: 120px; }
+            .sell-header { flex-direction: column; align-items: stretch; }
+            .sell-header h1 { font-size: 24px; justify-content: center; }
+            .sell-header .sell-stats { width: 100%; justify-content: space-between; }
+            .sell-header .sell-stats .stat-item { flex: 1; padding: 8px 10px; min-width: unset; }
+            .sell-header .sell-stats .stat-item .stat-value { font-size: 16px; }
+
+            .sell-inventory .inventory-header { flex-direction: column; align-items: stretch; }
+            .sell-inventory .inventory-header .search-inventory { width: 100%; }
+            .sell-inventory .inventory-header .search-inventory input { flex: 1; width: auto; }
+
+            .sell-grid { grid-template-columns: repeat(3, 1fr); max-height: 400px; }
+            .sell-form .form-row { grid-template-columns: 1fr; gap: 0; }
+            .withdraw-methods { grid-template-columns: repeat(2, 1fr); }
+            
+            .modal { padding: 24px 20px; }
+            .money-toast { padding: 28px 24px; max-width: 90%; }
+            .money-toast .money-icon { font-size: 48px; }
+            .money-toast .money-title { font-size: 20px; }
+            .money-toast .money-amount { font-size: 24px; padding: 6px 20px; }
+            
             .toast { bottom: 80px; right: 12px; left: 12px; max-width: unset; }
             footer .footer-links { gap: 16px; }
             footer .socials { gap: 14px; }
-            .price-chart .chart-header { flex-direction: column; align-items: flex-start; }
         }
 
         @media (max-width: 480px) {
-            .exteriors-grid { grid-template-columns: repeat(2, 1fr); }
-            .skin-stats { grid-template-columns: 1fr 1fr; }
-            .skin-image-container .skin-image { height: 180px; }
-            .price-chart .chart-header .chart-periods { flex-wrap: wrap; }
+            .sell-grid { grid-template-columns: repeat(2, 1fr); }
+            .sell-item .item-image { height: 80px; }
+            .sell-item .item-name { font-size: 11px; }
+            .sell-item .item-price { font-size: 14px; }
+            
+            .withdraw-methods { grid-template-columns: repeat(2, 1fr); }
+            .sell-inventory .inventory-header .inventory-actions { flex-direction: column; width: 100%; gap: 6px; }
+            .sell-inventory .inventory-header .inventory-actions button { width: 100%; }
+            
+            .sell-form .form-group .total-price-display { flex-direction: column; text-align: center; gap: 4px; }
+            .sell-form .form-group .total-price-display .total-amount { font-size: 20px; }
         }
     </style>
 </head>
@@ -963,7 +1149,7 @@
                     <a href="index.html">Магазин</a>
                     <a href="cabinet.html">Кабинет</a>
                     <a href="trade.html">Обмен</a>
-                    <a href="sell.html">Продать</a>
+                    <a class="active" href="sell.html">Продать</a>
                     <a href="#" onclick="showToast('📄 Страница о нас скоро появится!', 'default')">О нас</a>
                 </nav>
                 <div class="header-actions">
@@ -975,98 +1161,160 @@
                     </button>
                     <div class="wallet" onclick="openTopup()">
                         <i class="fas fa-dollar-sign"></i>
-                        <span class="wallet-balance" id="walletBalance">$0.00</span>
+                        <span class="wallet-balance" id="walletBalance">0.00</span>
                     </div>
                     <button class="cart-btn" id="cartBtn">
-                        <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count" id="cartCount">0</span>
                     </button>
                 </div>
             </div>
         </header>
 
-        <!-- ДЕТАЛИ СКИНА -->
-        <section class="skin-detail-section">
-            <a href="index.html" class="back-link">
-                <i class="fas fa-arrow-left"></i> Назад в магазин
-            </a>
-
-            <div class="skin-detail-grid">
-                <!-- Левая колонка — Изображение -->
-                <div class="skin-image-container">
-                    <div class="rarity-badge-large rarity-red">🔴 Красный</div>
-                    <div class="skin-image">
-                        <img src="https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV" alt="AWP Dragon Lore" onerror="this.parentElement.innerHTML='<span></span>'">
+        <!-- СТРАНИЦА ПРОДАЖИ -->
+        <section class="sell-section">
+            <!-- Заголовок -->
+            <div class="sell-header">
+                <h1><i class="fas fa-tag"></i> Продажа скинов</h1>
+                <div class="sell-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">В инвентаре</div>
+                        <div class="stat-value" id="totalSkins">0</div>
                     </div>
-                    <div class="skin-actions">
-                        <button class="btn-buy-detail" id="buyNowBtn">
-                            <i class="fas fa-bolt"></i> Купить сейчас
-                        </button>
-                        <button class="btn-cart-detail" id="cartBtnDetail">
-                            <i class="fas fa-cart-plus"></i> В корзину
-                        </button>
+                    <div class="stat-item">
+                        <div class="stat-label">Выбрано</div>
+                        <div class="stat-value" id="selectedCount">0</div>
                     </div>
-                </div>
-
-                <!-- Правая колонка — Информация -->
-                <div class="skin-info-container">
-                    <div class="skin-name">AWP Dragon Lore</div>
-                    <div class="skin-price">
-                        $<span id="skinPrice">2,500.00</span>
-                        <span class="price-rub">≈ <span id="skinPriceRub">225,000</span> ₽</span>
-                    </div>
-                    <div class="skin-exterior" id="skinExterior">Качество: <strong>Factory New</strong></div>
-                    <div class="skin-float">Float: <span class="float-value" id="skinFloat">0.0123</span></div>
-                    <div class="skin-type">Снайперская винтовка • AWP</div>
-
-                    <!-- ОПИСАНИЕ -->
-                    <div class="skin-description">
-                        <h4>📝 Описание</h4>
-                        <p>Легендарная снайперская винтовка с уникальным драконьим дизайном. Один из самых редких и дорогих скинов в CS2. Вдохновлён средневековыми драконами и эпическими битвами.</p>
-                    </div>
-
-                    <!-- Характеристики -->
-                    <div class="skin-stats">
-                        <div class="skin-stat">
-                            <div class="stat-label">Популярность</div>
-                            <div class="stat-value good">🔥 97%</div>
-                        </div>
-                        <div class="skin-stat">
-                            <div class="stat-label">Продано сегодня</div>
-                            <div class="stat-value gold">47</div>
-                        </div>
-                        <div class="skin-stat">
-                            <div class="stat-label">В наличии</div>
-                            <div class="stat-value" style="color:#4caf50;">12 шт.</div>
-                        </div>
-                    </div>
-
-                    <!-- График цен -->
-                    <div class="price-chart">
-                        <div class="chart-header">
-                            <h4><i class="fas fa-chart-line"></i> Динамика цен</h4>
-                            <div class="chart-periods">
-                                <button class="active" data-period="7">7д</button>
-                                <button data-period="30">30д</button>
-                                <button data-period="90">90д</button>
-                                <button data-period="365">1г</button>
-                            </div>
-                        </div>
-                        <div class="chart-container" id="chartContainer">
-                            <!-- Заполняется через JS -->
-                        </div>
-                    </div>
-
-                    <!-- Качества -->
-                    <div class="exteriors-section">
-                        <h4><i class="fas fa-star"></i> Доступные качества</h4>
-                        <div class="exteriors-grid" id="exteriorsGrid">
-                            <!-- Заполняется через JS -->
-                        </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Сумма</div>
+                        <div class="stat-value" id="totalPrice">$0</div>
                     </div>
                 </div>
             </div>
+
+            <!-- Инвентарь для продажи -->
+            <div class="sell-inventory">
+                <div class="inventory-header">
+                    <h3><i class="fas fa-box"></i> Мой инвентарь</h3>
+                    <div class="inventory-actions">
+                        <button onclick="selectAllSkins()">Выбрать все</button>
+                        <button onclick="deselectAllSkins()">Снять все</button>
+                        <div class="search-inventory">
+                            <input type="text" id="searchInventory" placeholder="Поиск скина...">
+                            <button onclick="filterInventory()"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sell-grid" id="sellGrid">
+                    <!-- Заполняется через JS -->
+                </div>
+            </div>
+
+            <!-- Форма продажи -->
+            <div class="sell-form" id="sellForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🎯 Выбранные скины</label>
+                        <div class="selected-skins" id="selectedSkins">
+                            <span class="no-skin">Выберите скины для продажи</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>💰 Общая сумма</label>
+                        <div class="total-price-display">
+                            <div>
+                                <div class="total-label">Рыночная стоимость</div>
+                                <div class="discount-hint">Цена рассчитана автоматически</div>
+                            </div>
+                            <div class="total-amount">
+                                <span class="currency">$</span><span id="totalAmount">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>💳 Способ вывода</label>
+                    <div class="withdraw-methods" id="withdrawMethods">
+                        <div class="withdraw-method active" data-method="card" onclick="selectWithdrawMethod('card')">
+                            <i class="fas fa-credit-card"></i>
+                            <div class="method-name">Банковская карта</div>
+                            <div class="method-fee">Комиссия 2%</div>
+                        </div>
+                        <div class="withdraw-method" data-method="balance" onclick="selectWithdrawMethod('balance')">
+                            <i class="fas fa-wallet"></i>
+                            <div class="method-name">Баланс сайта</div>
+                            <div class="method-fee">Без комиссии</div>
+                        </div>
+                        <div class="withdraw-method" data-method="crypto" onclick="selectWithdrawMethod('crypto')">
+                            <i class="fab fa-bitcoin"></i>
+                            <div class="method-name">Криптовалюта</div>
+                            <div class="method-fee">Комиссия 0.5%</div>
+                        </div>
+                        <div class="withdraw-method" data-method="steam" onclick="selectWithdrawMethod('steam')">
+                            <i class="fab fa-steam"></i>
+                            <div class="method-name">Steam Wallet</div>
+                            <div class="method-fee">Без комиссии</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-sell-submit" id="sellSubmitBtn" disabled onclick="confirmSell()">
+                    <i class="fas fa-paper-plane"></i> Выставить на продажу
+                </button>
+            </div>
         </section>
+    </div>
+
+    <!-- УВЕДОМЛЕНИЕ О ПЕРЕВОДЕ ДЕНЕГ -->
+    <div class="money-toast" id="moneyToast">
+        <div class="money-icon">💸</div>
+        <div class="money-title">Деньги переведены!</div>
+        <div class="money-sub">Средства успешно зачислены на ваш счёт</div>
+        <div class="money-amount" id="moneyAmount">$0.00</div>
+        <div class="money-method" id="moneyMethod"><i class="fas fa-wallet"></i> Баланс сайта</div>
+        <button class="money-btn-ok" onclick="closeMoneyToast()">Отлично! <i class="fas fa-check"></i></button>
+    </div>
+
+    <!-- МОДАЛКА ПОДТВЕРЖДЕНИЯ -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeConfirmModal()"><i class="fas fa-times"></i></button>
+            <span class="modal-icon">💰</span>
+            <h2>Подтверждение продажи</h2>
+            <p class="modal-sub">Проверьте детали перед выставлением на продажу</p>
+
+            <div class="modal-details" id="confirmDetails">
+                <div class="detail-row">
+                    <span class="label">Скины</span>
+                    <span class="value" id="confirmSkins">—</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Количество</span>
+                    <span class="value" id="confirmCount">—</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Общая цена</span>
+                    <span class="value gold" id="confirmTotalPrice">—</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Способ вывода</span>
+                    <span class="value" id="confirmMethod">—</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Комиссия</span>
+                    <span class="value" id="confirmFee">—</span>
+                </div>
+                <div class="detail-row" style="border-top:1px solid rgba(245,197,24,0.3);padding-top:10px;margin-top:6px;">
+                    <span class="label" style="font-weight:700; color:var(--hive-yellow);">Вы получите</span>
+                    <span class="value gold" style="font-size:20px;" id="confirmTotal">—</span>
+                </div>
+            </div>
+
+            <button class="btn-confirm" onclick="submitSell()">
+                <i class="fas fa-check-circle"></i> Подтвердить продажу
+            </button>
+            <button class="btn-cancel" onclick="closeConfirmModal()">Отмена</button>
+        </div>
     </div>
 
     <!-- МОДАЛКА АВТОРИЗАЦИИ -->
@@ -1089,7 +1337,7 @@
                     <label>🔑 Пароль</label>
                     <input type="password" id="authPassword" placeholder="Минимум 6 символов" value="demo123" minlength="6">
                 </div>
-                <button class="btn-confirm" id="authSubmitBtn">
+                <button class="btn-confirm" id="authSubmitBtn" style="margin-top:8px;">
                     <i class="fas fa-sign-in-alt"></i> <span id="authBtnLabel">Войти</span>
                 </button>
             </form>
@@ -1136,100 +1384,80 @@
             THEME: 'skinHive_theme'
         };
 
-        const skin = {
-            id: 1,
-            name: 'AWP Dragon Lore',
-            exterior: 'Factory New',
-            float: '0.0123',
-            type: 'Снайперская винтовка • AWP',
-            rarity: 'red',
-            price: 2500,
-            icon: 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV',
-            hasImage: true
+        const SKIN_IMAGES = {
+            'Sport Gloves Vice': { url: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/40000_b.png', fallback: '🧤' },
+            'Hand Wraps Slaughter': { url: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/16616_b.png', fallback: '🥊' },
+            'Karambit Doppler': { url: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/98776_b.png', fallback: '🔪' },
+            'Bayonet Marble Fade': { url: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/12515_b.png', fallback: '🗡️' },
+            'AK-47 Vulcan': { url: 'https://assets.lis-skins.com/cdn-cgi/image/f=auto,fit=scale-down/https://assets.lis-skins.com/market_images/10642_b.png', fallback: '🔫' }
         };
 
-        const qualities = [
-            { name: 'Factory New', price: 2500, float: '0.00-0.07', icon: '✨' },
-            { name: 'Minimal Wear', price: 2125, float: '0.07-0.15', icon: '🌟' },
-            { name: 'Field-Tested', price: 1500, float: '0.15-0.38', icon: '⭐' },
-            { name: 'Well-Worn', price: 1000, float: '0.38-0.45', icon: '💫' },
-            { name: 'Battle-Scarred', price: 625, float: '0.45-1.00', icon: '🌑' }
-        ];
+        function createFreshInventory() {
+            const skins = [
+                { id: 101, name: 'Sport Gloves Vice', exterior: 'Minimal Wear', float: '0.0734', type: 'Перчатки', rarity: 'red', price: 3200, icon: SKIN_IMAGES['Sport Gloves Vice'].url, hasImage: true, category: 'gloves', iconFallback: SKIN_IMAGES['Sport Gloves Vice'].fallback },
+                { id: 102, name: 'Hand Wraps Slaughter', exterior: 'Field-Tested', float: '0.1567', type: 'Перчатки', rarity: 'pink', price: 480, icon: SKIN_IMAGES['Hand Wraps Slaughter'].url, hasImage: true, category: 'gloves', iconFallback: SKIN_IMAGES['Hand Wraps Slaughter'].fallback },
+                { id: 103, name: 'Karambit Doppler', exterior: 'Factory New', float: '0.0012', type: 'Нож', rarity: 'gold', price: 4500, icon: SKIN_IMAGES['Karambit Doppler'].url, hasImage: true, category: 'knife', iconFallback: SKIN_IMAGES['Karambit Doppler'].fallback },
+                { id: 104, name: 'Bayonet Marble Fade', exterior: 'Minimal Wear', float: '0.0456', type: 'Нож', rarity: 'gold', price: 2800, icon: SKIN_IMAGES['Bayonet Marble Fade'].url, hasImage: true, category: 'knife', iconFallback: SKIN_IMAGES['Bayonet Marble Fade'].fallback },
+                { id: 105, name: 'AK-47 Vulcan', exterior: 'Factory New', float: '0.0034', type: 'Винтовка', rarity: 'red', price: 850, icon: SKIN_IMAGES['AK-47 Vulcan'].url, hasImage: true, category: 'rifle', iconFallback: SKIN_IMAGES['AK-47 Vulcan'].fallback }
+            ];
+            localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(skins));
+            return skins;
+        }
+
+        function loadInventory() { return createFreshInventory(); }
 
         let isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
         let user = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || { email: '', username: 'Гость', avatar: '👤' };
         let balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
-        let selectedQuality = 0;
+        let ownedSkins = loadInventory();
+        let selectedIndices = new Set();
+        let selectedWithdrawMethod = 'card';
         let toastTimeout = null;
+        let moneyToastTimeout = null;
 
-        function generateChartData(basePrice, days) {
-            const data = [];
-            let price = basePrice;
-            for (let i = 0; i < days; i++) {
-                const change = (Math.random() - 0.45) * 0.06;
-                price = price * (1 + change);
-                price = Math.max(price, basePrice * 0.6);
-                data.push({ day: i + 1, price: Math.round(price * 100) / 100 });
-            }
-            return data;
-        }
+        const withdrawMethods = {
+            card: { name: 'Банковская карта', fee: 2, icon: 'fa-credit-card' },
+            balance: { name: 'Баланс сайта', fee: 0, icon: 'fa-wallet' },
+            crypto: { name: 'Криптовалюта', fee: 0.5, icon: 'fa-bitcoin' },
+            steam: { name: 'Steam Wallet', fee: 0, icon: 'fa-steam' }
+        };
 
-        function renderChart(period) {
-            const container = document.getElementById('chartContainer');
-            const days = period || 7;
-            const currentPrice = qualities[selectedQuality].price;
-            const data = generateChartData(currentPrice, days);
-            const maxPrice = Math.max(...data.map(d => d.price));
-            const minPrice = Math.min(...data.map(d => d.price));
-            const range = maxPrice - minPrice || 1;
-
-            container.innerHTML = data.map((d, index) => {
-                const height = ((d.price - minPrice) / range) * 90 + 10;
-                const isLast = index === data.length - 1;
-                return `
-                    <div class="chart-bar" style="height: ${Math.max(height, 10)}%; background: linear-gradient(180deg, ${isLast ? 'var(--steam-orange)' : 'var(--hive-yellow)'}, ${isLast ? 'var(--steam-orange-dark)' : 'var(--hive-yellow-dark)'});">
-                        <span class="bar-price">$${d.price.toFixed(2)}</span>
-                        <span class="bar-label">${index + 1}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderQualities() {
-            const grid = document.getElementById('exteriorsGrid');
-            grid.innerHTML = qualities.map((q, index) => {
-                const isActive = index === selectedQuality;
-                return `
-                    <div class="exterior-item ${isActive ? 'active' : ''}" onclick="selectQuality(${index})">
-                        <div class="exterior-name">${q.icon} ${q.name}</div>
-                        <div class="exterior-price">$${q.price.toFixed(2)}</div>
-                        <div class="exterior-float">${q.float}</div>
-                        <div class="exterior-check">✓ Выбрано</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectQuality(index) {
-            selectedQuality = index;
-            const quality = qualities[index];
-            
-            document.getElementById('skinExterior').innerHTML = `Качество: <strong>${quality.name}</strong>`;
-            document.getElementById('skinPrice').textContent = quality.price.toFixed(2);
-            document.getElementById('skinPriceRub').textContent = Math.round(quality.price * 90);
-            
-            const floatParts = quality.float.split('-');
-            const avgFloat = (parseFloat(floatParts[0]) + parseFloat(floatParts[1])) / 2;
-            document.getElementById('skinFloat').textContent = avgFloat.toFixed(4);
-            
-            renderChart(7);
-            renderQualities();
-        }
+        const sellGrid = document.getElementById('sellGrid');
+        const selectedSkinsEl = document.getElementById('selectedSkins');
+        const totalAmountEl = document.getElementById('totalAmount');
+        const sellSubmitBtn = document.getElementById('sellSubmitBtn');
+        const totalSkinsEl = document.getElementById('totalSkins');
+        const selectedCountEl = document.getElementById('selectedCount');
+        const totalPriceEl = document.getElementById('totalPrice');
+        const searchInput = document.getElementById('searchInventory');
+        const toast = document.getElementById('toast');
+        const toastText = document.getElementById('toastText');
+        const steamLoginBtn = document.getElementById('steamLoginBtn');
+        const authBtnText = document.getElementById('authBtnText');
+        const walletBalance = document.getElementById('walletBalance');
+        const cartCount = document.getElementById('cartCount');
+        const themeIcon = document.getElementById('themeIcon');
+        const authModal = document.getElementById('authModal');
+        const authClose = document.getElementById('authClose');
+        const authForm = document.getElementById('authForm');
+        const authEmail = document.getElementById('authEmail');
+        const authPassword = document.getElementById('authPassword');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authBtnLabel = document.getElementById('authBtnLabel');
+        const authTitle = document.getElementById('authTitle');
+        const authSub = document.getElementById('authSub');
+        const authSwitchLink = document.getElementById('authSwitchLink');
+        const authSwitchText = document.getElementById('authSwitchText');
+        const authError = document.getElementById('authError');
+        const confirmModal = document.getElementById('confirmModal');
+        const moneyToast = document.getElementById('moneyToast');
+        const moneyAmount = document.getElementById('moneyAmount');
+        const moneyMethod = document.getElementById('moneyMethod');
 
         function toggleTheme() {
             const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
             document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            document.getElementById('themeIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
             localStorage.setItem(STORAGE_KEYS.THEME, isDark ? 'light' : 'dark');
             showToast(isDark ? '☀️ Светлая тема' : '🌙 Тёмная тема', 'default');
         }
@@ -1237,12 +1465,10 @@
         const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
         if (savedTheme === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
-            document.getElementById('themeIcon').className = 'fas fa-sun';
+            themeIcon.className = 'fas fa-sun';
         }
 
         function showToast(text, type = 'default') {
-            const toast = document.getElementById('toast');
-            const toastText = document.getElementById('toastText');
             toastText.textContent = text;
             toast.className = 'toast show';
             if (type === 'error') toast.classList.add('error');
@@ -1251,32 +1477,51 @@
             toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
+        function showMoneyToast(amount, method) {
+            moneyAmount.textContent =  + amount.toFixed(2);
+            moneyMethod.innerHTML = `<i class="fas ${method.icon}"></i> ${method.name}`;
+            moneyToast.classList.add('show');
+            clearTimeout(moneyToastTimeout);
+            moneyToastTimeout = setTimeout(() => { closeMoneyToast(); }, 5000);
+        }
+
+        function closeMoneyToast() {
+            moneyToast.classList.remove('show');
+            clearTimeout(moneyToastTimeout);
+        }
+
         function updateBalanceUI() {
-            const formatted = '$' + balance.toFixed(2);
-            document.getElementById('walletBalance').textContent = formatted;
+            const formatted =  + balance.toFixed(2);
+            if (walletBalance) walletBalance.textContent = formatted;
+        }
+
+        function addBalance(amount) {
+            balance += amount;
+            localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
+            updateBalanceUI();
+            window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEYS.BALANCE, newValue: balance.toString() }));
         }
 
         function updateAuthUI() {
             if (isLoggedIn) {
-                document.getElementById('authBtnText').textContent = user.username;
-                document.getElementById('steamLoginBtn').style.borderColor = 'var(--hive-yellow)';
-                document.getElementById('steamLoginBtn').style.color = 'var(--hive-yellow)';
+                authBtnText.textContent = user.username;
+                steamLoginBtn.style.borderColor = 'var(--hive-yellow)';
+                steamLoginBtn.style.color = 'var(--hive-yellow)';
             } else {
-                document.getElementById('authBtnText').textContent = 'Войти';
-                document.getElementById('steamLoginBtn').style.borderColor = 'var(--hive-yellow)';
-                document.getElementById('steamLoginBtn').style.color = 'var(--hive-yellow)';
+                authBtnText.textContent = 'Войти';
+                steamLoginBtn.style.borderColor = 'var(--hive-yellow)';
+                steamLoginBtn.style.color = 'var(--hive-yellow)';
             }
         }
 
         function handleAuth() {
-            const email = document.getElementById('authEmail').value.trim();
-            const password = document.getElementById('authPassword').value.trim();
-            const errorEl = document.getElementById('authError');
+            const email = authEmail.value.trim();
+            const password = authPassword.value.trim();
 
-            if (!email || !password) { errorEl.textContent = '⚠️ Заполните все поля!'; errorEl.style.display = 'block'; return; }
-            if (password.length < 6) { errorEl.textContent = '⚠️ Пароль должен быть минимум 6 символов!'; errorEl.style.display = 'block'; return; }
+            if (!email || !password) { authError.textContent = '⚠️ Заполните все поля!'; authError.style.display = 'block'; return; }
+            if (password.length < 6) { authError.textContent = '⚠️ Пароль должен быть минимум 6 символов!'; authError.style.display = 'block'; return; }
 
-            const isRegisterMode = document.getElementById('authBtnLabel').textContent === 'Зарегистрироваться';
+            const isRegisterMode = authBtnLabel.textContent === 'Зарегистрироваться';
 
             if (isRegisterMode) {
                 user = { email, username: email.split('@')[0], avatar: '👤' };
@@ -1285,9 +1530,9 @@
                 localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
-                document.getElementById('authModal').classList.remove('active');
+                authModal.classList.remove('active');
                 showToast(`🎉 Добро пожаловать в улей, ${user.username}!`, 'success');
-                updateAuthUI(); updateBalanceUI();
+                updateAuthUI(); updateBalanceUI(); ownedSkins = loadInventory(); renderInventory();
             } else {
                 const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
                 if (savedUser) {
@@ -1296,9 +1541,9 @@
                         isLoggedIn = true;
                         user = parsed;
                         balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
-                        document.getElementById('authModal').classList.remove('active');
+                        authModal.classList.remove('active');
                         showToast(`👋 С возвращением в улей, ${user.username}!`, 'success');
-                        updateAuthUI(); updateBalanceUI();
+                        updateAuthUI(); updateBalanceUI(); ownedSkins = loadInventory(); renderInventory();
                         return;
                     }
                 }
@@ -1308,96 +1553,271 @@
                 localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
-                document.getElementById('authModal').classList.remove('active');
+                authModal.classList.remove('active');
                 showToast(`🎉 Добро пожаловать в улей, ${user.username}!`, 'success');
-                updateAuthUI(); updateBalanceUI();
+                updateAuthUI(); updateBalanceUI(); ownedSkins = loadInventory(); renderInventory();
             }
 
-            document.getElementById('authEmail').value = '';
-            document.getElementById('authPassword').value = '';
-            errorEl.style.display = 'none';
+            authEmail.value = '';
+            authPassword.value = '';
+            authError.style.display = 'none';
         }
 
         function toggleAuthMode() {
-            const isRegisterMode = document.getElementById('authBtnLabel').textContent === 'Зарегистрироваться';
+            const isRegisterMode = authBtnLabel.textContent === 'Зарегистрироваться';
             if (isRegisterMode) {
-                document.getElementById('authTitle').textContent = 'Вход в улей';
-                document.getElementById('authSub').textContent = 'Войдите или зарегистрируйтесь';
-                document.getElementById('authBtnLabel').textContent = 'Войти';
-                document.getElementById('authSwitchText').textContent = 'Нет аккаунта?';
-                document.getElementById('authSwitchLink').textContent = 'Зарегистрироваться';
+                authTitle.textContent = 'Вход в улей';
+                authSub.textContent = 'Войдите или зарегистрируйтесь';
+                authBtnLabel.textContent = 'Войти';
+                authSwitchText.textContent = 'Нет аккаунта?';
+                authSwitchLink.textContent = 'Зарегистрироваться';
             } else {
-                document.getElementById('authTitle').textContent = 'Регистрация в улье';
-                document.getElementById('authSub').textContent = 'Создайте аккаунт';
-                document.getElementById('authBtnLabel').textContent = 'Зарегистрироваться';
-                document.getElementById('authSwitchText').textContent = 'Уже есть аккаунт?';
-                document.getElementById('authSwitchLink').textContent = 'Войти';
+                authTitle.textContent = 'Регистрация в улье';
+                authSub.textContent = 'Создайте аккаунт';
+                authBtnLabel.textContent = 'Зарегистрироваться';
+                authSwitchText.textContent = 'Уже есть аккаунт?';
+                authSwitchLink.textContent = 'Войти';
             }
-            document.getElementById('authError').style.display = 'none';
+            authError.style.display = 'none';
         }
 
-        function getCartItems() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]'); }
-        function setCartItems(items) { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(items)); updateCartBadge(); }
-        function isInCart() { return getCartItems().some(item => item.id === skin.id); }
-
-        function toggleCart() {
-            const cart = getCartItems();
-            const index = cart.findIndex(item => item.id === skin.id);
-
-            if (index !== -1) {
-                cart.splice(index, 1);
-                setCartItems(cart);
-                showToast('🗑️ Скин удалён из корзины', 'default');
-                const btn = document.getElementById('cartBtnDetail');
-                btn.innerHTML = '<i class="fas fa-cart-plus"></i> В корзину';
-                btn.classList.remove('in-cart');
-            } else {
-                const quality = qualities[selectedQuality];
-                cart.push({ ...skin, price: quality.price, exterior: quality.name });
-                setCartItems(cart);
-                showToast('🐝 Скин добавлен в улей!', 'success');
-                const btn = document.getElementById('cartBtnDetail');
-                btn.innerHTML = '<i class="fas fa-check"></i> В корзине';
-                btn.classList.add('in-cart');
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEYS.BALANCE) {
+                balance = parseFloat(e.newValue) || 0;
+                updateBalanceUI();
             }
-            updateCartBadge();
-        }
+            if (e.key === STORAGE_KEYS.USER) {
+                try { user = JSON.parse(e.newValue) || { email: '', username: 'Гость', avatar: '👤' }; updateAuthUI(); } catch(e) {}
+            }
+            if (e.key === STORAGE_KEYS.LOGGED_IN) {
+                isLoggedIn = e.newValue === 'true';
+                updateAuthUI();
+            }
+            if (e.key === STORAGE_KEYS.CART) updateCartBadge();
+        });
 
         function updateCartBadge() {
-            document.getElementById('cartCount').textContent = getCartItems().length;
+            const cart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]');
+            if (cartCount) cartCount.textContent = cart.length;
         }
 
-        function buyNow() {
+        function getRarityClass(rarity) {
+            const map = { 'gold': 'rarity-gold', 'contraband': 'rarity-contraband', 'red': 'rarity-red', 'pink': 'rarity-pink', 'purple': 'rarity-purple', 'blue': 'rarity-blue' };
+            return map[rarity] || 'rarity-blue';
+        }
+
+        function getRarityLabel(rarity) {
+            const map = { 'gold': '★ Золото', 'contraband': '● Контрбанда', 'red': '🔴 Красный', 'pink': '🌸 Розовый', 'purple': '🟣 Фиолетовый', 'blue': '🔵 Синий' };
+            return map[rarity] || '';
+        }
+
+        function renderInventory() {
+            if (!sellGrid) return;
+            ownedSkins = loadInventory();
+
             if (!isLoggedIn) {
-                showToast('⚠️ Войдите в аккаунт!', 'error');
-                document.getElementById('authModal').classList.add('active');
-                return;
-            }
-            const quality = qualities[selectedQuality];
-            const price = quality.price;
-            if (balance < price) {
-                showToast(`❌ Недостаточно средств! Нужно $${price.toFixed(2)}, у вас $${balance.toFixed(2)}`, 'error');
+                sellGrid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);">
+                        <i class="fas fa-lock" style="font-size:48px;display:block;margin-bottom:16px;color:var(--hive-yellow);opacity:0.5;"></i>
+                        <p style="font-size:18px;font-weight:600;color:var(--hive-yellow);">Войдите в аккаунт</p>
+                        <span style="font-size:14px;">Чтобы продавать скины, необходимо авторизоваться</span>
+                    </div>
+                `;
+                totalSkinsEl.textContent = '0';
+                updateSelectedUI();
                 return;
             }
 
-            balance -= price;
-            localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
-            updateBalanceUI();
+            if (!ownedSkins || ownedSkins.length === 0) {
+                sellGrid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);">
+                        <i class="fas fa-box-open" style="font-size:48px;display:block;margin-bottom:16px;color:var(--hive-yellow);opacity:0.5;"></i>
+                        <p style="font-size:18px;font-weight:600;color:var(--hive-yellow);">У вас нет скинов для продажи</p>
+                        <span style="font-size:14px;">Купите скины в магазине, чтобы продавать их</span>
+                    </div>
+                `;
+                totalSkinsEl.textContent = '0';
+                updateSelectedUI();
+                return;
+            }
 
-            const owned = JSON.parse(localStorage.getItem(STORAGE_KEYS.OWNED_SKINS) || '[]');
-            owned.push({ ...skin, price: price, exterior: quality.name, acquired: new Date().toISOString() });
-            localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(owned));
+            const searchQuery = searchInput.value.toLowerCase().trim();
+            let filtered = ownedSkins.map((skin, index) => ({ ...skin, realIndex: index })).filter(skin => skin.name.toLowerCase().includes(searchQuery));
+
+            totalSkinsEl.textContent = filtered.length;
+
+            const categories = {
+                'gloves': { label: '🧤 Перчатки', items: [] },
+                'knife': { label: '🔪 Ножи', items: [] },
+                'rifle': { label: '🔫 Винтовки', items: [] },
+                'other': { label: '🎯 Другое', items: [] }
+            };
+
+            filtered.forEach(item => {
+                const cat = item.category || 'other';
+                if (categories[cat]) categories[cat].items.push(item);
+                else categories['other'].items.push(item);
+            });
+
+            let html = '';
+
+            Object.values(categories).forEach(cat => {
+                if (cat.items.length === 0) return;
+                html += `
+                    <div style="grid-column:1/-1;margin-top:8px;margin-bottom:4px;font-size:13px;font-weight:700;color:var(--hive-yellow);padding:6px 0;border-bottom:1px solid rgba(245,197,24,0.2);">
+                        ${cat.label} (${cat.items.length})
+                    </div>
+                `;
+
+                cat.items.forEach(item => {
+                    const isSelected = selectedIndices.has(item.realIndex);
+                    const rarityClass = getRarityClass(item.rarity);
+                    const rarityLabel = getRarityLabel(item.rarity);
+                    const price = item.price || 0;
+
+                    const iconHtml = item.hasImage && item.icon ?
+                        `<img src="${item.icon}" alt="${item.name}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'fallback-icon\\'>${item.iconFallback || '🎯'}</span>'">` :
+                        `<span class="fallback-icon">${item.iconFallback || '🎯'}</span>`;
+
+                    html += `
+                        <div class="sell-item ${isSelected ? 'selected' : ''}" onclick="toggleSkin(${item.realIndex})">
+                            <div class="check-mark">${isSelected ? '✓' : ''}</div>
+                            <div class="item-image">${iconHtml}</div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">$${typeof price === 'number' ? price.toFixed(2) : price}</div>
+                            <div class="item-quality">${item.exterior || 'Factory New'}</div>
+                            ${rarityLabel ? `<div class="item-rarity ${rarityClass}">${rarityLabel}</div>` : ''}
+                        </div>
+                    `;
+                });
+            });
+
+            sellGrid.innerHTML = html;
+            updateSelectedUI();
+        }
+
+        function toggleSkin(index) {
+            if (!isLoggedIn) { showToast('⚠️ Войдите в аккаунт!', 'error'); authModal.classList.add('active'); return; }
+            ownedSkins = loadInventory();
+            if (selectedIndices.has(index)) selectedIndices.delete(index);
+            else selectedIndices.add(index);
+            renderInventory();
+            updateSelectedUI();
+        }
+
+        function selectAllSkins() {
+            ownedSkins = loadInventory();
+            ownedSkins.forEach((_, index) => selectedIndices.add(index));
+            renderInventory();
+            updateSelectedUI();
+            showToast('✅ Все скины выбраны', 'success');
+        }
+
+        function deselectAllSkins() {
+            selectedIndices.clear();
+            renderInventory();
+            updateSelectedUI();
+            showToast('🔄 Выбор снят', 'default');
+        }
+
+        function updateSelectedUI() {
+            ownedSkins = loadInventory();
+            const selectedSkins = ownedSkins.filter((_, index) => selectedIndices.has(index));
+            const count = selectedSkins.length;
+            const total = selectedSkins.reduce((sum, skin) => sum + (skin.price || 0), 0);
+
+            totalAmountEl.textContent = total.toFixed(2);
+            selectedCountEl.textContent = count;
+            totalPriceEl.textContent = '$' + total.toFixed(2);
+
+            if (count === 0) {
+                selectedSkinsEl.innerHTML = `<span class="no-skin">Выберите скины для продажи</span>`;
+                sellSubmitBtn.disabled = true;
+                return;
+            }
+
+            let tagsHtml = '';
+            selectedSkins.forEach((skin) => {
+                const imgHtml = skin.hasImage && skin.icon ? `<img src="${skin.icon}" onerror="this.style.display='none'">` : '🎯';
+                tagsHtml += `
+                    <span class="skin-tag">
+                        ${imgHtml} ${skin.name}
+                        <span class="remove-tag" onclick="event.stopPropagation(); toggleSkin(ownedSkins.indexOf(skin))">×</span>
+                    </span>
+                `;
+            });
+
+            selectedSkinsEl.innerHTML = tagsHtml;
+            sellSubmitBtn.disabled = false;
+        }
+
+        function filterInventory() { renderInventory(); }
+        searchInput.addEventListener('input', filterInventory);
+
+        function selectWithdrawMethod(method) {
+            selectedWithdrawMethod = method;
+            document.querySelectorAll('.withdraw-method').forEach(el => { el.classList.toggle('active', el.dataset.method === method); });
+        }
+
+        function confirmSell() {
+            if (!isLoggedIn) { showToast('⚠️ Войдите в аккаунт!', 'error'); authModal.classList.add('active'); return; }
+            ownedSkins = loadInventory();
+            const selectedSkins = ownedSkins.filter((_, index) => selectedIndices.has(index));
+            if (selectedSkins.length === 0) { showToast('⚠️ Выберите скины для продажи!', 'error'); return; }
+
+            const totalPrice = selectedSkins.reduce((sum, skin) => sum + (skin.price || 0), 0);
+            const method = withdrawMethods[selectedWithdrawMethod];
+            const fee = (totalPrice * method.fee) / 100;
+            const total = totalPrice - fee;
+
+            const skinNames = selectedSkins.map(s => s.name).join(', ');
+            document.getElementById('confirmSkins').textContent = skinNames.length > 40 ? skinNames.substring(0, 40) + '...' : skinNames;
+            document.getElementById('confirmCount').textContent = selectedSkins.length + ' шт.';
+            document.getElementById('confirmTotalPrice').textContent = '$' + totalPrice.toFixed(2);
+            document.getElementById('confirmMethod').textContent = method.name;
+            document.getElementById('confirmFee').textContent = '$' + fee.toFixed(2) + ' (' + method.fee + '%)';
+            document.getElementById('confirmTotal').textContent = '$' + total.toFixed(2);
+
+            confirmModal.classList.add('active');
+        }
+
+        function closeConfirmModal() { confirmModal.classList.remove('active'); }
+
+        function submitSell() {
+            ownedSkins = loadInventory();
+            const selectedSkins = ownedSkins.filter((_, index) => selectedIndices.has(index));
+            if (selectedSkins.length === 0) return;
+
+            const totalPrice = selectedSkins.reduce((sum, skin) => sum + (skin.price || 0), 0);
+            const method = withdrawMethods[selectedWithdrawMethod];
+            const fee = (totalPrice * method.fee) / 100;
+            const total = totalPrice - fee;
 
             const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
+            const skinNames = selectedSkins.map(s => s.name).join(', ');
             txs.push({
-                type: 'Покупка',
-                amount: -price,
-                name: `${skin.name} (${quality.name})`,
+                type: 'Продажа',
+                amount: total,
+                name: `Продажа ${selectedSkins.length} скинов: ${skinNames}`,
                 date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
             });
             localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(txs));
 
-            showToast(`🎉 Скин "${skin.name}" (${quality.name}) куплен!`, 'success');
+            const indicesToRemove = Array.from(selectedIndices).sort((a, b) => b - a);
+            indicesToRemove.forEach(index => { ownedSkins.splice(index, 1); });
+            localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(ownedSkins));
+            selectedIndices.clear();
+
+            if (selectedWithdrawMethod === 'balance') {
+                addBalance(total);
+                showToast(`💰 ${total.toFixed(2)} зачислены на баланс сайта!`, 'success');
+            }
+
+            closeConfirmModal();
+            showMoneyToast(total, method);
+            ownedSkins = loadInventory();
+            renderInventory();
+            updateSelectedUI();
         }
 
         function openTopup() {
@@ -1405,25 +1825,7 @@
             window.location.href = 'cabinet.html';
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
-            isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
-
-            updateAuthUI();
-            updateBalanceUI();
-            updateCartBadge();
-
-            renderQualities();
-            renderChart(7);
-
-            if (isInCart()) {
-                const btn = document.getElementById('cartBtnDetail');
-                btn.innerHTML = '<i class="fas fa-check"></i> В корзине';
-                btn.classList.add('in-cart');
-            }
-        });
-
-        document.getElementById('steamLoginBtn')?.addEventListener('click', function() {
+        steamLoginBtn.addEventListener('click', function() {
             if (isLoggedIn) {
                 isLoggedIn = false;
                 user = { email: '', username: 'Гость', avatar: '👤' };
@@ -1431,37 +1833,33 @@
                 localStorage.setItem(STORAGE_KEYS.BALANCE, '0');
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'false');
-                updateAuthUI(); updateBalanceUI();
+                updateAuthUI(); updateBalanceUI(); ownedSkins = loadInventory(); renderInventory();
                 showToast('👋 Вы вышли из улья', 'default');
                 return;
             }
-            document.getElementById('authModal').classList.add('active');
+            authModal.classList.add('active');
         });
 
-        document.getElementById('authClose')?.addEventListener('click', function() {
-            document.getElementById('authModal').classList.remove('active');
-        });
-
-        document.getElementById('authModal')?.addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('active');
-        });
-
-        document.getElementById('authForm')?.addEventListener('submit', function(e) {
-            e.preventDefault(); handleAuth();
-        });
-
-        document.getElementById('authSubmitBtn')?.addEventListener('click', handleAuth);
+        authClose.addEventListener('click', () => authModal.classList.remove('active'));
+        authModal.addEventListener('click', function(e) { if (e.target === this) authModal.classList.remove('active'); });
+        authForm.addEventListener('submit', function(e) { e.preventDefault(); handleAuth(); });
+        authSubmitBtn.addEventListener('click', handleAuth);
         document.getElementById('cartBtn')?.addEventListener('click', function() { window.location.href = 'index.html'; });
-        document.getElementById('buyNowBtn')?.addEventListener('click', buyNow);
-        document.getElementById('cartBtnDetail')?.addEventListener('click', toggleCart);
 
-        document.querySelectorAll('.chart-periods button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.chart-periods button').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                renderChart(parseInt(this.dataset.period));
-            });
-        });
+        function init() {
+            ownedSkins = loadInventory();
+            balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
+            isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
+            updateAuthUI();
+            updateBalanceUI();
+            updateCartBadge();
+            renderInventory();
+            updateSelectedUI();
+            document.querySelector('.withdraw-method[data-method="card"]')?.classList.add('active');
+            console.log('🐝 Страница продажи SkinHive загружена!');
+        }
+
+        init();
     </script>
 </body>
 </html>
