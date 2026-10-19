@@ -1291,7 +1291,7 @@
                     </button>
                     <div class="wallet" onclick="openTopup()">
                         <i class="fas fa-dollar-sign"></i>
-                        <span class="wallet-balance" id="walletBalance">$0.00</span>
+                        <span class="wallet-balance" id="walletBalance">0.00</span>
                     </div>
                     <button class="cart-btn" id="cartBtn" onclick="window.location.href='index.html'">
                         <i class="fas fa-shopping-cart"></i>
@@ -1317,7 +1317,7 @@
                         <a id="tradeLink" onclick="copyTradeLink()">steamcommunity.com/trade/abc123</a>
                         <span class="trade-edit" onclick="editTradeLink()">✏️ Изменить</span>
                     </div>
-                    <div class="user-balance">💰 Баланс: <span id="cabinetBalance">$0.00</span></div>
+                    <div class="user-balance">💰 Баланс: <span id="cabinetBalance">0.00</span></div>
                 </div>
             </div>
 
@@ -1745,7 +1745,7 @@
         }
 
         function updateBalanceUI() {
-            const formatted = '$' + balance.toFixed(2);
+            const formatted =  + balance.toFixed(2);
             cabinetBalance.textContent = formatted;
             if (walletBalance) walletBalance.textContent = formatted;
         }
@@ -2040,8 +2040,8 @@
             closeTopup();
             showToast(`💰 Кошелек пополнен на $${amount.toFixed(2)}`, 'success');
 
-            document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent = '$' + getBalance().toFixed(2); });
-            cabinetBalance.textContent = '$' + getBalance().toFixed(2);
+            document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent =  + getBalance().toFixed(2); });
+            cabinetBalance.textContent =  + getBalance().toFixed(2);
         }
 
         function handleAuth() {
