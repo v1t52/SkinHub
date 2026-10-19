@@ -1161,10 +1161,9 @@
                     </button>
                     <div class="wallet" onclick="openTopup()">
                         <i class="fas fa-dollar-sign"></i>
-                        <span class="wallet-balance" id="walletBalance">$0.00</span>
+                        <span class="wallet-balance" id="walletBalance">0.00</span>
                     </div>
                     <button class="cart-btn" id="cartBtn">
-                        <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count" id="cartCount">0</span>
                     </button>
                 </div>
@@ -1479,7 +1478,7 @@
         }
 
         function showMoneyToast(amount, method) {
-            moneyAmount.textContent = '$' + amount.toFixed(2);
+            moneyAmount.textContent =  + amount.toFixed(2);
             moneyMethod.innerHTML = `<i class="fas ${method.icon}"></i> ${method.name}`;
             moneyToast.classList.add('show');
             clearTimeout(moneyToastTimeout);
@@ -1492,7 +1491,7 @@
         }
 
         function updateBalanceUI() {
-            const formatted = '$' + balance.toFixed(2);
+            const formatted =  + balance.toFixed(2);
             if (walletBalance) walletBalance.textContent = formatted;
         }
 
