@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkinHub — AWP Dragon Lore</title>
+    <title>SkinHive — AWP Dragon Lore</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* =========================================================
-                   STEAM 2026 — ПЕРЕМЕННЫЕ
-                   ========================================================= */
         :root {
             --bg-primary: #0e1217;
             --bg-secondary: #171d25;
@@ -30,6 +27,10 @@
             --steam-orange-light: #ff8833;
             --steam-gold: #d4a843;
             --steam-gold-light: #f0d080;
+            --hive-yellow: #f5c518;
+            --hive-yellow-dark: #d4a015;
+            --hive-yellow-light: #ffe066;
+            --hive-honey: #ffb300;
             --rarity-gold: #d4a843;
             --rarity-contraband: #ff6b00;
             --rarity-red: #ff4444;
@@ -54,11 +55,27 @@
             --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* СВЕТЛАЯ ТЕМА — БЕЛЫЕ ПАНЕЛИ */
+        [data-theme="light"] header,
+        [data-theme="light"] .skin-image-container,
+        [data-theme="light"] .skin-description,
+        [data-theme="light"] .skin-stat,
+        [data-theme="light"] .price-chart,
+        [data-theme="light"] .exteriors-section,
+        [data-theme="light"] .exterior-item,
+        [data-theme="light"] .modal,
+        [data-theme="light"] .toast,
+        [data-theme="light"] footer {
+            background: #ffffff;
         }
+
+        [data-theme="light"] .skin-stat,
+        [data-theme="light"] .exterior-item,
+        [data-theme="light"] .modal .form-group input {
+            background: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -70,83 +87,23 @@
         }
 
         /* =========================================================
-                   АНИМИРОВАННЫЙ ФОН — STEAM 2026
+                   СТАТИЧНЫЙ ФОН (СЕТКА)
                    ========================================================= */
         .bg-animation {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
         }
-
-        .bg-animation .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            animation: pulse-orb 10s ease-in-out infinite;
-            opacity: 0.06;
-            will-change: transform;
-        }
-
-        @keyframes pulse-orb {
-            0%, 100% {
-                transform: scale(1) translate(0, 0);
-                opacity: 0.04;
-            }
-            50% {
-                transform: scale(1.8) translate(40px, -30px);
-                opacity: 0.10;
-            }
-        }
-
         .bg-animation .steam-grid {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(74, 144, 217, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(74, 144, 217, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(245, 197, 24, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 197, 24, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-            animation: grid-shift 20s linear infinite;
-        }
-
-        @keyframes grid-shift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
-        }
-
-        .bg-animation .falling-skin-img {
-            position: absolute;
-            object-fit: contain;
-            pointer-events: none;
-            user-select: none;
-            border-radius: 4px;
-            will-change: transform;
-            animation: fall-skin 20s linear infinite;
-            z-index: 0;
-            opacity: 0.04;
-            filter: blur(0.5px);
-        }
-
-        @keyframes fall-skin {
-            0% {
-                transform: translateY(-100px) rotate(0deg) scale(0.4);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.06;
-            }
-            90% {
-                opacity: 0.05;
-            }
-            100% {
-                transform: translateY(110vh) rotate(720deg) scale(0.9);
-                opacity: 0;
-            }
         }
 
         .container {
@@ -158,22 +115,21 @@
         }
 
         /* =========================================================
-                   ХЕДЕР — STEAM 2026
+                   ХЕДЕР
                    ========================================================= */
         header {
-            padding: 14px 0;
-            border-bottom: 2px solid var(--border-color);
+            padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(14, 18, 23, 0.92);
+            background: rgba(14, 18, 23, 0.55);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            margin-top: 12px;
             transition: background 0.4s ease;
-        }
-
-        [data-theme="light"] header {
-            background: rgba(232, 236, 242, 0.92);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.15), inset 0 0 30px rgba(245, 197, 24, 0.03);
         }
 
         .header-inner {
@@ -182,205 +138,87 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+            padding: 0 20px;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            color: var(--text-primary);
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900;
+            cursor: pointer; transition: opacity 0.4s ease, transform 0.4s ease;
+            text-decoration: none; color: var(--text-primary);
+            margin-right: auto; opacity: 1; transform: scale(1); position: relative;
+        }
+        .logo:hover { transform: scale(1.03); }
+        .logo .cs-text {
+            background: linear-gradient(135deg, var(--hive-yellow-light), var(--hive-yellow), var(--hive-honey));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; position: relative; z-index: 2;
+        }
+        .logo .cs-text span { color: var(--hive-honey); -webkit-text-fill-color: var(--hive-honey); }
+        .logo .mini-hive {
+            width: 28px; height: 28px; object-fit: contain;
+            position: relative; z-index: 2;
+            filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.4));
         }
 
-        .logo:hover {
-            transform: scale(1.03);
-        }
-
-        .logo-skin {
-            color: var(--steam-blue);
-        }
-
-        .logo-hub {
-            color: var(--steam-orange);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
+        nav { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
         nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-            letter-spacing: 0.3px;
+            color: var(--text-secondary); text-decoration: none;
+            font-weight: 600; font-size: 14px; transition: var(--transition);
+            position: relative; cursor: pointer; letter-spacing: 0.3px;
         }
-
-        nav a:hover {
-            color: var(--steam-blue);
-        }
-
-        nav a.active {
-            color: var(--steam-blue);
-        }
-
+        nav a:hover { color: var(--hive-yellow); }
+        nav a.active { color: var(--hive-yellow); }
         nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--steam-blue);
-            box-shadow: 0 0 20px rgba(74, 144, 217, 0.4);
+            content: ''; position: absolute; bottom: -6px; left: 0;
+            width: 100%; height: 2px; background: var(--hive-yellow);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.5);
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .btn-theme {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+            background: rgba(245, 197, 24, 0.05); border: 1px solid var(--hive-yellow);
+            color: var(--hive-yellow); width: 38px; height: 38px; border-radius: 50%;
+            cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
-
-        .btn-theme:hover {
-            border-color: var(--steam-blue);
-            color: var(--steam-blue);
-        }
-
+        .btn-theme:hover { background: rgba(245, 197, 24, 0.15); }
         .btn-steam {
-            background: linear-gradient(135deg, #1a2332, #2a3a4a);
-            color: #fff;
-            border: 1px solid rgba(74, 144, 217, 0.15);
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(245, 197, 24, 0.05); color: var(--hive-yellow);
+            border: 1px solid var(--hive-yellow); padding: 8px 18px;
+            border-radius: 40px; font-weight: 600; font-size: 12px;
+            cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; gap: 8px;
         }
-
-        .btn-steam i {
-            color: var(--steam-blue);
-        }
-
-        .btn-steam:hover {
-            border-color: var(--steam-blue);
-            transform: scale(1.04);
-            box-shadow: 0 0 24px rgba(74, 144, 217, 0.15);
-        }
-
-        .btn-sell {
-            background: rgba(255, 107, 0, 0.08);
-            color: var(--steam-orange);
-            border: 1px solid rgba(255, 107, 0, 0.15);
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-sell:hover {
-            background: rgba(255, 107, 0, 0.15);
-            border-color: var(--steam-orange);
-        }
-
+        .btn-steam i { color: var(--hive-yellow); }
+        .btn-steam:hover { background: rgba(245, 197, 24, 0.15); transform: scale(1.04); box-shadow: 0 0 24px rgba(245, 197, 24, 0.3); }
         .wallet {
-            background: rgba(212, 168, 67, 0.08);
-            border: 1px solid rgba(212, 168, 67, 0.15);
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--steam-gold);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: var(--transition);
+            background: rgba(245, 197, 24, 0.05); border: 1px solid var(--hive-yellow);
+            padding: 8px 18px; border-radius: 40px; font-weight: 700;
+            font-size: 13px; color: var(--hive-yellow);
+            display: flex; align-items: center; gap: 6px;
+            cursor: pointer; transition: var(--transition);
         }
-
-        .wallet:hover {
-            background: rgba(212, 168, 67, 0.15);
-            border-color: var(--steam-gold);
-            transform: scale(1.02);
-        }
-
+        .wallet:hover { background: rgba(245, 197, 24, 0.15); transform: scale(1.02); }
         .cart-btn {
-            background: rgba(74, 144, 217, 0.06);
-            border: 1px solid rgba(74, 144, 217, 0.12);
-            padding: 8px 16px;
-            border-radius: 40px;
-            color: var(--steam-blue);
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
+            background: rgba(245, 197, 24, 0.05); border: 1px solid var(--hive-yellow);
+            padding: 8px 16px; border-radius: 40px; color: var(--hive-yellow);
+            font-weight: 700; font-size: 12px; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; gap: 6px; position: relative;
         }
-
-        .cart-btn:hover {
-            background: rgba(74, 144, 217, 0.10);
-        }
-
+        .cart-btn:hover { background: rgba(245, 197, 24, 0.15); }
         .cart-count {
-            background: var(--steam-orange);
-            color: #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 800;
-            position: absolute;
-            top: -6px;
-            right: -6px;
+            background: var(--steam-orange); color: #fff; border-radius: 50%;
+            width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 800; position: absolute; top: -6px; right: -6px;
             box-shadow: 0 0 16px rgba(255, 107, 0, 0.3);
         }
 
         /* =========================================================
-                   СТРАНИЦА ДЕТАЛЕЙ СКИНА — STEAM 2026
+                   СТРАНИЦА ДЕТАЛЕЙ
                    ========================================================= */
         .skin-detail-section {
-            margin: 30px 0 40px;
+            margin: 24px 0 40px;
         }
 
         .back-link {
@@ -392,11 +230,17 @@
             font-weight: 600;
             font-size: 14px;
             transition: var(--transition);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            background: rgba(245, 197, 24, 0.05);
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(245, 197, 24, 0.2);
         }
 
         .back-link:hover {
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
+            border-color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.15);
         }
 
         .skin-detail-grid {
@@ -410,38 +254,43 @@
                    ЛЕВАЯ КОЛОНКА — ИЗОБРАЖЕНИЕ
                    ========================================================= */
         .skin-image-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 24px 24px 20px;
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
             max-width: 100%;
+            box-shadow: 0 0 40px rgba(245, 197, 24, 0.1), inset 0 0 40px rgba(245, 197, 24, 0.02);
         }
 
         .skin-image-container .rarity-badge-large {
             position: absolute;
-            top: 12px;
-            left: 14px;
-            padding: 3px 14px;
+            top: 16px;
+            left: 16px;
+            padding: 4px 16px;
             border-radius: 40px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            z-index: 2;
         }
 
         .rarity-red {
-            background: rgba(255, 68, 68, 0.12);
+            background: rgba(255, 68, 68, 0.15);
             color: var(--rarity-red);
-            border: 1px solid rgba(255, 68, 68, 0.15);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.1);
         }
 
         .skin-image-container .skin-image {
             width: 100%;
-            height: 300px;
+            height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -452,7 +301,7 @@
             max-width: 90%;
             max-height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 40px rgba(74, 144, 217, 0.08));
+            filter: drop-shadow(0 10px 40px rgba(245, 197, 24, 0.15));
             transition: var(--transition);
         }
 
@@ -463,43 +312,43 @@
 
         .skin-image-container .skin-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
-            margin-top: 14px;
+            margin-top: 20px;
         }
 
         .skin-image-container .skin-actions .btn-buy-detail {
             flex: 1;
-            padding: 10px 12px;
-            background: linear-gradient(135deg, var(--steam-orange), var(--steam-orange-dark));
-            color: #fff;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
+            color: #1a1a1a;
             border: none;
             border-radius: 60px;
-            font-weight: 700;
-            font-size: 14px;
+            font-weight: 800;
+            font-size: 15px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.12);
+            box-shadow: 0 4px 24px rgba(245, 197, 24, 0.3);
         }
 
         .skin-image-container .skin-actions .btn-buy-detail:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(255, 107, 0, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(245, 197, 24, 0.5);
         }
 
         .skin-image-container .skin-actions .btn-cart-detail {
             flex: 1;
-            padding: 10px 12px;
-            background: rgba(74, 144, 217, 0.06);
-            color: var(--steam-blue);
-            border: 1px solid rgba(74, 144, 217, 0.12);
+            padding: 14px 16px;
+            background: rgba(245, 197, 24, 0.08);
+            color: var(--hive-yellow);
+            border: 1px solid var(--hive-yellow);
             border-radius: 60px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
@@ -509,8 +358,8 @@
         }
 
         .skin-image-container .skin-actions .btn-cart-detail:hover {
-            background: rgba(74, 144, 217, 0.10);
-            transform: translateY(-2px);
+            background: rgba(245, 197, 24, 0.15);
+            transform: translateY(-3px);
         }
 
         .skin-image-container .skin-actions .btn-cart-detail.in-cart {
@@ -531,51 +380,55 @@
         .skin-info-container {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         .skin-info-container .skin-name {
-            font-size: 26px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 900;
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 0.5px;
+            color: var(--text-primary);
+            text-shadow: 0 0 20px rgba(245, 197, 24, 0.1);
         }
 
         .skin-info-container .skin-price {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
-            color: var(--steam-gold);
+            color: var(--hive-yellow);
             font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 20px rgba(245, 197, 24, 0.3);
         }
 
         .skin-info-container .skin-price .price-rub {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-secondary);
             font-weight: 400;
             font-family: 'Inter', sans-serif;
+            text-shadow: none;
         }
 
         .skin-info-container .skin-exterior {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
         }
 
         .skin-info-container .skin-exterior strong {
-            color: var(--text-primary);
+            color: var(--hive-yellow);
         }
 
         .skin-info-container .skin-float {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
         }
 
         .skin-info-container .skin-float .float-value {
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--hive-yellow);
         }
 
         .skin-info-container .skin-type {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -585,22 +438,23 @@
                    ОПИСАНИЕ
                    ========================================================= */
         .skin-description {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(245, 197, 24, 0.2);
             border-radius: var(--radius);
-            padding: 14px 16px;
-            margin-top: 2px;
+            padding: 18px 20px;
+            margin-top: 4px;
         }
 
         .skin-description h4 {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 4px;
-            color: var(--text-secondary);
+            margin-bottom: 8px;
+            color: var(--hive-yellow);
         }
 
         .skin-description p {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-secondary);
             line-height: 1.6;
         }
@@ -611,85 +465,78 @@
         .skin-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 2px;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         .skin-stat {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(245, 197, 24, 0.2);
             border-radius: var(--radius);
-            padding: 10px;
+            padding: 14px 10px;
             text-align: center;
         }
 
         .skin-stat .stat-label {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
 
         .skin-stat .stat-value {
-            font-weight: 700;
-            font-size: 15px;
-            margin-top: 2px;
+            font-weight: 800;
+            font-size: 16px;
+            margin-top: 4px;
         }
 
-        .skin-stat .stat-value.good {
-            color: #4caf50;
-        }
-
-        .skin-stat .stat-value.bad {
-            color: var(--rarity-red);
-        }
-
-        .skin-stat .stat-value.gold {
-            color: var(--steam-gold);
-        }
+        .skin-stat .stat-value.good { color: #4caf50; }
+        .skin-stat .stat-value.bad { color: var(--rarity-red); }
+        .skin-stat .stat-value.gold { color: var(--hive-yellow); }
 
         /* =========================================================
                    ГРАФИК ЦЕН
                    ========================================================= */
         .price-chart {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(245, 197, 24, 0.2);
             border-radius: var(--radius);
-            padding: 16px 18px;
-            margin-top: 2px;
+            padding: 18px 20px;
+            margin-top: 4px;
         }
 
         .price-chart .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
             gap: 8px;
         }
 
         .price-chart .chart-header h4 {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-        }
-
-        .price-chart .chart-header h4 i {
-            color: var(--steam-blue);
-            margin-right: 6px;
+            color: var(--hive-yellow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .price-chart .chart-header .chart-periods {
             display: flex;
-            gap: 4px;
+            gap: 6px;
         }
 
         .price-chart .chart-header .chart-periods button {
-            padding: 3px 12px;
+            padding: 4px 14px;
             border-radius: 40px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-primary);
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            background: rgba(245, 197, 24, 0.05);
             color: var(--text-secondary);
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
@@ -697,27 +544,29 @@
 
         .price-chart .chart-header .chart-periods button:hover,
         .price-chart .chart-header .chart-periods button.active {
-            border-color: var(--steam-blue);
-            color: var(--steam-blue);
+            border-color: var(--hive-yellow);
+            color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.15);
+            box-shadow: 0 0 15px rgba(245, 197, 24, 0.1);
         }
 
         .chart-container {
-            height: 150px;
+            height: 160px;
             position: relative;
             display: flex;
             align-items: flex-end;
-            gap: 5px;
-            padding: 8px 0;
+            gap: 6px;
+            padding: 10px 0;
         }
 
         .chart-bar {
             flex: 1;
-            background: linear-gradient(180deg, var(--steam-blue), var(--steam-blue-dark));
-            border-radius: 3px 3px 0 0;
+            background: linear-gradient(180deg, var(--hive-yellow), var(--hive-yellow-dark));
+            border-radius: 4px 4px 0 0;
             min-height: 8px;
             transition: var(--transition);
             position: relative;
-            opacity: 0.7;
+            opacity: 0.8;
             cursor: pointer;
         }
 
@@ -728,23 +577,27 @@
 
         .chart-bar .bar-label {
             position: absolute;
-            bottom: -18px;
+            bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 7px;
+            font-size: 8px;
             color: var(--text-muted);
             white-space: nowrap;
         }
 
         .chart-bar .bar-price {
             position: absolute;
-            top: -16px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 700;
-            color: var(--steam-gold);
+            color: var(--hive-yellow);
             display: none;
+            background: rgba(14, 18, 23, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 197, 24, 0.2);
         }
 
         .chart-bar:hover .bar-price {
@@ -752,77 +605,81 @@
         }
 
         /* =========================================================
-                   КАЧЕСТВА (EXTERIORS) — ВЫБИРАЕМЫЕ
+                   КАЧЕСТВА (EXTERIORS)
                    ========================================================= */
         .exteriors-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 16px 18px;
-            margin-top: 2px;
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 4px;
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.08);
         }
 
         .exteriors-section h4 {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .exteriors-section h4 i {
-            color: var(--steam-gold);
-            margin-right: 6px;
+            margin-bottom: 12px;
+            color: var(--hive-yellow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .exteriors-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
 
         .exterior-item {
-            background: var(--bg-primary);
-            border: 2px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.3);
             border-radius: var(--radius);
-            padding: 8px 6px;
+            padding: 10px 8px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
         }
 
         .exterior-item:hover {
-            border-color: var(--steam-blue);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(74, 144, 217, 0.04);
+            border-color: var(--hive-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.15);
         }
 
         .exterior-item.active {
-            border-color: var(--steam-blue);
-            background: rgba(74, 144, 217, 0.05);
-            box-shadow: 0 0 20px rgba(74, 144, 217, 0.03);
+            border-color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.15);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.2);
         }
 
         .exterior-item .exterior-name {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
+            color: var(--text-primary);
         }
 
         .exterior-item .exterior-price {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--steam-gold);
-            margin-top: 2px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--hive-yellow);
+            margin-top: 4px;
         }
 
         .exterior-item .exterior-float {
-            font-size: 8px;
+            font-size: 9px;
             color: var(--text-muted);
+            margin-top: 2px;
         }
 
         .exterior-item .exterior-check {
             display: none;
-            color: var(--steam-blue);
-            font-size: 12px;
-            margin-top: 2px;
+            color: var(--hive-yellow);
+            font-size: 11px;
+            margin-top: 4px;
+            font-weight: 700;
         }
 
         .exterior-item.active .exterior-check {
@@ -834,65 +691,41 @@
                    ========================================================= */
         .toast {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            bottom: 28px; right: 28px;
+            background: rgba(14, 18, 23, 0.95);
+            border: 1px solid var(--hive-yellow);
             border-radius: var(--radius);
             padding: 14px 22px;
             display: none;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(245, 197, 24, 0.2);
             animation: slideIn 0.4s ease;
             z-index: 99999;
             max-width: 380px;
+            backdrop-filter: blur(12px);
         }
 
-        .toast.show {
-            display: flex;
-        }
+        .toast.show { display: flex; }
+        .toast i { font-size: 20px; }
+        .toast .toast-text { font-weight: 600; font-size: 14px; }
 
-        .toast i {
-            font-size: 20px;
-        }
+        .toast.error { border-color: var(--rarity-red); }
+        .toast.error i { color: var(--rarity-red); }
 
-        .toast .toast-text {
-            font-weight: 600;
-            font-size: 14px;
-        }
+        .toast.success { border-color: var(--hive-yellow); }
+        .toast.success i { color: var(--hive-yellow); }
 
-        .toast.error {
-            border-color: var(--rarity-red);
-        }
-
-        .toast.error i {
-            color: var(--rarity-red);
-        }
-
-        .toast.success {
-            border-color: #4caf50;
-        }
-
-        .toast.success i {
-            color: #4caf50;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
         /* =========================================================
-                   МОДАЛЬНЫЕ ОКНА — STEAM 2026
+                   МОДАЛЬНЫЕ ОКНА
                    ========================================================= */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(8px);
             z-index: 9999;
@@ -902,66 +735,52 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.94); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
 
         .modal {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.95);
+            border: 2px solid var(--hive-yellow);
             border-radius: 16px;
             max-width: 520px;
             width: 100%;
             padding: 32px 30px;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(245, 197, 24, 0.2);
             max-height: 90vh;
             overflow-y: auto;
             text-align: center;
+            backdrop-filter: blur(12px);
         }
 
         .modal-close {
             position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 22px;
-            cursor: pointer;
-            transition: var(--transition);
+            top: 14px; right: 18px;
+            background: none; border: none;
+            color: var(--hive-yellow);
+            font-size: 22px; cursor: pointer; transition: var(--transition);
         }
 
-        .modal-close:hover {
-            color: var(--text-primary);
-            transform: rotate(90deg);
-        }
+        .modal-close:hover { transform: rotate(90deg); }
 
-        .modal .modal-icon {
-            font-size: 60px;
-            display: block;
-            margin-bottom: 12px;
-        }
+        .modal .modal-icon { font-size: 56px; display: block; margin-bottom: 12px; }
 
         .modal h2 {
             font-size: 24px;
             font-weight: 800;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            color: var(--hive-yellow);
         }
 
         .modal .modal-sub {
             color: var(--text-secondary);
             font-size: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .modal .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             text-align: left;
         }
 
@@ -969,35 +788,35 @@
             display: block;
             font-size: 12px;
             color: var(--text-secondary);
-            margin-bottom: 3px;
+            margin-bottom: 6px;
             font-weight: 600;
             letter-spacing: 0.3px;
         }
 
         .modal .form-group input {
             width: 100%;
-            padding: 8px 12px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid var(--hive-yellow);
             border-radius: 8px;
             color: var(--text-primary);
-            font-size: 13px;
+            font-size: 14px;
             outline: none;
             transition: var(--transition);
         }
 
         .modal .form-group input:focus {
-            border-color: var(--steam-blue);
+            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15);
         }
 
         .modal .btn-confirm {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
-            color: #fff;
+            background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
+            color: #1a1a1a;
             border: none;
             border-radius: 60px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 16px;
             cursor: pointer;
             transition: var(--transition);
@@ -1005,46 +824,43 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.10);
+            box-shadow: 0 4px 24px rgba(245, 197, 24, 0.3);
+            margin-top: 8px;
         }
 
         .modal .btn-confirm:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 32px rgba(74, 144, 217, 0.25);
+            box-shadow: 0 8px 32px rgba(245, 197, 24, 0.5);
         }
 
         .modal .auth-suggest {
-            background: rgba(74, 144, 217, 0.05);
-            border: 1px solid rgba(74, 144, 217, 0.08);
+            background: rgba(245, 197, 24, 0.05);
+            border: 1px solid rgba(245, 197, 24, 0.2);
             border-radius: 8px;
-            padding: 10px 14px;
-            margin-bottom: 16px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
             font-size: 13px;
             color: var(--text-secondary);
             text-align: center;
         }
 
-        .modal .auth-suggest strong {
-            color: var(--text-primary);
-        }
+        .modal .auth-suggest strong { color: var(--hive-yellow); }
 
         .modal .auth-switch {
             text-align: center;
-            margin-top: 14px;
+            margin-top: 16px;
             font-size: 13px;
             color: var(--text-secondary);
         }
 
         .modal .auth-switch a {
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
         }
 
-        .modal .auth-switch a:hover {
-            text-decoration: underline;
-        }
+        .modal .auth-switch a:hover { text-decoration: underline; }
 
         .modal .error-text {
             color: var(--rarity-red);
@@ -1055,202 +871,94 @@
         }
 
         /* =========================================================
-                   ФУТЕР — STEAM 2026
+                   ФУТЕР
                    ========================================================= */
         footer {
             padding: 34px 0 24px;
-            border-top: 2px solid var(--border-color);
             margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 18px;
+            background: rgba(14, 18, 23, 0.4);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.08), inset 0 0 20px rgba(245, 197, 24, 0.02);
         }
 
-        footer .footer-links {
-            display: flex;
-            gap: 28px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
+        footer .footer-links { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
         footer .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 13px;
-            transition: var(--transition);
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 13px; transition: var(--transition);
         }
-
-        footer .footer-links a:hover {
-            color: var(--steam-blue);
-        }
-
-        footer .socials {
-            display: flex;
-            gap: 18px;
-        }
-
+        footer .footer-links a:hover { color: var(--hive-yellow); }
+        footer .socials { display: flex; gap: 18px; }
         footer .socials a {
-            color: var(--text-secondary);
-            font-size: 22px;
+            color: var(--text-secondary); font-size: 22px;
             transition: var(--transition);
         }
-
-        footer .socials a:hover {
-            color: var(--steam-blue);
-            transform: translateY(-3px);
-        }
-
+        footer .socials a:hover { color: var(--hive-yellow); transform: translateY(-3px); }
         footer .copy {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-align: center;
-            letter-spacing: 0.3px;
+            font-size: 12px; color: var(--text-muted);
+            text-align: center; letter-spacing: 0.3px;
         }
 
         /* =========================================================
                    АДАПТИВ
                    ========================================================= */
         @media (max-width: 1024px) {
-            .skin-detail-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skin-image-container .skin-image {
-                height: 250px;
-            }
-
-            .exteriors-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .skin-detail-grid { grid-template-columns: 1fr; }
+            .skin-image-container .skin-image { height: 250px; }
+            .exteriors-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 12px;
-            }
-
-            header {
-                padding: 12px 0;
-            }
-
-            .header-inner {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-
-            nav {
-                justify-content: center;
-                gap: 14px;
-            }
-
-            .header-actions {
-                justify-content: center;
-            }
-
-            .skin-image-container .skin-image {
-                height: 200px;
-            }
-
-            .skin-image-container .skin-image .fallback-icon {
-                font-size: 60px;
-            }
-
-            .skin-image-container {
-                padding: 16px;
-            }
-
-            .skin-info-container .skin-name {
-                font-size: 20px;
-            }
-
-            .skin-info-container .skin-price {
-                font-size: 22px;
-            }
-
-            .skin-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .exteriors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .skin-image-container .skin-actions {
-                flex-direction: column;
-            }
-
-            .chart-container {
-                height: 100px;
-            }
-
-            .toast {
-                bottom: 80px;
-                right: 12px;
-                left: 12px;
-                max-width: unset;
-            }
-
-            footer .footer-links {
-                gap: 16px;
-            }
-
-            footer .socials {
-                gap: 14px;
-            }
-
-            .price-chart .chart-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .container { padding: 0 12px; }
+            header { padding: 12px 0; margin-top: 8px; }
+            .header-inner { flex-direction: column; align-items: stretch; gap: 10px; padding: 0 12px; }
+            nav { justify-content: center; gap: 14px; }
+            .header-actions { justify-content: center; }
+            .logo { font-size: 26px; justify-content: center; }
+            
+            .skin-image-container .skin-image { height: 220px; }
+            .skin-image-container { padding: 16px; }
+            .skin-info-container .skin-name { font-size: 24px; }
+            .skin-info-container .skin-price { font-size: 26px; }
+            .skin-stats { grid-template-columns: repeat(2, 1fr); }
+            .exteriors-grid { grid-template-columns: repeat(2, 1fr); }
+            .skin-image-container .skin-actions { flex-direction: column; }
+            .chart-container { height: 120px; }
+            .toast { bottom: 80px; right: 12px; left: 12px; max-width: unset; }
+            footer .footer-links { gap: 16px; }
+            footer .socials { gap: 14px; }
+            .price-chart .chart-header { flex-direction: column; align-items: flex-start; }
         }
 
         @media (max-width: 480px) {
-            .exteriors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .skin-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .skin-image-container .skin-image {
-                height: 160px;
-            }
-
-            .price-chart .chart-header .chart-periods {
-                flex-wrap: wrap;
-            }
+            .exteriors-grid { grid-template-columns: repeat(2, 1fr); }
+            .skin-stats { grid-template-columns: 1fr 1fr; }
+            .skin-image-container .skin-image { height: 180px; }
+            .price-chart .chart-header .chart-periods { flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-    АНИМИРОВАННЫЙ ФОН — STEAM 2026
-    ============================================================ -->
+    <!-- СТАТИЧНЫЙ ФОН -->
     <div class="bg-animation" id="bgAnimation">
         <div class="steam-grid"></div>
-        <div class="glow-orb" style="width:350px;height:350px;background:radial-gradient(circle,#4a90d9,transparent);top:8%;left:3%;animation-delay:0s;"></div>
-        <div class="glow-orb" style="width:450px;height:450px;background:radial-gradient(circle,#2d6fa8,transparent);bottom:5%;right:3%;animation-delay:4s;"></div>
-        <div class="glow-orb" style="width:250px;height:250px;background:radial-gradient(circle,#6dafe8,transparent);top:45%;left:55%;animation-delay:8s;"></div>
     </div>
 
-    <!-- ============================================================
-    ОСНОВНОЙ КОНТЕЙНЕР
-    ============================================================ -->
     <div class="container">
-
-        <!-- ============================================================
-        ХЕДЕР — STEAM 2026
-        ============================================================ -->
+        <!-- ХЕДЕР -->
         <header>
             <div class="header-inner">
                 <a class="logo" href="index.html">
-                    <span class="logo-skin">Skin</span><span class="logo-hub">Hub</span>
+                    <img class="mini-hive" src="картинки/соты (1).webp" alt="SkinHive" onerror="this.style.display='none'">
+                    <span class="cs-text">Skin<span>Hive</span></span>
                 </a>
-
                 <nav>
                     <a href="index.html">Магазин</a>
                     <a href="cabinet.html">Кабинет</a>
@@ -1258,13 +966,9 @@
                     <a href="sell.html">Продать</a>
                     <a href="#" onclick="showToast('📄 Страница о нас скоро появится!', 'default')">О нас</a>
                 </nav>
-
                 <div class="header-actions">
                     <button class="btn-theme" title="Сменить тему" onclick="toggleTheme()">
                         <i class="fas fa-moon" id="themeIcon"></i>
-                    </button>
-                    <button class="btn-sell" onclick="window.location.href='sell.html'">
-                        <i class="fas fa-tag"></i> Продать
                     </button>
                     <button class="btn-steam" id="steamLoginBtn">
                         <i class="fab fa-steam"></i> <span id="authBtnText">Войти</span>
@@ -1281,11 +985,8 @@
             </div>
         </header>
 
-        <!-- ============================================================
-        СТРАНИЦА ДЕТАЛЕЙ СКИНА — AWP DRAGON LORE
-        ============================================================ -->
+        <!-- ДЕТАЛИ СКИНА -->
         <section class="skin-detail-section">
-            <!-- Назад -->
             <a href="index.html" class="back-link">
                 <i class="fas fa-arrow-left"></i> Назад в магазин
             </a>
@@ -1356,7 +1057,7 @@
                         </div>
                     </div>
 
-                    <!-- Качества (Exteriors) — ВЫБИРАЕМЫЕ -->
+                    <!-- Качества -->
                     <div class="exteriors-section">
                         <h4><i class="fas fa-star"></i> Доступные качества</h4>
                         <div class="exteriors-grid" id="exteriorsGrid">
@@ -1366,17 +1067,14 @@
                 </div>
             </div>
         </section>
-
     </div>
 
-    <!-- ============================================================
-    МОДАЛКА АВТОРИЗАЦИИ
-    ============================================================ -->
+    <!-- МОДАЛКА АВТОРИЗАЦИИ -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
             <button class="modal-close" id="authClose"><i class="fas fa-times"></i></button>
-            <span class="modal-icon">🎮</span>
-            <h2 id="authTitle">Вход в аккаунт</h2>
+            <span class="modal-icon">🐝</span>
+            <h2 id="authTitle">Вход в улей</h2>
             <p class="modal-sub" id="authSub">Войдите или зарегистрируйтесь</p>
             <div id="authError" class="error-text" style="display:none;"></div>
             <div class="auth-suggest">
@@ -1391,7 +1089,7 @@
                     <label>🔑 Пароль</label>
                     <input type="password" id="authPassword" placeholder="Минимум 6 символов" value="demo123" minlength="6">
                 </div>
-                <button class="btn-confirm" id="authSubmitBtn" style="margin-top:4px;">
+                <button class="btn-confirm" id="authSubmitBtn">
                     <i class="fas fa-sign-in-alt"></i> <span id="authBtnLabel">Войти</span>
                 </button>
             </form>
@@ -1402,9 +1100,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    ТОСТ
-    ============================================================ -->
+    <!-- ТОСТ -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <div>
@@ -1412,9 +1108,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    ФУТЕР
-    ============================================================ -->
+    <!-- ФУТЕР -->
     <footer>
         <div class="footer-links">
             <a href="#">Правила безопасности</a>
@@ -1428,29 +1122,20 @@
             <a href="#"><i class="fab fa-youtube"></i></a>
             <a href="#"><i class="fab fa-telegram"></i></a>
         </div>
-        <div class="copy">© 2026 SkinHub. Все сделки защищены. Не связан с Valve Corporation.</div>
+        <div class="copy">© 2026 SkinHive. Все сделки защищены. Не связан с Valve Corporation.</div>
     </footer>
 
-    <!-- ============================================================
-    JAVASCRIPT — STEAM 2026
-    ============================================================ -->
     <script>
-        // ============================================================
-        // ОБЩИЕ КЛЮЧИ ДЛЯ localStorage
-        // ============================================================
         const STORAGE_KEYS = {
-            USER: 'skinHub_user',
-            BALANCE: 'skinHub_balance',
-            LOGGED_IN: 'skinHub_loggedIn',
-            OWNED_SKINS: 'skinHub_ownedSkins',
-            TRANSACTIONS: 'skinHub_transactions',
-            CART: 'skinHub_cart',
-            THEME: 'skinHub_theme'
+            USER: 'skinHive_user',
+            BALANCE: 'skinHive_balance',
+            LOGGED_IN: 'skinHive_loggedIn',
+            OWNED_SKINS: 'skinHive_ownedSkins',
+            TRANSACTIONS: 'skinHive_transactions',
+            CART: 'skinHive_cart',
+            THEME: 'skinHive_theme'
         };
 
-        // ============================================================
-        // ДАННЫЕ СКИНА (AWP DRAGON LORE)
-        // ============================================================
         const skin = {
             id: 1,
             name: 'AWP Dragon Lore',
@@ -1463,9 +1148,6 @@
             hasImage: true
         };
 
-        // ============================================================
-        // ДАННЫЕ КАЧЕСТВ
-        // ============================================================
         const qualities = [
             { name: 'Factory New', price: 2500, float: '0.00-0.07', icon: '✨' },
             { name: 'Minimal Wear', price: 2125, float: '0.07-0.15', icon: '🌟' },
@@ -1474,19 +1156,12 @@
             { name: 'Battle-Scarred', price: 625, float: '0.45-1.00', icon: '🌑' }
         ];
 
-        // ============================================================
-        // СОСТОЯНИЕ
-        // ============================================================
         let isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
         let user = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || { email: '', username: 'Гость', avatar: '👤' };
         let balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
         let selectedQuality = 0;
         let toastTimeout = null;
-        let isRegister = false;
 
-        // ============================================================
-        // ГЕНЕРАЦИЯ ДАННЫХ ДЛЯ ГРАФИКА
-        // ============================================================
         function generateChartData(basePrice, days) {
             const data = [];
             let price = basePrice;
@@ -1494,17 +1169,11 @@
                 const change = (Math.random() - 0.45) * 0.06;
                 price = price * (1 + change);
                 price = Math.max(price, basePrice * 0.6);
-                data.push({
-                    day: i + 1,
-                    price: Math.round(price * 100) / 100
-                });
+                data.push({ day: i + 1, price: Math.round(price * 100) / 100 });
             }
             return data;
         }
 
-        // ============================================================
-        // РЕНДЕРИНГ ГРАФИКА
-        // ============================================================
         function renderChart(period) {
             const container = document.getElementById('chartContainer');
             const days = period || 7;
@@ -1518,7 +1187,7 @@
                 const height = ((d.price - minPrice) / range) * 90 + 10;
                 const isLast = index === data.length - 1;
                 return `
-                    <div class="chart-bar" style="height: ${Math.max(height, 10)}%; background: linear-gradient(180deg, ${isLast ? 'var(--steam-orange)' : 'var(--steam-blue)'}, var(--steam-blue-dark));">
+                    <div class="chart-bar" style="height: ${Math.max(height, 10)}%; background: linear-gradient(180deg, ${isLast ? 'var(--steam-orange)' : 'var(--hive-yellow)'}, ${isLast ? 'var(--steam-orange-dark)' : 'var(--hive-yellow-dark)'});">
                         <span class="bar-price">$${d.price.toFixed(2)}</span>
                         <span class="bar-label">${index + 1}</span>
                     </div>
@@ -1526,12 +1195,8 @@
             }).join('');
         }
 
-        // ============================================================
-        // РЕНДЕРИНГ КАЧЕСТВ (ВЫБИРАЕМЫЕ)
-        // ============================================================
         function renderQualities() {
             const grid = document.getElementById('exteriorsGrid');
-
             grid.innerHTML = qualities.map((q, index) => {
                 const isActive = index === selectedQuality;
                 return `
@@ -1545,9 +1210,6 @@
             }).join('');
         }
 
-        // ============================================================
-        // ВЫБОР КАЧЕСТВА
-        // ============================================================
         function selectQuality(index) {
             selectedQuality = index;
             const quality = qualities[index];
@@ -1564,9 +1226,6 @@
             renderQualities();
         }
 
-        // ============================================================
-        // ТЕМА
-        // ============================================================
         function toggleTheme() {
             const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
             document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
@@ -1581,9 +1240,6 @@
             document.getElementById('themeIcon').className = 'fas fa-sun';
         }
 
-        // ============================================================
-        // TOAST
-        // ============================================================
         function showToast(text, type = 'default') {
             const toast = document.getElementById('toast');
             const toastText = document.getElementById('toastText');
@@ -1592,31 +1248,23 @@
             if (type === 'error') toast.classList.add('error');
             else if (type === 'success') toast.classList.add('success');
             clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        // ============================================================
-        // БАЛАНС
-        // ============================================================
         function updateBalanceUI() {
             const formatted = '$' + balance.toFixed(2);
             document.getElementById('walletBalance').textContent = formatted;
         }
 
-        // ============================================================
-        // АВТОРИЗАЦИЯ
-        // ============================================================
         function updateAuthUI() {
             if (isLoggedIn) {
                 document.getElementById('authBtnText').textContent = user.username;
-                document.getElementById('steamLoginBtn').style.borderColor = 'var(--steam-blue)';
-                document.getElementById('steamLoginBtn').style.color = 'var(--steam-blue)';
+                document.getElementById('steamLoginBtn').style.borderColor = 'var(--hive-yellow)';
+                document.getElementById('steamLoginBtn').style.color = 'var(--hive-yellow)';
             } else {
                 document.getElementById('authBtnText').textContent = 'Войти';
-                document.getElementById('steamLoginBtn').style.borderColor = 'rgba(255,255,255,0.08)';
-                document.getElementById('steamLoginBtn').style.color = '#fff';
+                document.getElementById('steamLoginBtn').style.borderColor = 'var(--hive-yellow)';
+                document.getElementById('steamLoginBtn').style.color = 'var(--hive-yellow)';
             }
         }
 
@@ -1625,17 +1273,8 @@
             const password = document.getElementById('authPassword').value.trim();
             const errorEl = document.getElementById('authError');
 
-            if (!email || !password) {
-                errorEl.textContent = '⚠️ Заполните все поля!';
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            if (password.length < 6) {
-                errorEl.textContent = '⚠️ Пароль должен быть минимум 6 символов!';
-                errorEl.style.display = 'block';
-                return;
-            }
+            if (!email || !password) { errorEl.textContent = '⚠️ Заполните все поля!'; errorEl.style.display = 'block'; return; }
+            if (password.length < 6) { errorEl.textContent = '⚠️ Пароль должен быть минимум 6 символов!'; errorEl.style.display = 'block'; return; }
 
             const isRegisterMode = document.getElementById('authBtnLabel').textContent === 'Зарегистрироваться';
 
@@ -1647,9 +1286,8 @@
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
                 document.getElementById('authModal').classList.remove('active');
-                showToast(`🎉 Добро пожаловать, ${user.username}!`, 'success');
-                updateAuthUI();
-                updateBalanceUI();
+                showToast(`🎉 Добро пожаловать в улей, ${user.username}!`, 'success');
+                updateAuthUI(); updateBalanceUI();
             } else {
                 const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
                 if (savedUser) {
@@ -1659,9 +1297,8 @@
                         user = parsed;
                         balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
                         document.getElementById('authModal').classList.remove('active');
-                        showToast(`👋 С возвращением, ${user.username}!`, 'success');
-                        updateAuthUI();
-                        updateBalanceUI();
+                        showToast(`👋 С возвращением в улей, ${user.username}!`, 'success');
+                        updateAuthUI(); updateBalanceUI();
                         return;
                     }
                 }
@@ -1672,9 +1309,8 @@
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
                 document.getElementById('authModal').classList.remove('active');
-                showToast(`🎉 Добро пожаловать, ${user.username}!`, 'success');
-                updateAuthUI();
-                updateBalanceUI();
+                showToast(`🎉 Добро пожаловать в улей, ${user.username}!`, 'success');
+                updateAuthUI(); updateBalanceUI();
             }
 
             document.getElementById('authEmail').value = '';
@@ -1685,13 +1321,13 @@
         function toggleAuthMode() {
             const isRegisterMode = document.getElementById('authBtnLabel').textContent === 'Зарегистрироваться';
             if (isRegisterMode) {
-                document.getElementById('authTitle').textContent = 'Вход в аккаунт';
+                document.getElementById('authTitle').textContent = 'Вход в улей';
                 document.getElementById('authSub').textContent = 'Войдите или зарегистрируйтесь';
                 document.getElementById('authBtnLabel').textContent = 'Войти';
                 document.getElementById('authSwitchText').textContent = 'Нет аккаунта?';
                 document.getElementById('authSwitchLink').textContent = 'Зарегистрироваться';
             } else {
-                document.getElementById('authTitle').textContent = 'Регистрация';
+                document.getElementById('authTitle').textContent = 'Регистрация в улье';
                 document.getElementById('authSub').textContent = 'Создайте аккаунт';
                 document.getElementById('authBtnLabel').textContent = 'Зарегистрироваться';
                 document.getElementById('authSwitchText').textContent = 'Уже есть аккаунт?';
@@ -1700,21 +1336,9 @@
             document.getElementById('authError').style.display = 'none';
         }
 
-        // ============================================================
-        // КОРЗИНА
-        // ============================================================
-        function getCartItems() {
-            return JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]');
-        }
-
-        function setCartItems(items) {
-            localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(items));
-            updateCartBadge();
-        }
-
-        function isInCart() {
-            return getCartItems().some(item => item.id === skin.id);
-        }
+        function getCartItems() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]'); }
+        function setCartItems(items) { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(items)); updateCartBadge(); }
+        function isInCart() { return getCartItems().some(item => item.id === skin.id); }
 
         function toggleCart() {
             const cart = getCartItems();
@@ -1731,7 +1355,7 @@
                 const quality = qualities[selectedQuality];
                 cart.push({ ...skin, price: quality.price, exterior: quality.name });
                 setCartItems(cart);
-                showToast('✅ Скин добавлен в корзину', 'success');
+                showToast('🐝 Скин добавлен в улей!', 'success');
                 const btn = document.getElementById('cartBtnDetail');
                 btn.innerHTML = '<i class="fas fa-check"></i> В корзине';
                 btn.classList.add('in-cart');
@@ -1740,31 +1364,24 @@
         }
 
         function updateCartBadge() {
-            const count = getCartItems().length;
-            document.getElementById('cartCount').textContent = count;
+            document.getElementById('cartCount').textContent = getCartItems().length;
         }
 
-        // ============================================================
-        // КУПИТЬ СЕЙЧАС
-        // ============================================================
         function buyNow() {
             if (!isLoggedIn) {
                 showToast('⚠️ Войдите в аккаунт!', 'error');
                 document.getElementById('authModal').classList.add('active');
                 return;
             }
-
             const quality = qualities[selectedQuality];
             const price = quality.price;
-
             if (balance < price) {
                 showToast(`❌ Недостаточно средств! Нужно $${price.toFixed(2)}, у вас $${balance.toFixed(2)}`, 'error');
                 return;
             }
 
-            const newBalance = balance - price;
-            localStorage.setItem(STORAGE_KEYS.BALANCE, newBalance.toString());
-            balance = newBalance;
+            balance -= price;
+            localStorage.setItem(STORAGE_KEYS.BALANCE, balance.toString());
             updateBalanceUI();
 
             const owned = JSON.parse(localStorage.getItem(STORAGE_KEYS.OWNED_SKINS) || '[]');
@@ -1781,84 +1398,14 @@
             localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(txs));
 
             showToast(`🎉 Скин "${skin.name}" (${quality.name}) куплен!`, 'success');
-            updateCartBadge();
         }
 
-        // ============================================================
-        // МОДАЛКА ПОПОЛНЕНИЯ
-        // ============================================================
         function openTopup() {
             showToast('💳 Пополнение кошелька доступно в личном кабинете', 'default');
             window.location.href = 'cabinet.html';
         }
 
-        // ============================================================
-        // АНИМИРОВАННЫЙ ФОН — С КАРТИНКАМИ СКИНОВ
-        // ============================================================
-        function initBackground() {
-            const bg = document.getElementById('bgAnimation');
-            if (!bg) return;
-
-            // Очищаем фон от старых элементов
-            const existingImgs = bg.querySelectorAll('.falling-skin-img');
-            existingImgs.forEach(el => el.remove());
-
-            // Реальные URL картинок скинов из Steam
-            const skinUrls = [
-                'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Z-ua6bbZrLOmsD2mv1edxtfNWQDuymxoijDGMnYftb3mfOg8hAsFzRrYCtxKxxtPlZOnl5gaM3ogQmX_7jnkdvHppseoGVvI7uvqAJhUGkWs',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1idwPx0vORWSSi3kCIrujqNjsGveH2RaVRxX5ohEe4Juhawm4fiM-ji4APf2YMXmSz_hyoduytv4uhWT-N7rfLHGBJ4',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiNW0PCvZaZiL8-ZG2mXzetJveRtRjy-20lwtzzRytb_dS-eagAnCsN0Q-detxO-x4HkYuLksQTXjNkUz3342ntXrnE85hrDYAs',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Wts2sab1iLvWHMWaR_uh3tORWQyC0nQlp4znQytr6cnjFbg8oC8BzRrQK50S-lNDgP-_r5wWP3t5CyX37jCIb7DErvbiJu9Hv_g',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_yaCW-E_ux6peRWQyC0nQlp4jjRyt-vJX6QblMgApt0R-5c5hLsktO2Nu_h4QaLg4MXyCmr2ClP7jErvbiwB_ADaw',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_CNk7uW-V6JsJPWsAm6Xyfo45-c5GXDnwB534DuEwtuoIHOfaAYiAsYjF-QItUaxmoC0MO_h5ALcjJUFk3sEzfdk4w',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwjFS4_ega6F_H_GeMWrEwL9lj-NlWiygmBIstgKJk4jxNWWeOg5xDJR2Q-5b5BGwxIDuP7uw4ALa3ohMz3n3iypLvyc55-pQUKct5OSJ2OKlF5Nn',
-                'https://community.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0PSneqF-JeKDC2mE_u995LZWTTuygxIYvzSCkpu3cnvFPQB2DpUkROFY4Rntw93lP7i241DbiI1BxSuviHlKunk_6-sHU71lpPMTRLyP4Q'
-            ];
-
-            // Создаем падающие элементы с картинками
-            for (let i = 0; i < 40; i++) {
-                const img = document.createElement('img');
-                img.className = 'falling-skin-img';
-                img.src = skinUrls[Math.floor(Math.random() * skinUrls.length)];
-                img.alt = 'skin';
-                img.loading = 'lazy';
-                
-                const size = Math.random() * 50 + 25;
-                const left = Math.random() * 95 + 2.5;
-                const duration = Math.random() * 15 + 10;
-                const delay = Math.random() * 20;
-                const rotation = Math.random() * 360;
-                const opacity = Math.random() * 0.05 + 0.02;
-                
-                img.style.cssText = `
-                    left: ${left}%;
-                    width: ${size}px;
-                    height: auto;
-                    animation-duration: ${duration}s;
-                    animation-delay: ${delay}s;
-                    transform: rotate(${rotation}deg);
-                    opacity: ${opacity};
-                    filter: blur(${Math.random() * 0.5}px);
-                    object-fit: contain;
-                `;
-                
-                img.onerror = function() {
-                    this.style.display = 'none';
-                };
-                
-                bg.appendChild(img);
-            }
-        }
-
-        // ============================================================
-        // СОБЫТИЯ
-        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Инициализация фона
-            initBackground();
-            
-            // Инициализация остальных элементов
             balance = parseFloat(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 0;
             isLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN) === 'true';
 
@@ -1874,11 +1421,6 @@
                 btn.innerHTML = '<i class="fas fa-check"></i> В корзине';
                 btn.classList.add('in-cart');
             }
-
-            console.log('🐉 Страница AWP Dragon Lore (Steam 2026) загружена!');
-            console.log(`👤 Пользователь: ${isLoggedIn ? user.username : 'Гость'}`);
-            console.log(`💰 Баланс: $${balance}`);
-            console.log('📸 Падающие картинки скинов активированы!');
         });
 
         document.getElementById('steamLoginBtn')?.addEventListener('click', function() {
@@ -1889,9 +1431,8 @@
                 localStorage.setItem(STORAGE_KEYS.BALANCE, '0');
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'false');
-                updateAuthUI();
-                updateBalanceUI();
-                showToast('👋 Вы вышли из аккаунта', 'default');
+                updateAuthUI(); updateBalanceUI();
+                showToast('👋 Вы вышли из улья', 'default');
                 return;
             }
             document.getElementById('authModal').classList.add('active');
@@ -1906,29 +1447,21 @@
         });
 
         document.getElementById('authForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleAuth();
+            e.preventDefault(); handleAuth();
         });
 
         document.getElementById('authSubmitBtn')?.addEventListener('click', handleAuth);
-
-        document.getElementById('cartBtn')?.addEventListener('click', function() {
-            window.location.href = 'index.html';
-        });
-
+        document.getElementById('cartBtn')?.addEventListener('click', function() { window.location.href = 'index.html'; });
         document.getElementById('buyNowBtn')?.addEventListener('click', buyNow);
         document.getElementById('cartBtnDetail')?.addEventListener('click', toggleCart);
 
-        // Кнопки периодов графика
         document.querySelectorAll('.chart-periods button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.chart-periods button').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                const period = parseInt(this.dataset.period);
-                renderChart(period);
+                renderChart(parseInt(this.dataset.period));
             });
         });
     </script>
-
 </body>
 </html>
