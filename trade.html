@@ -923,7 +923,7 @@
                     </button>
                     <div class="wallet" onclick="openTopup()">
                         <i class="fas fa-dollar-sign"></i>
-                        <span class="wallet-balance" id="walletBalance">$0.00</span>
+                        <span class="wallet-balance" id="walletBalance">0.00</span>
                     </div>
                     <button class="cart-btn" id="cartBtn">
                         <i class="fas fa-shopping-cart"></i>
@@ -1428,7 +1428,7 @@
         }
 
         function updateBalanceUI() {
-            const formatted = '$' + balance.toFixed(2);
+            const formatted =  + balance.toFixed(2);
             document.getElementById('walletBalance').textContent = formatted;
         }
 
