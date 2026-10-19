@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkinHub — Личный кабинет</title>
+    <title>SkinHive — Личный кабинет</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* =========================================================
-                   STEAM 2026 — ПЕРЕМЕННЫЕ
-                   ========================================================= */
         :root {
             --bg-primary: #0e1217;
             --bg-secondary: #171d25;
@@ -30,12 +27,18 @@
             --steam-orange-light: #ff8833;
             --steam-gold: #d4a843;
             --steam-gold-light: #f0d080;
+            --hive-yellow: #f5c518;
+            --hive-yellow-dark: #d4a015;
+            --hive-yellow-light: #ffe066;
+            --hive-honey: #ffb300;
             --rarity-gold: #d4a843;
             --rarity-contraband: #ff6b00;
             --rarity-red: #ff4444;
             --rarity-pink: #ff69b4;
             --rarity-purple: #aa66ff;
             --rarity-blue: #4488ff;
+            --glow-blue: 0 0 40px rgba(74, 144, 217, 0.15);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
             --radius: 10px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -49,13 +52,42 @@
             --text-primary: #1a2332;
             --text-secondary: #4a6a8a;
             --text-muted: #8a9aaa;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* СВЕТЛАЯ ТЕМА — БЕЛЫЕ ПАНЕЛИ */
+        [data-theme="light"] header,
+        [data-theme="light"] .cabinet-profile,
+        [data-theme="light"] .cabinet-tabs,
+        [data-theme="light"] .inventory-item,
+        [data-theme="light"] .transaction-item,
+        [data-theme="light"] .referral-box,
+        [data-theme="light"] .security-box,
+        [data-theme="light"] .modal,
+        [data-theme="light"] .toast,
+        [data-theme="light"] footer {
+            background: #ffffff;
         }
+
+        [data-theme="light"] .cabinet-tab:hover {
+            background: rgba(245, 197, 24, 0.1);
+        }
+        
+        [data-theme="light"] .cabinet-tab.active {
+            background: rgba(245, 197, 24, 0.15);
+        }
+
+        [data-theme="light"] .inventory-item .item-image {
+            background: #f8fafc;
+        }
+
+        [data-theme="light"] .filter-menu, 
+        [data-theme="light"] .card-form,
+        [data-theme="light"] .form-group input {
+            background: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -67,47 +99,23 @@
         }
 
         /* =========================================================
-                   АНИМИРОВАННЫЙ ФОН
+                   СТАТИЧНЫЙ ФОН
                    ========================================================= */
         .bg-animation {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
         }
-
-        .bg-animation .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            animation: pulse-orb 10s ease-in-out infinite;
-            opacity: 0.06;
-            will-change: transform;
-        }
-
-        @keyframes pulse-orb {
-            0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.04; }
-            50% { transform: scale(1.8) translate(40px, -30px); opacity: 0.10; }
-        }
-
         .bg-animation .steam-grid {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(74, 144, 217, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(74, 144, 217, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(245, 197, 24, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 197, 24, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-            animation: grid-shift 20s linear infinite;
-        }
-
-        @keyframes grid-shift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
         }
 
         .container {
@@ -122,281 +130,175 @@
                    ХЕДЕР
                    ========================================================= */
         header {
-            padding: 14px 0;
-            border-bottom: 2px solid var(--border-color);
+            padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(14, 18, 23, 0.92);
+            background: rgba(14, 18, 23, 0.55);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            margin-top: 12px;
             transition: background 0.4s ease;
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.15), inset 0 0 30px rgba(245, 197, 24, 0.03);
         }
-
-        [data-theme="light"] header {
-            background: rgba(232, 236, 242, 0.92);
-        }
-
+        
         .header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+            padding: 0 20px;
         }
-
+        
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            color: var(--text-primary);
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900;
+            cursor: pointer; transition: opacity 0.4s ease, transform 0.4s ease;
+            text-decoration: none; color: var(--text-primary);
+            margin-right: auto; opacity: 1; transform: scale(1); position: relative;
+        }
+        .logo:hover { transform: scale(1.03); }
+        .logo .cs-text {
+            background: linear-gradient(135deg, var(--hive-yellow-light), var(--hive-yellow), var(--hive-honey));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; position: relative; z-index: 2;
+        }
+        .logo .cs-text span { color: var(--hive-honey); -webkit-text-fill-color: var(--hive-honey); }
+        .logo .mini-hive {
+            width: 28px; height: 28px; object-fit: contain;
+            position: relative; z-index: 2;
+            filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.4));
         }
 
-        .logo:hover {
-            transform: scale(1.03);
-        }
-
-        .logo-skin {
-            color: var(--steam-blue);
-        }
-
-        .logo-hub {
-            color: var(--steam-orange);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
+        nav { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
         nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-            letter-spacing: 0.3px;
+            color: var(--text-secondary); text-decoration: none;
+            font-weight: 600; font-size: 14px; transition: var(--transition);
+            position: relative; cursor: pointer; letter-spacing: 0.3px;
         }
-
-        nav a:hover {
-            color: var(--steam-blue);
-        }
-
-        nav a.active {
-            color: var(--steam-blue);
-        }
-
+        nav a:hover { color: var(--hive-yellow); }
+        nav a.active { color: var(--hive-yellow); }
         nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--steam-blue);
-            box-shadow: 0 0 20px rgba(74, 144, 217, 0.4);
+            content: ''; position: absolute; bottom: -6px; left: 0;
+            width: 100%; height: 2px; background: var(--hive-yellow);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.5);
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .btn-theme {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+            background: rgba(245, 197, 24, 0.05); border: 1px solid var(--hive-yellow);
+            color: var(--hive-yellow); width: 38px; height: 38px; border-radius: 50%;
+            cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
-
-        .btn-theme:hover {
-            border-color: var(--steam-blue);
-            color: var(--steam-blue);
-        }
-
+        .btn-theme:hover { background: rgba(245, 197, 24, 0.15); }
         .btn-steam {
-            background: linear-gradient(135deg, #1a2332, #2a3a4a);
-            color: #fff;
-            border: 1px solid rgba(74, 144, 217, 0.15);
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(245, 197, 24, 0.05); color: var(--hive-yellow);
+            border: 1px solid var(--hive-yellow); padding: 8px 18px;
+            border-radius: 40px; font-weight: 600; font-size: 12px;
+            cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; gap: 8px;
         }
-
-        .btn-steam i {
-            color: var(--steam-blue);
-        }
-
-        .btn-steam:hover {
-            border-color: var(--steam-blue);
-            transform: scale(1.04);
-            box-shadow: 0 0 24px rgba(74, 144, 217, 0.15);
-        }
-
+        .btn-steam i { color: var(--hive-yellow); }
+        .btn-steam:hover { background: rgba(245, 197, 24, 0.15); transform: scale(1.04); box-shadow: 0 0 24px rgba(245, 197, 24, 0.3); }
         .wallet {
-            background: rgba(212, 168, 67, 0.08);
-            border: 1px solid rgba(212, 168, 67, 0.15);
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--steam-gold);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: var(--transition);
+            background: rgba(245, 197, 24, 0.05); border: 1px solid var(--hive-yellow);
+            padding: 8px 18px; border-radius: 40px; font-weight: 700;
+            font-size: 13px; color: var(--hive-yellow);
+            display: flex; align-items: center; gap: 6px;
+            cursor: pointer; transition: var(--transition);
         }
-
-        .wallet:hover {
-            background: rgba(212, 168, 67, 0.15);
-            border-color: var(--steam-gold);
-            transform: scale(1.02);
-        }
-
+        .wallet:hover { background: rgba(245, 197, 24, 0.15); transform: scale(1.02); }
         .cart-btn {
-            background: rgba(74, 144, 217, 0.06);
-            border: 1px solid rgba(74, 144, 217, 0.12);
-            padding: 8px 16px;
-            border-radius: 40px;
-            color: var(--steam-blue);
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
+            background: rgba(245, 197, 24, 0.05); border: 1px solid var(--hive-yellow);
+            padding: 8px 16px; border-radius: 40px; color: var(--hive-yellow);
+            font-weight: 700; font-size: 12px; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; gap: 6px; position: relative;
         }
-
-        .cart-btn:hover {
-            background: rgba(74, 144, 217, 0.10);
-        }
-
+        .cart-btn:hover { background: rgba(245, 197, 24, 0.15); }
         .cart-count {
-            background: var(--steam-orange);
-            color: #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 800;
-            position: absolute;
-            top: -6px;
-            right: -6px;
+            background: var(--steam-orange); color: #fff; border-radius: 50%;
+            width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 800; position: absolute; top: -6px; right: -6px;
             box-shadow: 0 0 16px rgba(255, 107, 0, 0.3);
         }
 
         /* =========================================================
-                   ЛИЧНЫЙ КАБИНЕТ
+                   ЛИЧНЫЙ КАБИНЕТ (ОБЕРТКА)
                    ========================================================= */
         .cabinet-section {
-            margin: 30px 0 40px;
+            margin: 20px 0 40px;
         }
 
+        /* ПРОФИЛЬ */
         .cabinet-profile {
             display: flex;
             gap: 24px;
             padding: 24px 28px;
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
             margin-bottom: 20px;
             flex-wrap: wrap;
             align-items: center;
+            box-shadow: 0 0 40px rgba(245, 197, 24, 0.1), inset 0 0 40px rgba(245, 197, 24, 0.02);
         }
 
         .cabinet-avatar {
-            width: 72px;
-            height: 72px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--steam-blue), var(--steam-orange));
+            background: linear-gradient(135deg, var(--hive-yellow-dark), var(--hive-yellow));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            color: #fff;
+            font-size: 36px;
+            color: #1a1a1a;
             cursor: pointer;
             transition: var(--transition);
-            border: 2px solid transparent;
+            border: 2px solid var(--hive-yellow);
             overflow: hidden;
             position: relative;
             flex-shrink: 0;
         }
 
         .cabinet-avatar:hover {
-            border-color: var(--steam-blue);
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(74, 144, 217, 0.15);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.3);
         }
 
-        .cabinet-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .cabinet-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .cabinet-avatar .avatar-overlay {
             position: absolute;
-            bottom: 0;
-            right: 0;
+            bottom: 0; right: 0;
             background: var(--bg-primary);
-            border: 2px solid var(--steam-blue);
+            border: 2px solid var(--hive-yellow);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: var(--steam-blue);
-            cursor: pointer;
-            transition: var(--transition);
+            width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; color: var(--hive-yellow);
+            cursor: pointer; transition: var(--transition);
         }
 
         .cabinet-avatar .avatar-overlay:hover {
-            background: var(--steam-blue);
-            color: #fff;
+            background: var(--hive-yellow);
+            color: #1a1a1a;
         }
 
-        .cabinet-user-info {
-            flex: 1;
-        }
+        .cabinet-user-info { flex: 1; }
 
         .cabinet-user-info .username {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             letter-spacing: 0.5px;
+            color: var(--hive-yellow);
+            text-shadow: 0 0 10px rgba(245, 197, 24, 0.3);
         }
 
         .cabinet-user-info .user-email {
@@ -407,7 +309,7 @@
         .cabinet-user-info .user-trade {
             color: var(--text-secondary);
             font-size: 13px;
-            margin-top: 4px;
+            margin-top: 6px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -415,15 +317,13 @@
         }
 
         .cabinet-user-info .user-trade a {
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
             text-decoration: none;
             cursor: pointer;
             font-weight: 500;
         }
 
-        .cabinet-user-info .user-trade a:hover {
-            text-decoration: underline;
-        }
+        .cabinet-user-info .user-trade a:hover { text-decoration: underline; }
 
         .cabinet-user-info .user-trade .trade-edit {
             color: var(--text-secondary);
@@ -432,61 +332,66 @@
             transition: var(--transition);
             padding: 2px 10px;
             border-radius: 40px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(245, 197, 24, 0.3);
         }
 
         .cabinet-user-info .user-trade .trade-edit:hover {
-            border-color: var(--steam-blue);
-            color: var(--steam-blue);
+            border-color: var(--hive-yellow);
+            color: var(--hive-yellow);
         }
 
         .cabinet-user-info .user-balance {
-            margin-top: 6px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--steam-gold);
+            margin-top: 8px;
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--hive-yellow);
         }
 
+        /* ВКЛАДКИ */
         .cabinet-tabs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 16px;
-            background: var(--bg-card);
-            padding: 6px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            background: rgba(14, 18, 23, 0.4);
+            padding: 8px;
+            border-radius: 12px;
+            border: 2px solid var(--hive-yellow);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.08);
         }
 
         .cabinet-tab {
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 40px;
             background: transparent;
-            border: none;
+            border: 1px solid transparent;
             color: var(--text-secondary);
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .cabinet-tab:hover {
-            color: var(--text-primary);
-            background: rgba(74, 144, 217, 0.05);
+            color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.05);
+            border-color: rgba(245, 197, 24, 0.2);
         }
 
         .cabinet-tab.active {
-            background: rgba(74, 144, 217, 0.10);
-            color: var(--steam-blue);
+            background: rgba(245, 197, 24, 0.15);
+            color: var(--hive-yellow);
+            border-color: var(--hive-yellow);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.2);
         }
 
-        .cabinet-content .tab-content {
-            display: none;
-        }
-
-        .cabinet-content .tab-content.active {
-            display: block;
-        }
+        .cabinet-content .tab-content { display: none; }
+        .cabinet-content .tab-content.active { display: block; }
 
         /* =========================================================
                    ИНВЕНТАРЬ
@@ -498,26 +403,28 @@
         }
 
         .inventory-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            border: 1px solid var(--hive-yellow);
             border-radius: var(--radius);
             padding: 16px 16px 14px;
             transition: var(--transition);
             display: flex;
             flex-direction: column;
             position: relative;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.08), inset 0 0 20px rgba(245, 197, 24, 0.02);
         }
 
         .inventory-item:hover {
-            border-color: var(--steam-blue);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(74, 144, 217, 0.08);
+            border-color: var(--hive-honey);
+            transform: translateY(-6px);
+            box-shadow: 0 0 40px rgba(245, 197, 24, 0.25), inset 0 0 40px rgba(245, 197, 24, 0.05);
         }
 
         .inventory-item .rarity-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 12px; right: 12px;
             padding: 3px 12px;
             border-radius: 40px;
             font-size: 9px;
@@ -527,37 +434,12 @@
             z-index: 2;
         }
 
-        .rarity-gold {
-            background: rgba(212, 168, 67, 0.15);
-            color: var(--rarity-gold);
-            border: 1px solid rgba(212, 168, 67, 0.2);
-        }
-        .rarity-contraband {
-            background: rgba(255, 107, 0, 0.15);
-            color: var(--rarity-contraband);
-            border: 1px solid rgba(255, 107, 0, 0.25);
-            box-shadow: 0 0 20px rgba(255, 107, 0, 0.06);
-        }
-        .rarity-red {
-            background: rgba(255, 68, 68, 0.12);
-            color: var(--rarity-red);
-            border: 1px solid rgba(255, 68, 68, 0.15);
-        }
-        .rarity-pink {
-            background: rgba(255, 105, 180, 0.12);
-            color: var(--rarity-pink);
-            border: 1px solid rgba(255, 105, 180, 0.15);
-        }
-        .rarity-purple {
-            background: rgba(170, 102, 255, 0.12);
-            color: var(--rarity-purple);
-            border: 1px solid rgba(170, 102, 255, 0.15);
-        }
-        .rarity-blue {
-            background: rgba(68, 136, 255, 0.12);
-            color: var(--rarity-blue);
-            border: 1px solid rgba(68, 136, 255, 0.15);
-        }
+        .rarity-gold { background: rgba(212, 168, 67, 0.15); color: var(--rarity-gold); border: 1px solid rgba(212, 168, 67, 0.2); }
+        .rarity-contraband { background: rgba(255, 107, 0, 0.15); color: var(--rarity-contraband); border: 1px solid rgba(255, 107, 0, 0.25); box-shadow: 0 0 20px rgba(255, 107, 0, 0.06); }
+        .rarity-red { background: rgba(255, 68, 68, 0.12); color: var(--rarity-red); border: 1px solid rgba(255, 68, 68, 0.15); }
+        .rarity-pink { background: rgba(255, 105, 180, 0.12); color: var(--rarity-pink); border: 1px solid rgba(255, 105, 180, 0.15); }
+        .rarity-purple { background: rgba(170, 102, 255, 0.12); color: var(--rarity-purple); border: 1px solid rgba(170, 102, 255, 0.15); }
+        .rarity-blue { background: rgba(68, 136, 255, 0.12); color: var(--rarity-blue); border: 1px solid rgba(68, 136, 255, 0.15); }
 
         .inventory-item .item-image {
             width: 100%;
@@ -566,11 +448,12 @@
             align-items: center;
             justify-content: center;
             padding: 8px 0;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(14, 18, 23, 0.6);
             border-radius: 8px;
             margin-bottom: 10px;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(245, 197, 24, 0.1);
         }
 
         .inventory-item .item-image img {
@@ -589,9 +472,7 @@
             transform: scale(1.05);
         }
 
-        .inventory-item .item-details {
-            flex: 1;
-        }
+        .inventory-item .item-details { flex: 1; }
 
         .inventory-item .item-details .item-name {
             font-weight: 700;
@@ -625,19 +506,19 @@
             justify-content: space-between;
             margin-top: 12px;
             padding-top: 10px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid rgba(245, 197, 24, 0.2);
         }
 
         .inventory-item .item-footer .item-price {
             font-weight: 800;
             font-size: 16px;
-            color: var(--steam-gold);
+            color: var(--hive-yellow);
         }
 
         .inventory-item .item-footer .btn-claim {
-            background: rgba(74, 144, 217, 0.08);
-            border: 1px solid rgba(74, 144, 217, 0.15);
-            color: var(--steam-blue);
+            background: rgba(245, 197, 24, 0.08);
+            border: 1px solid var(--hive-yellow);
+            color: var(--hive-yellow);
             padding: 6px 18px;
             border-radius: 40px;
             font-weight: 700;
@@ -650,9 +531,10 @@
         }
 
         .inventory-item .item-footer .btn-claim:hover {
-            background: rgba(74, 144, 217, 0.18);
-            border-color: var(--steam-blue);
+            background: var(--hive-yellow);
+            color: #1a1a1a;
             transform: scale(1.04);
+            box-shadow: 0 4px 20px rgba(245, 197, 24, 0.3);
         }
 
         .cabinet-empty {
@@ -665,26 +547,21 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            border: 1px dashed rgba(245, 197, 24, 0.3);
+            border-radius: var(--radius);
+            background: rgba(14, 18, 23, 0.2);
         }
 
         .cabinet-empty i {
             font-size: 48px;
             margin-bottom: 12px;
             display: block;
-            color: var(--text-muted);
+            color: var(--hive-yellow);
             opacity: 0.5;
         }
 
-        .cabinet-empty p {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .cabinet-empty span {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
+        .cabinet-empty p { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+        .cabinet-empty span { font-size: 14px; color: var(--text-muted); }
 
         /* =========================================================
                    ТРАНЗАКЦИИ
@@ -692,22 +569,25 @@
         .transactions-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
 
         .transaction-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            border: 1px solid var(--hive-yellow);
             border-radius: var(--radius);
-            padding: 12px 16px;
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(245, 197, 24, 0.05);
         }
 
         .transaction-item .tx-info .tx-name {
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .transaction-item .tx-info .tx-date {
@@ -715,138 +595,113 @@
             color: var(--text-secondary);
         }
 
-        .transaction-item .tx-amount.plus {
-            color: #4caf50;
-        }
-
-        .transaction-item .tx-amount.minus {
-            color: var(--rarity-red);
-        }
+        .transaction-item .tx-amount.plus { color: #4caf50; font-weight: 700; }
+        .transaction-item .tx-amount.minus { color: var(--rarity-red); font-weight: 700; }
 
         /* =========================================================
                    РЕФЕРАЛКА
                    ========================================================= */
         .referral-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            border: 2px solid var(--hive-yellow);
             border-radius: var(--radius);
-            padding: 28px 24px;
+            padding: 36px 24px;
             text-align: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.08);
         }
 
+        .referral-box i { color: var(--hive-yellow) !important; }
+        .referral-box h3 { color: var(--hive-yellow); margin: 8px 0 4px; font-size: 22px; }
+
         .referral-box .ref-code {
-            background: rgba(74, 144, 217, 0.06);
-            border: 1px solid rgba(74, 144, 217, 0.15);
-            padding: 12px 24px;
-            border-radius: var(--radius);
-            font-size: 20px;
+            background: rgba(245, 197, 24, 0.08);
+            border: 1px dashed var(--hive-yellow);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 22px;
             font-weight: 800;
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
             display: inline-block;
-            margin: 10px 0;
+            margin: 14px 0;
             letter-spacing: 3px;
             font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(245, 197, 24, 0.3);
         }
 
         .referral-box .ref-link {
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
             text-decoration: none;
             display: block;
-            margin-top: 6px;
+            margin-top: 8px;
             font-weight: 500;
         }
 
-        .referral-box .ref-link:hover {
-            text-decoration: underline;
-        }
-
-        .referral-box .ref-active {
-            color: #4caf50;
-            font-weight: 600;
-            margin-top: 6px;
-        }
-
-        .referral-box .ref-stats {
-            margin-top: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .referral-box .ref-stats strong {
-            color: var(--steam-blue);
-        }
+        .referral-box .ref-link:hover { text-decoration: underline; }
+        .referral-box .ref-active { color: #4caf50; font-weight: 600; margin-top: 10px; }
+        .referral-box .ref-stats { margin-top: 10px; font-size: 14px; color: var(--text-secondary); }
+        .referral-box .ref-stats strong { color: var(--hive-yellow); }
 
         /* =========================================================
                    БЕЗОПАСНОСТЬ
                    ========================================================= */
         .security-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.4);
+            border: 2px solid var(--hive-yellow);
             border-radius: var(--radius);
-            padding: 16px 20px;
+            padding: 10px 24px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.08);
         }
 
         .security-box .sec-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(245, 197, 24, 0.2);
         }
 
-        .security-box .sec-item:last-child {
-            border-bottom: none;
-        }
-
-        .security-box .sec-item .sec-label {
-            font-weight: 600;
-            font-size: 13px;
-        }
+        .security-box .sec-item:last-child { border-bottom: none; }
+        .security-box .sec-item .sec-label { font-weight: 600; font-size: 14px; }
 
         .security-box .sec-item .sec-status {
             font-size: 12px;
             cursor: pointer;
             transition: var(--transition);
-            padding: 4px 14px;
+            padding: 6px 16px;
             border-radius: 40px;
             border: 1px solid transparent;
+            font-weight: 600;
         }
 
         .security-box .sec-item .sec-status.enabled {
             color: #4caf50;
-            border-color: rgba(76, 175, 80, 0.2);
-            background: rgba(76, 175, 80, 0.05);
+            border-color: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.1);
         }
-
-        .security-box .sec-item .sec-status.enabled::before {
-            content: '✅ ';
-        }
+        .security-box .sec-item .sec-status.enabled::before { content: '✅ '; }
 
         .security-box .sec-item .sec-status.disabled {
             color: var(--text-muted);
-            border-color: var(--border-color);
+            border-color: rgba(245, 197, 24, 0.2);
             background: transparent;
         }
-
-        .security-box .sec-item .sec-status.disabled::before {
-            content: '⬜ ';
-        }
+        .security-box .sec-item .sec-status.disabled::before { content: '⬜ '; }
 
         .security-box .sec-item .sec-status.change-btn {
-            color: var(--steam-blue);
-            border-color: rgba(74, 144, 217, 0.2);
-            background: rgba(74, 144, 217, 0.05);
+            color: var(--hive-yellow);
+            border-color: rgba(245, 197, 24, 0.4);
+            background: rgba(245, 197, 24, 0.05);
             cursor: pointer;
         }
-
         .security-box .sec-item .sec-status.change-btn:hover {
-            background: rgba(74, 144, 217, 0.12);
-            border-color: var(--steam-blue);
+            background: rgba(245, 197, 24, 0.15);
+            border-color: var(--hive-yellow);
         }
-
-        .security-box .sec-item .sec-status.change-btn::before {
-            content: '✏️ ';
-        }
+        .security-box .sec-item .sec-status.change-btn::before { content: '✏️ '; }
 
         /* =========================================================
                    МОДАЛЬНЫЕ ОКНА
@@ -854,10 +709,8 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(8px);
             z-index: 9999;
@@ -867,58 +720,36 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.94); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
 
         .modal {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.95);
+            border: 2px solid var(--hive-yellow);
             border-radius: 16px;
             max-width: 520px;
             width: 100%;
             padding: 32px 30px;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(245, 197, 24, 0.2);
             max-height: 90vh;
             overflow-y: auto;
+            backdrop-filter: blur(12px);
         }
 
         .modal-close {
             position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 22px;
-            cursor: pointer;
-            transition: var(--transition);
+            top: 14px; right: 18px;
+            background: none; border: none;
+            color: var(--hive-yellow);
+            font-size: 22px; cursor: pointer; transition: var(--transition);
         }
 
-        .modal-close:hover {
-            color: var(--text-primary);
-            transform: rotate(90deg);
-        }
+        .modal-close:hover { transform: rotate(90deg); }
 
-        .modal-icon {
-            font-size: 44px;
-            text-align: center;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .modal h2 {
-            font-size: 24px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 2px;
-        }
+        .modal-icon { font-size: 44px; text-align: center; display: block; margin-bottom: 8px; }
+        .modal h2 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 4px; color: var(--hive-yellow); }
 
         .modal .modal-sub {
             color: var(--text-secondary);
@@ -928,24 +759,22 @@
             font-weight: 400;
         }
 
-        .modal .form-group {
-            margin-bottom: 12px;
-        }
+        .modal .form-group { margin-bottom: 16px; }
 
         .modal .form-group label {
             display: block;
             font-size: 12px;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-weight: 600;
             letter-spacing: 0.3px;
         }
 
         .modal .form-group input {
             width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid var(--hive-yellow);
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 14px;
@@ -953,27 +782,25 @@
             transition: var(--transition);
         }
 
-        .modal .form-group input:focus {
-            border-color: var(--steam-blue);
-        }
+        .modal .form-group input:focus { box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15); }
 
         .modal .btn-pay {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
-            color: #fff;
+            background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
+            color: #1a1a1a;
             border: none;
             border-radius: 60px;
             font-weight: 700;
             font-size: 15px;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.10);
+            box-shadow: 0 4px 24px rgba(245, 197, 24, 0.3);
         }
 
         .modal .btn-pay:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 36px rgba(74, 144, 217, 0.25);
+            box-shadow: 0 8px 36px rgba(245, 197, 24, 0.5);
         }
 
         .modal .error-text {
@@ -985,8 +812,8 @@
         }
 
         .modal .auth-suggest {
-            background: rgba(74, 144, 217, 0.05);
-            border: 1px solid rgba(74, 144, 217, 0.08);
+            background: rgba(245, 197, 24, 0.05);
+            border: 1px solid rgba(245, 197, 24, 0.2);
             border-radius: 8px;
             padding: 10px 14px;
             margin-bottom: 16px;
@@ -995,60 +822,43 @@
             text-align: center;
         }
 
-        .modal .auth-suggest strong {
-            color: var(--text-primary);
-        }
+        .modal .auth-suggest strong { color: var(--hive-yellow); }
 
         .modal .auth-switch {
             text-align: center;
-            margin-top: 14px;
+            margin-top: 16px;
             font-size: 13px;
             color: var(--text-secondary);
         }
 
         .modal .auth-switch a {
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
         }
 
-        .modal .auth-switch a:hover {
-            text-decoration: underline;
-        }
+        .modal .auth-switch a:hover { text-decoration: underline; }
 
         /* =========================================================
                    ПОПОЛНЕНИЕ
                    ========================================================= */
-        #topupModal .modal {
-            max-width: 540px;
-            padding: 34px 32px 30px;
-        }
-
-        #topupModal .modal-icon {
-            font-size: 48px;
-        }
-
-        #topupModal h2 {
-            background: linear-gradient(135deg, var(--steam-gold-light), var(--steam-gold));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        #topupModal .modal { max-width: 540px; padding: 34px 32px 30px; }
+        #topupModal .modal-icon { font-size: 48px; }
 
         .topup-display {
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.6);
+            border: 2px solid var(--hive-yellow);
             border-radius: 14px;
             padding: 18px 20px;
             text-align: center;
             font-size: 44px;
             font-weight: 900;
-            color: var(--steam-gold);
+            color: var(--hive-yellow);
             margin-bottom: 20px;
             letter-spacing: 1px;
             transition: var(--transition);
-            box-shadow: inset 0 4px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 4px 24px rgba(0, 0, 0, 0.2), 0 0 20px rgba(245, 197, 24, 0.15);
             font-family: 'Orbitron', sans-serif;
         }
 
@@ -1067,8 +877,8 @@
 
         .amount-btn {
             padding: 12px 0;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.6);
+            border: 2px solid rgba(245, 197, 24, 0.3);
             border-radius: 12px;
             color: var(--text-secondary);
             font-weight: 700;
@@ -1081,37 +891,34 @@
         }
 
         .amount-btn:hover {
-            border-color: var(--steam-blue);
+            border-color: var(--hive-yellow);
             color: var(--text-primary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(74, 144, 217, 0.08);
+            box-shadow: 0 4px 16px rgba(245, 197, 24, 0.15);
         }
 
         .amount-btn.active {
-            border-color: var(--steam-blue);
-            background: rgba(74, 144, 217, 0.10);
-            color: var(--steam-blue);
-            box-shadow: 0 0 24px rgba(74, 144, 217, 0.06);
+            border-color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.15);
+            color: var(--hive-yellow);
+            box-shadow: 0 0 24px rgba(245, 197, 24, 0.2);
         }
 
         .amount-btn.active::before {
             content: '✓';
             position: absolute;
-            top: 3px;
-            right: 10px;
+            top: 3px; right: 10px;
             font-size: 11px;
-            color: var(--steam-blue);
+            color: var(--hive-yellow);
         }
 
-        .topup-custom {
-            margin-bottom: 16px;
-        }
+        .topup-custom { margin-bottom: 16px; }
 
         .topup-custom input {
             width: 100%;
             padding: 12px 16px;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.6);
+            border: 2px solid rgba(245, 197, 24, 0.3);
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 16px;
@@ -1123,14 +930,11 @@
         }
 
         .topup-custom input:focus {
-            border-color: var(--steam-blue);
-            box-shadow: 0 0 0 4px rgba(74, 144, 217, 0.05);
+            border-color: var(--hive-yellow);
+            box-shadow: 0 0 0 4px rgba(245, 197, 24, 0.1);
         }
 
-        .topup-custom input::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
+        .topup-custom input::placeholder { color: var(--text-muted); font-weight: 400; }
 
         .topup-methods {
             display: grid;
@@ -1141,8 +945,8 @@
 
         .method-btn {
             padding: 12px 0;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.6);
+            border: 2px solid rgba(245, 197, 24, 0.3);
             border-radius: 12px;
             color: var(--text-secondary);
             cursor: pointer;
@@ -1156,49 +960,35 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .method-btn i {
-            font-size: 24px;
-            transition: var(--transition);
-        }
-
-        .method-btn .method-label {
-            font-size: 10px;
-            opacity: 0.8;
-        }
+        .method-btn i { font-size: 24px; transition: var(--transition); }
+        .method-btn .method-label { font-size: 10px; opacity: 0.8; }
 
         .method-btn:hover {
-            border-color: var(--steam-blue);
+            border-color: var(--hive-yellow);
             color: var(--text-primary);
             transform: translateY(-2px);
         }
 
         .method-btn.active {
-            border-color: var(--steam-blue);
-            background: rgba(74, 144, 217, 0.08);
-            color: var(--steam-blue);
+            border-color: var(--hive-yellow);
+            background: rgba(245, 197, 24, 0.15);
+            color: var(--hive-yellow);
         }
 
-        .method-btn.active i {
-            color: var(--steam-blue);
-        }
+        .method-btn.active i { color: var(--hive-yellow); }
 
         .card-form {
             display: none;
             padding: 18px;
-            background: var(--bg-card);
+            background: rgba(14, 18, 23, 0.6);
             border-radius: 14px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(245, 197, 24, 0.3);
             margin-bottom: 16px;
             animation: fadeIn 0.3s ease;
         }
 
-        .card-form.active {
-            display: block;
-        }
-
-        .card-form .form-group {
-            margin-bottom: 12px;
-        }
+        .card-form.active { display: block; }
+        .card-form .form-group { margin-bottom: 12px; }
 
         .card-form .form-group label {
             display: block;
@@ -1213,8 +1003,8 @@
         .card-form .form-group input {
             width: 100%;
             padding: 10px 14px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(14, 18, 23, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.3);
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 14px;
@@ -1224,8 +1014,8 @@
         }
 
         .card-form .form-group input:focus {
-            border-color: var(--steam-blue);
-            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.05);
+            border-color: var(--hive-yellow);
+            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.1);
         }
 
         .card-form .form-row {
@@ -1237,15 +1027,15 @@
         #topupModal .btn-pay {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
-            color: #fff;
+            background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
+            color: #1a1a1a;
             border: none;
             border-radius: 60px;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.15);
+            box-shadow: 0 4px 24px rgba(245, 197, 24, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1255,12 +1045,10 @@
 
         #topupModal .btn-pay:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 40px rgba(74, 144, 217, 0.25);
+            box-shadow: 0 8px 40px rgba(245, 197, 24, 0.5);
         }
 
-        #topupModal .btn-pay i {
-            font-size: 18px;
-        }
+        #topupModal .btn-pay i { font-size: 18px; }
 
         .topup-security {
             display: flex;
@@ -1272,21 +1060,17 @@
             color: var(--text-muted);
         }
 
-        .topup-security i {
-            color: #4caf50;
-            font-size: 14px;
-        }
+        .topup-security i { color: #4caf50; font-size: 14px; }
 
         /* =========================================================
                    УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
                    ========================================================= */
         .claim-toast {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            background: var(--bg-card);
-            border: 2px solid var(--steam-gold);
+            background: rgba(14, 18, 23, 0.95);
+            border: 2px solid var(--hive-yellow);
             border-radius: 20px;
             padding: 40px 50px;
             z-index: 99999;
@@ -1294,14 +1078,13 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(245, 197, 24, 0.3);
             animation: claimPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             max-width: 420px;
+            backdrop-filter: blur(12px);
         }
 
-        .claim-toast.show {
-            display: flex;
-        }
+        .claim-toast.show { display: flex; }
 
         @keyframes claimPop {
             0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
@@ -1322,7 +1105,7 @@
         .claim-toast .claim-title {
             font-size: 22px;
             font-weight: 800;
-            color: var(--steam-gold);
+            color: var(--hive-yellow);
             margin-bottom: 4px;
         }
 
@@ -1336,10 +1119,10 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
-            background: rgba(74, 144, 217, 0.06);
-            padding: 4px 16px;
+            background: rgba(245, 197, 24, 0.1);
+            padding: 6px 20px;
             border-radius: 40px;
-            border: 1px solid rgba(74, 144, 217, 0.12);
+            border: 1px solid rgba(245, 197, 24, 0.3);
             margin: 4px 0 12px;
         }
 
@@ -1348,14 +1131,12 @@
             color: var(--steam-blue);
         }
 
-        .claim-toast .claim-steam i {
-            margin-right: 6px;
-        }
+        .claim-toast .claim-steam i { margin-right: 6px; }
 
         .claim-toast .claim-btn-ok {
-            margin-top: 14px;
-            background: linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));
-            color: #fff;
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--hive-yellow), var(--hive-honey));
+            color: #1a1a1a;
             border: none;
             padding: 10px 34px;
             border-radius: 60px;
@@ -1367,7 +1148,7 @@
 
         .claim-toast .claim-btn-ok:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 24px rgba(74, 144, 217, 0.25);
+            box-shadow: 0 4px 24px rgba(245, 197, 24, 0.4);
         }
 
         /* =========================================================
@@ -1375,112 +1156,87 @@
                    ========================================================= */
         .toast {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            bottom: 28px; right: 28px;
+            background: rgba(14, 18, 23, 0.95);
+            border: 1px solid var(--hive-yellow);
             border-radius: var(--radius);
             padding: 14px 22px;
             display: none;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(245, 197, 24, 0.2);
             animation: slideIn 0.4s ease;
             z-index: 99998;
             max-width: 380px;
+            backdrop-filter: blur(12px);
         }
 
-        .toast.show {
-            display: flex;
-        }
+        .toast.show { display: flex; }
+        .toast i { font-size: 20px; }
+        .toast .toast-text { font-weight: 600; font-size: 14px; }
 
-        .toast i {
-            font-size: 20px;
-        }
+        .toast.error { border-color: var(--rarity-red); }
+        .toast.error i { color: var(--rarity-red); }
 
-        .toast .toast-text {
-            font-weight: 600;
-            font-size: 14px;
-        }
+        .toast.success { border-color: var(--hive-yellow); }
+        .toast.success i { color: var(--hive-yellow); }
 
-        .toast.error {
-            border-color: var(--rarity-red);
-        }
-
-        .toast.error i {
-            color: var(--rarity-red);
-        }
-
-        .toast.success {
-            border-color: #4caf50;
-        }
-
-        .toast.success i {
-            color: #4caf50;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
         /* =========================================================
                    ФУТЕР
                    ========================================================= */
         footer {
             padding: 34px 0 24px;
-            border-top: 2px solid var(--border-color);
             margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 18px;
+            background: rgba(14, 18, 23, 0.4);
+            border: 2px solid var(--hive-yellow);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.08), inset 0 0 20px rgba(245, 197, 24, 0.02);
         }
 
-        footer .footer-links {
-            display: flex;
-            gap: 28px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
+        footer .footer-links { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
         footer .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 13px;
-            transition: var(--transition);
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 13px; transition: var(--transition);
         }
-
-        footer .footer-links a:hover {
-            color: var(--steam-blue);
-        }
-
-        footer .socials {
-            display: flex;
-            gap: 18px;
-        }
-
+        footer .footer-links a:hover { color: var(--hive-yellow); }
+        footer .socials { display: flex; gap: 18px; }
         footer .socials a {
-            color: var(--text-secondary);
-            font-size: 22px;
+            color: var(--text-secondary); font-size: 22px;
             transition: var(--transition);
         }
-
-        footer .socials a:hover {
-            color: var(--steam-blue);
-            transform: translateY(-3px);
-        }
-
+        footer .socials a:hover { color: var(--hive-yellow); transform: translateY(-3px); }
         footer .copy {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-align: center;
-            letter-spacing: 0.3px;
+            font-size: 12px; color: var(--text-muted);
+            text-align: center; letter-spacing: 0.3px;
         }
 
         /* =========================================================
                    АДАПТИВ
                    ========================================================= */
+        @media (max-width: 768px) {
+            .container { padding: 0 12px; }
+            header { padding: 12px 0; margin-top: 8px; }
+            .header-inner { flex-direction: column; align-items: stretch; gap: 10px; padding: 0 12px; }
+            nav { justify-content: center; gap: 14px; }
+            .header-actions { justify-content: center; }
+            .logo { font-size: 26px; justify-content: center; }
+            .cabinet-profile { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+            .cabinet-user-info .user-trade { justify-content: center; }
+            .cabinet-tabs { justify-content: center; }
+            .card-form .form-row { grid-template-columns: 1fr; }
+            .toast { bottom: 80px; right: 12px; left: 12px; max-width: unset; }
+            footer .footer-links { gap: 16px; }
+            footer .socials { gap: 14px; }
+        }
+
         @media (max-width: 600px) {
             .modal { padding: 20px 16px; }
             .topup-amounts { grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -1500,51 +1256,25 @@
             .claim-toast .claim-icon { font-size: 48px; }
             .claim-toast .claim-title { font-size: 18px; }
             .cabinet-tabs { gap: 4px; padding: 4px; }
-            .cabinet-tab { font-size: 11px; padding: 6px 12px; }
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 0 12px; }
-            header { padding: 12px 0; }
-            .header-inner { flex-direction: column; align-items: stretch; gap: 10px; }
-            nav { justify-content: center; gap: 14px; }
-            .header-actions { justify-content: center; }
-            .cabinet-profile { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
-            .cabinet-user-info .user-trade { justify-content: center; }
-            .cabinet-tabs { justify-content: center; }
-            .card-form .form-row { grid-template-columns: 1fr; }
-            .toast { bottom: 80px; right: 12px; left: 12px; max-width: unset; }
-            footer .footer-links { gap: 16px; }
-            footer .socials { gap: 14px; }
+            .cabinet-tab { font-size: 11px; padding: 8px 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-    АНИМИРОВАННЫЙ ФОН
-    ============================================================ -->
+    <!-- СТАТИЧНЫЙ ФОН -->
     <div class="bg-animation" id="bgAnimation">
         <div class="steam-grid"></div>
-        <div class="glow-orb" style="width:350px;height:350px;background:radial-gradient(circle,#4a90d9,transparent);top:8%;left:3%;animation-delay:0s;"></div>
-        <div class="glow-orb" style="width:450px;height:450px;background:radial-gradient(circle,#2d6fa8,transparent);bottom:5%;right:3%;animation-delay:4s;"></div>
-        <div class="glow-orb" style="width:250px;height:250px;background:radial-gradient(circle,#6dafe8,transparent);top:45%;left:55%;animation-delay:8s;"></div>
     </div>
 
-    <!-- ============================================================
-    ОСНОВНОЙ КОНТЕЙНЕР
-    ============================================================ -->
     <div class="container">
-
-        <!-- ============================================================
-        ХЕДЕР
-        ============================================================ -->
+        <!-- ХЕДЕР -->
         <header>
             <div class="header-inner">
                 <a class="logo" href="index.html">
-                    <span class="logo-skin">Skin</span><span class="logo-hub">Hub</span>
+                    <img class="mini-hive" src="картинки/соты (1).webp" alt="SkinHive" onerror="this.style.display='none'">
+                    <span class="cs-text">Skin<span>Hive</span></span>
                 </a>
-
                 <nav>
                     <a href="index.html">Магазин</a>
                     <a class="active" href="cabinet.html">Кабинет</a>
@@ -1552,12 +1282,10 @@
                     <a href="sell.html">Продать</a>
                     <a href="#" onclick="showToast('📄 Страница о нас скоро появится!', 'default')">О нас</a>
                 </nav>
-
                 <div class="header-actions">
                     <button class="btn-theme" title="Сменить тему" onclick="toggleTheme()">
                         <i class="fas fa-moon" id="themeIcon"></i>
                     </button>
-                    
                     <button class="btn-steam" id="steamLoginBtn">
                         <i class="fab fa-steam"></i> <span id="authBtnText">Войти</span>
                     </button>
@@ -1565,7 +1293,7 @@
                         <i class="fas fa-dollar-sign"></i>
                         <span class="wallet-balance" id="walletBalance">$0.00</span>
                     </div>
-                    <button class="cart-btn" id="cartBtn">
+                    <button class="cart-btn" id="cartBtn" onclick="window.location.href='index.html'">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count" id="cartCount">0</span>
                     </button>
@@ -1573,9 +1301,7 @@
             </div>
         </header>
 
-        <!-- ============================================================
-        ЛИЧНЫЙ КАБИНЕТ
-        ============================================================ -->
+        <!-- ЛИЧНЫЙ КАБИНЕТ -->
         <section class="cabinet-section">
             <!-- Профиль -->
             <div class="cabinet-profile">
@@ -1597,17 +1323,17 @@
 
             <!-- Вкладки -->
             <div class="cabinet-tabs">
-                <span class="cabinet-tab active" data-tab="inventory">📦 Инвентарь</span>
-                <span class="cabinet-tab" data-tab="transactions">💳 Транзакции</span>
-                <span class="cabinet-tab" data-tab="referral">👥 Рефералка</span>
-                <span class="cabinet-tab" data-tab="security">🔒 Безопасность</span>
+                <span class="cabinet-tab active" data-tab="inventory"><i class="fas fa-box"></i> Инвентарь</span>
+                <span class="cabinet-tab" data-tab="transactions"><i class="fas fa-credit-card"></i> Транзакции</span>
+                <span class="cabinet-tab" data-tab="referral"><i class="fas fa-users"></i> Рефералка</span>
+                <span class="cabinet-tab" data-tab="security"><i class="fas fa-lock"></i> Безопасность</span>
             </div>
 
             <!-- Контент -->
             <div class="cabinet-content">
                 <div class="tab-content active" id="tab-inventory">
                     <div class="inventory-grid" id="inventoryGrid">
-                        <!-- Заполняется через JS только из покупок -->
+                        <!-- Заполняется через JS -->
                     </div>
                 </div>
 
@@ -1619,8 +1345,8 @@
 
                 <div class="tab-content" id="tab-referral">
                     <div class="referral-box">
-                        <i class="fas fa-users" style="font-size:38px; color:var(--steam-blue);"></i>
-                        <h3 style="margin:8px 0 2px; font-size:20px;">Реферальная программа</h3>
+                        <i class="fas fa-users" style="font-size:44px;"></i>
+                        <h3>Реферальная программа</h3>
                         <p style="color:var(--text-secondary); font-size:14px;">Приглашай друзей и получай 5% от их покупок</p>
                         <div class="ref-code" id="refCode">SKINHUB2026</div>
                         <a href="#" class="ref-link" onclick="event.preventDefault(); showToast('📋 Реферальный код скопирован!','success')">
@@ -1659,21 +1385,18 @@
                 </div>
             </div>
         </section>
-
     </div>
 
-    <!-- ============================================================
-    МОДАЛЬНЫЕ ОКНА
-    ============================================================ -->
+    <!-- МОДАЛЬНЫЕ ОКНА -->
     <!-- Модалка авторизации -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
             <button class="modal-close" id="authClose"><i class="fas fa-times"></i></button>
-            <span class="modal-icon">🎮</span>
-            <h2 id="authTitle">Вход в аккаунт</h2>
+            <span class="modal-icon">🐝</span>
+            <h2 id="authTitle">Вход в улей</h2>
             <p class="modal-sub" id="authSub">Войдите или зарегистрируйтесь</p>
             <div id="authError" class="error-text" style="display:none;"></div>
-            <div class="auth-suggest">
+            <div class="auth-suggest" id="authSuggest">
                 💡 <strong>Готовый аккаунт:</strong> demo@skin.com / <strong>demo123</strong>
             </div>
             <form class="auth-form" id="authForm" onsubmit="return false;">
@@ -1685,7 +1408,7 @@
                     <label>🔑 Пароль</label>
                     <input type="password" id="authPassword" placeholder="Минимум 6 символов" value="demo123" minlength="6">
                 </div>
-                <button class="btn-pay" id="authSubmitBtn" style="margin-top:4px; background:linear-gradient(135deg, var(--steam-blue), var(--steam-blue-dark));">
+                <button class="btn-pay" id="authSubmitBtn" style="margin-top:4px;">
                     <i class="fas fa-sign-in-alt"></i> <span id="authBtnLabel">Войти</span>
                 </button>
             </form>
@@ -1700,7 +1423,7 @@
     <div class="modal-overlay" id="topupModal">
         <div class="modal">
             <button class="modal-close" onclick="closeTopup()"><i class="fas fa-times"></i></button>
-            <span class="modal-icon">💎</span>
+            <span class="modal-icon">🍯</span>
             <h2>Пополнение кошелька</h2>
             <p class="modal-sub">Выберите сумму или укажите свою</p>
             <div class="topup-display" id="topupDisplay">
@@ -1769,25 +1492,25 @@
             <h2>Выберите аватарку</h2>
             <p class="modal-sub">Нажмите на понравившийся эмодзи или загрузите своё фото</p>
             <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin: 12px 0;">
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('👤')">👤</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('😎')">😎</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🔥')">🔥</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🦊')">🦊</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🐺')">🐺</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🦅')">🦅</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('👾')">👾</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🤖')">🤖</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('👨‍🚀')">👨‍🚀</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🧙')">🧙</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('⚡')">⚡</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🎮')">🎮</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('💀')">💀</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('👑')">👑</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🌟')">🌟</div>
-                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border-color); transition:var(--transition);" onclick="changeAvatar('🎯')">🎯</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('👤')">👤</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('😎')">😎</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🔥')">🔥</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🦊')">🦊</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🐺')">🐺</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🦅')">🦅</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('👾')">👾</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🤖')">🤖</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('👨‍🚀')">👨‍🚀</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🧙')">🧙</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('⚡')">⚡</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🎮')">🎮</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('💀')">💀</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('👑')">👑</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🌟')">🌟</div>
+                <div style="font-size:34px; text-align:center; cursor:pointer; padding:8px; background:rgba(245,197,24,0.05); border-radius:var(--radius); border:1px solid rgba(245,197,24,0.2); transition:var(--transition);" onclick="changeAvatar('🎯')">🎯</div>
             </div>
-            <div style="text-align:center; margin-top:4px;">
-                <label style="background:rgba(74,144,217,0.08); border:1px solid rgba(74,144,217,0.15); padding:8px 20px; border-radius:40px; cursor:pointer; font-weight:600; font-size:13px; color:var(--steam-blue); display:inline-flex; align-items:center; gap:8px; transition:var(--transition);">
+            <div style="text-align:center; margin-top:8px;">
+                <label style="background:rgba(245,197,24,0.08); border:1px solid rgba(245,197,24,0.3); padding:10px 24px; border-radius:40px; cursor:pointer; font-weight:600; font-size:13px; color:var(--hive-yellow); display:inline-flex; align-items:center; gap:8px; transition:var(--transition);">
                     <i class="fas fa-upload"></i> Загрузить фото
                     <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
                 </label>
@@ -1833,11 +1556,9 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
-    ============================================================ -->
+    <!-- УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА -->
     <div class="claim-toast" id="claimToast">
-        <div class="claim-icon">🎮</div>
+        <div class="claim-icon">🐝</div>
         <div class="claim-title">✅ Скин получен!</div>
         <div class="claim-sub">Предмет успешно передан в ваш инвентарь Steam</div>
         <div class="claim-skin-name" id="claimSkinName">AWP Dragon Lore</div>
@@ -1845,9 +1566,7 @@
         <button class="claim-btn-ok" onclick="closeClaimToast()">Отлично! <i class="fas fa-check"></i></button>
     </div>
 
-    <!-- ============================================================
-    TOAST
-    ============================================================ -->
+    <!-- TOAST -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <div>
@@ -1855,9 +1574,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    ФУТЕР
-    ============================================================ -->
+    <!-- ФУТЕР -->
     <footer>
         <div class="footer-links">
             <a href="#">Правила безопасности</a>
@@ -1871,29 +1588,23 @@
             <a href="#"><i class="fab fa-youtube"></i></a>
             <a href="#"><i class="fab fa-telegram"></i></a>
         </div>
-        <div class="copy">© 2026 SkinHub. Все сделки защищены. Не связан с Valve Corporation.</div>
+        <div class="copy">© 2026 SkinHive. Все сделки защищены. Не связан с Valve Corporation.</div>
     </footer>
 
     <!-- ============================================================
     JAVASCRIPT — ТОЛЬКО ИЗ ПОКУПОК
     ============================================================ -->
     <script>
-        // ============================================================
-        // КЛЮЧИ ДЛЯ localStorage
-        // ============================================================
         const STORAGE_KEYS = {
-            USER: 'skinHub_user',
-            BALANCE: 'skinHub_balance',
-            LOGGED_IN: 'skinHub_loggedIn',
-            OWNED_SKINS: 'skinHub_ownedSkins',
-            TRANSACTIONS: 'skinHub_transactions',
-            CART: 'skinHub_cart',
-            THEME: 'skinHub_theme'
+            USER: 'skinHive_user',
+            BALANCE: 'skinHive_balance',
+            LOGGED_IN: 'skinHive_loggedIn',
+            OWNED_SKINS: 'skinHive_ownedSkins',
+            TRANSACTIONS: 'skinHive_transactions',
+            CART: 'skinHive_cart',
+            THEME: 'skinHive_theme'
         };
 
-        // ============================================================
-        // СОСТОЯНИЕ
-        // ============================================================
         let balance = 0;
         let ownedSkins = [];
         let transactions = [];
@@ -1908,9 +1619,6 @@
         let toastTimeout = null;
         let claimTimeout = null;
 
-        // ============================================================
-        // DOM-ЭЛЕМЕНТЫ
-        // ============================================================
         const inventoryGrid = document.getElementById('inventoryGrid');
         const transactionsList = document.getElementById('transactionsList');
         const cabinetUsername = document.getElementById('cabinetUsername');
@@ -1962,37 +1670,21 @@
         const claimToast = document.getElementById('claimToast');
         const claimSkinName = document.getElementById('claimSkinName');
 
-        // ============================================================
-        // ★★★ ФУНКЦИЯ ЗАГРУЗКИ ИНВЕНТАРЯ (только из покупок) ★★★
-        // ============================================================
         function loadOwnedSkins() {
             const data = localStorage.getItem(STORAGE_KEYS.OWNED_SKINS);
             if (data) {
-                try {
-                    return JSON.parse(data);
-                } catch (e) {
-                    return [];
-                }
+                try { return JSON.parse(data); } catch (e) { return []; }
             }
             return [];
         }
 
-        // ============================================================
-        // ★★★ ФУНКЦИЯ ОБНОВЛЕНИЯ ИНВЕНТАРЯ ★★★
-        // ============================================================
         function updateInventory() {
             ownedSkins = loadOwnedSkins();
             renderInventory();
         }
 
-        // ============================================================
-        // ★★★ СЛУШАЕМ ИЗМЕНЕНИЯ В localStorage ★★★
-        // ============================================================
         window.addEventListener('storage', function(e) {
-            if (e.key === STORAGE_KEYS.OWNED_SKINS) {
-                console.log('🔄 Инвентарь обновлён из другой вкладки!');
-                updateInventory();
-            }
+            if (e.key === STORAGE_KEYS.OWNED_SKINS) updateInventory();
             if (e.key === STORAGE_KEYS.BALANCE) {
                 balance = parseFloat(e.newValue) || 0;
                 updateBalanceUI();
@@ -2013,36 +1705,9 @@
                     renderTransactions();
                 } catch(e) {}
             }
-            if (e.key === STORAGE_KEYS.CART) {
-                updateCartBadge();
-            }
+            if (e.key === STORAGE_KEYS.CART) updateCartBadge();
         });
 
-        // ============================================================
-        // АНИМИРОВАННЫЙ ФОН
-        // ============================================================
-        function initBackground() {
-            const bg = document.getElementById('bgAnimation');
-            if (!bg) return;
-            const colors = ['#4a90d9', '#2d6fa8', '#6dafe8'];
-            for (let i = 0; i < 3; i++) {
-                const orb = document.createElement('div');
-                orb.className = 'glow-orb';
-                const size = Math.random() * 300 + 200;
-                orb.style.width = size + 'px';
-                orb.style.height = size + 'px';
-                orb.style.left = Math.random() * 80 + 10 + '%';
-                orb.style.top = Math.random() * 80 + 10 + '%';
-                orb.style.background = colors[i % colors.length];
-                orb.style.animationDelay = (i * 2) + 's';
-                bg.appendChild(orb);
-            }
-        }
-        initBackground();
-
-        // ============================================================
-        // ТЕМА
-        // ============================================================
         function toggleTheme() {
             isDarkTheme = !isDarkTheme;
             document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
@@ -2058,30 +1723,20 @@
             themeIcon.className = 'fas fa-sun';
         }
 
-        // ============================================================
-        // TOAST
-        // ============================================================
         function showToast(text, type = 'default') {
             toastText.textContent = text;
             toast.className = 'toast show';
             if (type === 'error') toast.classList.add('error');
             else if (type === 'success') toast.classList.add('success');
             clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        // ============================================================
-        // УВЕДОМЛЕНИЕ О ПОЛУЧЕНИИ СКИНА
-        // ============================================================
         function showClaimToast(skinName) {
             claimSkinName.textContent = skinName || 'Скин';
             claimToast.classList.add('show');
             clearTimeout(claimTimeout);
-            claimTimeout = setTimeout(() => {
-                closeClaimToast();
-            }, 4000);
+            claimTimeout = setTimeout(() => { closeClaimToast(); }, 4000);
         }
 
         function closeClaimToast() {
@@ -2089,48 +1744,24 @@
             clearTimeout(claimTimeout);
         }
 
-        // ============================================================
-        // ОБНОВЛЕНИЕ БАЛАНСА
-        // ============================================================
         function updateBalanceUI() {
             const formatted = '$' + balance.toFixed(2);
             cabinetBalance.textContent = formatted;
             if (walletBalance) walletBalance.textContent = formatted;
         }
 
-        // ============================================================
-        // ПОЛУЧЕНИЕ КЛАССА РЕДКОСТИ
-        // ============================================================
         function getRarityClass(rarity) {
-            const map = {
-                'gold': 'rarity-gold',
-                'contraband': 'rarity-contraband',
-                'red': 'rarity-red',
-                'pink': 'rarity-pink',
-                'purple': 'rarity-purple',
-                'blue': 'rarity-blue'
-            };
+            const map = { 'gold': 'rarity-gold', 'contraband': 'rarity-contraband', 'red': 'rarity-red', 'pink': 'rarity-pink', 'purple': 'rarity-purple', 'blue': 'rarity-blue' };
             return map[rarity] || 'rarity-blue';
         }
 
         function getRarityLabel(rarity) {
-            const map = {
-                'gold': '★ Золото',
-                'contraband': '● Контрбанда',
-                'red': '🔴 Красный',
-                'pink': '🌸 Розовый',
-                'purple': '🟣 Фиолетовый',
-                'blue': '🔵 Синий'
-            };
+            const map = { 'gold': '★ Золото', 'contraband': '● Контрбанда', 'red': '🔴 Красный', 'pink': '🌸 Розовый', 'purple': '🟣 Фиолетовый', 'blue': '🔵 Синий' };
             return map[rarity] || '';
         }
 
-        // ============================================================
-        // ★★★ РЕНДЕРИНГ ИНВЕНТАРЯ (ТОЛЬКО ИЗ ПОКУПОК) ★★★
-        // ============================================================
         function renderInventory() {
             if (!inventoryGrid) return;
-
             ownedSkins = loadOwnedSkins();
 
             if (!ownedSkins || ownedSkins.length === 0) {
@@ -2147,11 +1778,9 @@
             inventoryGrid.innerHTML = ownedSkins.map((item, index) => {
                 const rarityClass = getRarityClass(item.rarity);
                 const rarityLabel = getRarityLabel(item.rarity);
-                
                 const iconHtml = item.hasImage && item.icon ? 
                     `<img src="${item.icon}" alt="${item.name}" onerror="this.parentElement.innerHTML='<span class=\\'fallback-icon\\'>${item.iconFallback || '🎯'}</span>'">` :
                     `<span class="fallback-icon">${item.iconFallback || '🎯'}</span>`;
-
                 const price = item.price || 0;
                 
                 return `
@@ -2175,16 +1804,12 @@
             }).join('');
         }
 
-        // ============================================================
-        // ЗАБРАТЬ СКИН (Отправка в Steam)
-        // ============================================================
         function claimSkin(index) {
             const currentInventory = loadOwnedSkins();
             const skin = currentInventory[index];
             if (!skin) return;
 
             showClaimToast(skin.name || 'Скин');
-
             currentInventory.splice(index, 1);
             localStorage.setItem(STORAGE_KEYS.OWNED_SKINS, JSON.stringify(currentInventory));
             
@@ -2206,12 +1831,8 @@
             }));
         }
 
-        // ============================================================
-        // РЕНДЕРИНГ ТРАНЗАКЦИЙ
-        // ============================================================
         function renderTransactions() {
             if (!transactionsList) return;
-            
             const txs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS) || '[]');
             transactions = txs;
 
@@ -2241,9 +1862,6 @@
             }).join('');
         }
 
-        // ============================================================
-        // БЕЗОПАСНОСТЬ
-        // ============================================================
         function toggleSecurity(el) {
             if (!isLoggedIn) {
                 showToast('⚠️ Войдите в аккаунт!', 'error');
@@ -2273,9 +1891,7 @@
                 authModal.classList.add('active');
                 return;
             }
-            currentPassword.value = '';
-            newPassword.value = '';
-            confirmPassword.value = '';
+            currentPassword.value = ''; newPassword.value = ''; confirmPassword.value = '';
             passwordModal.classList.add('active');
         }
 
@@ -2283,43 +1899,24 @@
             const current = currentPassword.value.trim();
             const newPass = newPassword.value.trim();
             const confirm = confirmPassword.value.trim();
-
-            if (!current || !newPass || !confirm) {
-                showToast('⚠️ Заполните все поля!', 'error');
-                return;
-            }
-
-            if (newPass.length < 6) {
-                showToast('⚠️ Пароль должен быть минимум 6 символов!', 'error');
-                return;
-            }
-
-            if (newPass !== confirm) {
-                showToast('⚠️ Пароли не совпадают!', 'error');
-                return;
-            }
-
+            if (!current || !newPass || !confirm) { showToast('⚠️ Заполните все поля!', 'error'); return; }
+            if (newPass.length < 6) { showToast('⚠️ Пароль должен быть минимум 6 символов!', 'error'); return; }
+            if (newPass !== confirm) { showToast('⚠️ Пароли не совпадают!', 'error'); return; }
             showToast('✅ Пароль успешно изменён!', 'success');
             passwordModal.classList.remove('active');
         }
 
-        // ============================================================
-        // РЕФЕРАЛКА
-        // ============================================================
         function updateReferralUI() {
             if (isLoggedIn) {
                 refStatus.textContent = '✅ Активна';
                 refStatus.style.color = '#4caf50';
-                refCode.textContent = 'SKINHUB' + Math.random().toString(36).substring(2, 6).toUpperCase();
+                refCode.textContent = 'SKINHIVE' + Math.random().toString(36).substring(2, 6).toUpperCase();
             } else {
                 refStatus.textContent = '⛔ Войдите в аккаунт';
                 refStatus.style.color = '#ff4444';
             }
         }
 
-        // ============================================================
-        // ТРЕЙД-ССЫЛКА
-        // ============================================================
         function copyTradeLink() {
             navigator.clipboard.writeText(tradeLink).then(() => {
                 showToast('📋 Трейд-ссылка скопирована!', 'success');
@@ -2340,19 +1937,13 @@
 
         function saveTradeLink() {
             const newLink = tradeInput.value.trim();
-            if (!newLink) {
-                showToast('⚠️ Введите корректную ссылку!', 'error');
-                return;
-            }
+            if (!newLink) { showToast('⚠️ Введите корректную ссылку!', 'error'); return; }
             tradeLink = newLink;
             tradeLinkEl.textContent = tradeLink;
             tradeModal.classList.remove('active');
             showToast('✅ Трейд-ссылка обновлена!', 'success');
         }
 
-        // ============================================================
-        // АВАТАРКА
-        // ============================================================
         avatarUpload.addEventListener('change', function(e) {
             const file = this.files[0];
             if (!file) return;
@@ -2360,10 +1951,6 @@
             reader.onload = function(event) {
                 const img = document.createElement('img');
                 img.src = event.target.result;
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '50%';
                 avatarDisplay.innerHTML = '';
                 avatarDisplay.appendChild(img);
                 user.avatar = event.target.result;
@@ -2380,24 +1967,14 @@
             avatarDisplay.textContent = emoji;
             const img = avatarDisplay.querySelector('img');
             if (img) img.remove();
-            avatarDisplay.style.fontSize = '32px';
+            avatarDisplay.style.fontSize = '36px';
             avatarModal.classList.remove('active');
             showToast('✅ Аватарка обновлена!', 'success');
             localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
         }
 
-        // ============================================================
-        // ПОПОЛНЕНИЕ
-        // ============================================================
-        function openTopup() {
-            const modal = document.getElementById('topupModal');
-            if (modal) modal.classList.add('active');
-        }
-
-        function closeTopup() {
-            const modal = document.getElementById('topupModal');
-            if (modal) modal.classList.remove('active');
-        }
+        function openTopup() { document.getElementById('topupModal').classList.add('active'); }
+        function closeTopup() { document.getElementById('topupModal').classList.remove('active'); }
 
         function selectTopupAmount(amount) {
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
@@ -2423,28 +2000,18 @@
             document.querySelector(`.method-btn[data-method="${method}"]`)?.classList.add('active');
             selectedMethod = method;
             const cardFormEl = document.getElementById('cardForm');
-            if (method === 'card') {
-                cardFormEl.classList.add('active');
-            } else {
-                cardFormEl.classList.remove('active');
-            }
+            if (method === 'card') cardFormEl.classList.add('active');
+            else cardFormEl.classList.remove('active');
         }
 
         function processTopup() {
             const customInput = document.getElementById('customAmount');
             let amount = parseFloat(customInput?.value) || 0;
-
             if (!amount || amount <= 0) {
                 const activeBtn = document.querySelector('.amount-btn.active');
-                if (activeBtn) {
-                    amount = parseFloat(activeBtn.dataset.amount) || 0;
-                }
+                if (activeBtn) amount = parseFloat(activeBtn.dataset.amount) || 0;
             }
-
-            if (amount <= 0) {
-                showToast('⚠️ Введите корректную сумму', 'error');
-                return;
-            }
+            if (amount <= 0) { showToast('⚠️ Введите корректную сумму', 'error'); return; }
 
             const userData = getUser();
             if (!userData) {
@@ -2457,13 +2024,8 @@
             if (selectedMethod === 'card') {
                 const inputs = cardForm.querySelectorAll('input');
                 let valid = true;
-                inputs.forEach(inp => {
-                    if (!inp.value.trim()) valid = false;
-                });
-                if (!valid) {
-                    showToast('⚠️ Заполните все поля карты!', 'error');
-                    return;
-                }
+                inputs.forEach(inp => { if (!inp.value.trim()) valid = false; });
+                if (!valid) { showToast('⚠️ Заполните все поля карты!', 'error'); return; }
                 showToast('💳 Оплата картой выполнена!', 'success');
             } else if (selectedMethod === 'sbp') {
                 showToast('🏦 Оплата через СБП выполнена!', 'success');
@@ -2475,35 +2037,19 @@
 
             updateBalance(amount);
             addTransaction({ type: 'Пополнение', amount: amount, name: 'Пополнение кошелька' });
-
             closeTopup();
             showToast(`💰 Кошелек пополнен на $${amount.toFixed(2)}`, 'success');
 
-            document.querySelectorAll('.wallet-balance').forEach(el => {
-                el.textContent = '$' + getBalance().toFixed(2);
-            });
-
+            document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent = '$' + getBalance().toFixed(2); });
             cabinetBalance.textContent = '$' + getBalance().toFixed(2);
         }
 
-        // ============================================================
-        // АВТОРИЗАЦИЯ
-        // ============================================================
         function handleAuth() {
             const email = authEmail.value.trim();
             const password = authPassword.value.trim();
 
-            if (!email || !password) {
-                authError.textContent = '⚠️ Заполните все поля!';
-                authError.style.display = 'block';
-                return;
-            }
-
-            if (password.length < 6) {
-                authError.textContent = '⚠️ Пароль должен быть минимум 6 символов!';
-                authError.style.display = 'block';
-                return;
-            }
+            if (!email || !password) { authError.textContent = '⚠️ Заполните все поля!'; authError.style.display = 'block'; return; }
+            if (password.length < 6) { authError.textContent = '⚠️ Пароль должен быть минимум 6 символов!'; authError.style.display = 'block'; return; }
 
             if (isRegister) {
                 user = { email, username: email.split('@')[0], avatar: '👤' };
@@ -2572,19 +2118,19 @@
         function updateAuthUI() {
             if (isLoggedIn) {
                 authBtnText.textContent = user.username;
-                steamLoginBtn.style.borderColor = 'var(--steam-blue)';
-                steamLoginBtn.style.color = 'var(--steam-blue)';
+                steamLoginBtn.style.borderColor = 'var(--hive-yellow)';
+                steamLoginBtn.style.color = 'var(--hive-yellow)';
             } else {
                 authBtnText.textContent = 'Войти';
-                steamLoginBtn.style.borderColor = 'rgba(255,255,255,0.08)';
-                steamLoginBtn.style.color = '#fff';
+                steamLoginBtn.style.borderColor = 'var(--hive-yellow)';
+                steamLoginBtn.style.color = 'var(--hive-yellow)';
             }
         }
 
         function toggleAuthMode() {
             isRegister = !isRegister;
             if (isRegister) {
-                authTitle.textContent = 'Регистрация';
+                authTitle.textContent = 'Регистрация в улье';
                 authSub.textContent = 'Создайте аккаунт';
                 authBtnLabel.textContent = 'Зарегистрироваться';
                 authSwitchText.textContent = 'Уже есть аккаунт?';
@@ -2592,7 +2138,7 @@
                 authError.style.display = 'none';
                 authSuggest.innerHTML = '💡 <strong>Готовый аккаунт:</strong> demo@skin.com / <strong>demo123</strong>';
             } else {
-                authTitle.textContent = 'Вход в аккаунт';
+                authTitle.textContent = 'Вход в улей';
                 authSub.textContent = 'Войдите или зарегистрируйтесь';
                 authBtnLabel.textContent = 'Войти';
                 authSwitchText.textContent = 'Нет аккаунта?';
@@ -2602,9 +2148,6 @@
             }
         }
 
-        // ============================================================
-        // РАБОТА С localStorage
-        // ============================================================
         function getUser() {
             const userData = localStorage.getItem(STORAGE_KEYS.USER);
             return userData ? JSON.parse(userData) : null;
@@ -2636,9 +2179,6 @@
             renderTransactions();
         }
 
-        // ============================================================
-        // ФОРМАТИРОВАНИЕ КАРТЫ
-        // ============================================================
         function formatCardNumber(input) {
             let val = input.value.replace(/\D/g, '');
             val = val.replace(/(\d{4})/g, '$1 ').trim();
@@ -2647,37 +2187,23 @@
 
         function formatCardExpiry(input) {
             let val = input.value.replace(/\D/g, '');
-            if (val.length >= 2) {
-                val = val.substring(0, 2) + '/' + val.substring(2, 4);
-            }
+            if (val.length >= 2) val = val.substring(0, 2) + '/' + val.substring(2, 4);
             input.value = val;
         }
 
-        // ============================================================
-        // КОРЗИНА
-        // ============================================================
         function updateCartBadge() {
             const cart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART) || '[]');
-            if (cartCount) {
-                cartCount.textContent = cart.length;
-            }
+            if (cartCount) cartCount.textContent = cart.length;
         }
 
-        // ============================================================
-        // ★★★ ПЕРИОДИЧЕСКАЯ ПРОВЕРКА ОБНОВЛЕНИЙ ★★★
-        // ============================================================
         setInterval(() => {
             const currentInventory = loadOwnedSkins();
             if (JSON.stringify(currentInventory) !== JSON.stringify(ownedSkins)) {
-                console.log('🔄 Инвентарь обновлён автоматически!');
                 ownedSkins = currentInventory;
                 renderInventory();
             }
         }, 3000);
 
-        // ============================================================
-        // ★★★ ЗАГРУЗКА ДАННЫХ ★★★
-        // ============================================================
         function loadData() {
             const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
             const savedLoggedIn = localStorage.getItem(STORAGE_KEYS.LOGGED_IN);
@@ -2702,16 +2228,9 @@
                 updateBalanceUI();
             }
             if (savedTransactions) {
-                try {
-                    transactions = JSON.parse(savedTransactions) || [];
-                } catch(e) {
-                    transactions = [];
-                }
+                try { transactions = JSON.parse(savedTransactions) || []; } catch(e) { transactions = []; }
             }
-
-            // ★★★ Загружаем инвентарь только из покупок ★★★
             ownedSkins = loadOwnedSkins();
-            
             renderInventory();
             renderTransactions();
             updateSecurityUI();
@@ -2719,11 +2238,6 @@
             updateCartBadge();
         }
 
-        // ============================================================
-        // СОБЫТИЯ
-        // ============================================================
-
-        // Вкладки
         cabinetTabs.forEach(tab => {
             tab.addEventListener('click', function() {
                 cabinetTabs.forEach(t => t.classList.remove('active'));
@@ -2734,29 +2248,14 @@
             });
         });
 
-        // Аватарка
-        avatarClickArea.addEventListener('click', function(e) {
-            avatarModal.classList.add('active');
-        });
-
+        avatarClickArea.addEventListener('click', function(e) { avatarModal.classList.add('active'); });
         avatarClose.addEventListener('click', () => avatarModal.classList.remove('active'));
-        avatarModal.addEventListener('click', function(e) {
-            if (e.target === this) avatarModal.classList.remove('active');
-        });
-
-        // Трейд-ссылка
+        avatarModal.addEventListener('click', function(e) { if (e.target === this) avatarModal.classList.remove('active'); });
         tradeClose.addEventListener('click', () => tradeModal.classList.remove('active'));
-        tradeModal.addEventListener('click', function(e) {
-            if (e.target === this) tradeModal.classList.remove('active');
-        });
-
-        // Смена пароля
+        tradeModal.addEventListener('click', function(e) { if (e.target === this) tradeModal.classList.remove('active'); });
         passwordClose.addEventListener('click', () => passwordModal.classList.remove('active'));
-        passwordModal.addEventListener('click', function(e) {
-            if (e.target === this) passwordModal.classList.remove('active');
-        });
+        passwordModal.addEventListener('click', function(e) { if (e.target === this) passwordModal.classList.remove('active'); });
 
-        // Авторизация
         steamLoginBtn.addEventListener('click', function() {
             if (isLoggedIn) {
                 isLoggedIn = false;
@@ -2768,7 +2267,7 @@
                 cabinetEmail.textContent = '📧 Не авторизован';
                 avatarDisplay.textContent = '👤';
                 lastLogin.textContent = '—';
-                showToast('👋 Вы вышли из аккаунта', 'default');
+                showToast('👋 Вы вышли из улья', 'default');
                 updateReferralUI();
                 updateSecurityUI();
                 localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'false');
@@ -2782,30 +2281,14 @@
         });
 
         authClose.addEventListener('click', () => authModal.classList.remove('active'));
-        authModal.addEventListener('click', function(e) {
-            if (e.target === this) authModal.classList.remove('active');
-        });
-
-        authForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleAuth();
-        });
-
+        authModal.addEventListener('click', function(e) { if (e.target === this) authModal.classList.remove('active'); });
+        authForm.addEventListener('submit', function(e) { e.preventDefault(); handleAuth(); });
         authSubmitBtn.addEventListener('click', handleAuth);
-
-        // Тема
         document.querySelector('.btn-theme')?.addEventListener('click', toggleTheme);
 
-        // ============================================================
-        // ★★★ ИНИЦИАЛИЗАЦИЯ ★★★
-        // ============================================================
         loadData();
 
-        console.log('👤 Личный кабинет SkinHub (Steam 2026) загружен!');
-        console.log(`📦 Скинов в инвентаре: ${ownedSkins.length} (только из покупок)`);
-        console.log(`💰 Баланс: $${balance}`);
-        console.log(`👤 Пользователь: ${isLoggedIn ? user.username : 'Гость'}`);
-        console.log('✅ Теперь скины появляются только после покупки на главной странице!');
+        console.log('🐝 Личный кабинет SkinHive загружен!');
     </script>
 </body>
 </html>
