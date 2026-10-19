@@ -2064,7 +2064,7 @@
                 </select>
             </div>
             <div style="font-size:13px;color:var(--text-secondary);">
-                Найдено: <span id="totalCount">0</span> скинов
+                Найдено: <span id="totalCount">$0</span> скинов
             </div>
         </div>
 
@@ -2498,7 +2498,7 @@
         }
 
         function updateBalanceUI() {
-            const formatted = '$' + balance.toFixed(2);
+            const formatted = + balance.toFixed(2);
             const wallet = document.getElementById('walletBalance');
             if (wallet) wallet.textContent = formatted;
         }
@@ -2591,7 +2591,7 @@
 
             closeTopup();
             showToast(`💰 Кошелек пополнен на $${amount.toFixed(2)}`, 'success');
-            document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent = '$' + getBalance().toFixed(2); });
+            document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent = + getBalance().toFixed(2); });
         }
 
         function getActiveFilters() {
@@ -3014,7 +3014,7 @@
                 updateCartUI(); updateCartBadge();
                 document.getElementById('cartPanel').classList.remove('open');
                 showToast(`🎉 Покупка завершена! Скины в улье!`, 'success');
-                document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent = '$' + getBalance().toFixed(2); });
+                document.querySelectorAll('.wallet-balance').forEach(el => { el.textContent =  + getBalance().toFixed(2); });
                 renderCatalog();
             });
 
@@ -3068,4 +3068,4 @@
         console.log('✅ Все скрипты загружены!');
     </script>
 </body>
-</html>
+</html>ы
